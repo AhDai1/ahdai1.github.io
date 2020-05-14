@@ -279,6 +279,199 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/14/%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA%E4%BB%A5%E5%8F%8Aexec%E6%97%8F%E5%87%BD%E6%95%B0%E7%9A%84%E5%BA%94%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AhDai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AhDai">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/14/%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA%E4%BB%A5%E5%8F%8Aexec%E6%97%8F%E5%87%BD%E6%95%B0%E7%9A%84%E5%BA%94%E7%94%A8/" itemprop="url">进程的创建以及exec族函数的应用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-14T20:37:00+08:00">
+                2020-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                   字 
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><h2 id="父子进程共享"><a href="#父子进程共享" class="headerlink" title="父子进程共享"></a>父子进程共享</h2><p>父子进程间遵循读时共享写时复制的原则。</p>
+<h3 id="共享"><a href="#共享" class="headerlink" title="共享"></a>共享</h3><p>全局变量、.date、.text、栈、堆、环境变量、用户ID、宿主ID、进程工作目录、信号处理方式…</p>
+<h3 id="非共享"><a href="#非共享" class="headerlink" title="非共享"></a>非共享</h3><p>进程ID、fork返回值、父进程ID、进程运行时间、闹钟、未决信号集</p>
+<h2 id="循环创建多个多进程"><a href="#循环创建多个多进程" class="headerlink" title="循环创建多个多进程"></a>循环创建多个多进程</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i;</span><br><span class="line">        <span class="keyword">pid_t</span> pid;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"xxxxxxxx\n"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; <span class="number">5</span>; i++)</span><br><span class="line">        &#123;</span><br><span class="line">                pid = fork();</span><br><span class="line">                <span class="keyword">if</span>(pid == <span class="number">-1</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                        perror(<span class="string">"fork error:"</span>);</span><br><span class="line">                        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(pid == <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                        <span class="keyword">break</span>;<span class="comment">//关键所在</span></span><br><span class="line">                <span class="comment">//如果不break则会导致子进程继续fork，从而导致不只有5个子进程</span></span><br><span class="line">                <span class="comment">//      printf("I'm %dth child ,pid = %u,ppid = %u\n",i+1,getpid(),getppid());</span></span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(i &lt; <span class="number">5</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                sleep(i);</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"I'm %dth child, pid = %u\n"</span>,i+<span class="number">1</span>, getpid());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">                sleep(i);</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"I'm parent"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"yyyyyyyyyyyy\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="exec族函数"><a href="#exec族函数" class="headerlink" title="exec族函数"></a>exec族函数</h2><p>用途：加载某一个进程</p>
+<h3 id="execlp"><a href="#execlp" class="headerlink" title="execlp"></a>execlp</h3><p>加载一个进程，借助PATH环境变量</p>
+<p>int execlp(const char *file, const char *arg, …)成功：无返回；失败：-1<br>参数1 : 要加载的程序的名字。</p>
+<p>execlp(“ls”, “ls”, “-l”, “-F”, NULL);         使用程序名在PATH中搜索。<br>该函数通常调用系统程序例如：ls date cp</p>
+<h3 id="execl"><a href="#execl" class="headerlink" title="execl"></a>execl</h3><p>加载一个进程， 通过 路径+程序名 来加载。</p>
+<p>int execl(const char *path, const char *arg, …成功：无返回；失败：-1</p>
+<p>execl(“/bin/ls”, “ls”, “-l”, “-F”, NULL);<br>使用参数1给出的绝对路径搜索。</p>
+<h3 id="execvp"><a href="#execvp" class="headerlink" title="execvp"></a>execvp</h3><p>加载一个进程，使用自定义环境变量env</p>
+<p>int execvp(const char *file, const char *argv[]);<br>变参形式： ①… ② argv[]  (main函数也是变参函数，形式上等同于 int main(int argc, char *argv0, …)) </p>
+<p>变参终止条件：① NULL结尾 ② 固参指定</p>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">pid_t</span> pid;</span><br><span class="line">        pid = fork();</span><br><span class="line">        <span class="keyword">if</span>(pid == <span class="number">-1</span>) </span><br><span class="line">        &#123;</span><br><span class="line">                perror(<span class="string">"fork "</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(pid &gt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                sleep(<span class="number">1</span>);</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"parent\n"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">                <span class="comment">//execl("./while","while",NULL);</span></span><br><span class="line">                execl(<span class="string">"/bin/ls"</span>, <span class="string">"ls"</span>, <span class="string">"-l"</span>, <span class="string">"-F"</span>, <span class="literal">NULL</span>);</span><br><span class="line">                <span class="comment">//execlp("ls", "ls","-l","-a",NULL);</span></span><br><span class="line">                <span class="keyword">char</span> *argv[] = &#123;<span class="string">"ls"</span>,<span class="string">"-l"</span>,<span class="string">"-a"</span>,<span class="string">"-h"</span>,<span class="literal">NULL</span>&#125;;</span><br><span class="line">                <span class="comment">//execv("/bin/ls",argv);</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="利用dup2-重定向输出到文件中"><a href="#利用dup2-重定向输出到文件中" class="headerlink" title="利用dup2()重定向输出到文件中"></a>利用dup2()重定向输出到文件中</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> fd; </span><br><span class="line">        fd = <span class="built_in">open</span>(<span class="string">"ps.out"</span>, O_WRONLY|O_CREAT|O_TRUNC,<span class="number">0644</span>);</span><br><span class="line">        <span class="keyword">if</span>(fd &lt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                perror(<span class="string">"open ps.out"</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">        &#125;    </span><br><span class="line">        dup2(fd, STDOUT_FILENO);<span class="comment">//dup2(3,1);</span></span><br><span class="line">        <span class="comment">//将标准输出重定向到自己创建的文件中</span></span><br><span class="line">        execlp(<span class="string">"ps"</span>,<span class="string">"ps"</span>,<span class="string">"aux"</span>,<span class="literal">NULL</span>);<span class="comment">//no successful return</span></span><br><span class="line">        <span class="built_in">close</span>(fd);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/14/C++%E5%A4%9A%E6%80%81%E4%BE%8B%E5%AD%90%E4%B8%8EC%E8%AF%AD%E8%A8%80%E5%88%A9%E7%94%A8%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E5%AE%9E%E7%8E%B0%E5%A4%9A%E6%80%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -495,7 +688,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -506,7 +699,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -518,6 +711,16 @@
 
           
 
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ahdai1" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+            </div>
           
 
           
@@ -568,7 +771,10 @@
 
 
 
-
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">全站共  字</span>
+</div>
 
         
 <div class="busuanzi-count">
