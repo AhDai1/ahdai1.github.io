@@ -79,11 +79,15 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="AhDai">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="本程序解释：诸葛亮交给赵云三个锦囊，三种情况下分别打开不同的锦囊。 C++1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++多态例子与C语言利用函数指针实现多态">
+<meta property="og:url" content="http://yoursite.com/2020/05/14/C++%E5%A4%9A%E6%80%81%E4%BE%8B%E5%AD%90%E4%B8%8EC%E8%AF%AD%E8%A8%80%E5%88%A9%E7%94%A8%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E5%AE%9E%E7%8E%B0%E5%A4%9A%E6%80%81/index.html">
 <meta property="og:site_name" content="AhDai">
+<meta property="og:description" content="本程序解释：诸葛亮交给赵云三个锦囊，三种情况下分别打开不同的锦囊。 C++1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-14T11:10:00.268Z">
+<meta property="article:modified_time" content="2020-05-14T11:36:37.919Z">
 <meta property="article:author" content="AhDai">
 <meta name="twitter:card" content="summary">
 
@@ -115,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/05/14/C++多态例子与C语言利用函数指针实现多态/"/>
 
 
 
 
 
-  <title>AhDai</title>
+  <title>C++多态例子与C语言利用函数指针实现多态 | AhDai</title>
   
 
 
@@ -140,8 +144,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -264,9 +267,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -296,9 +299,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/14/C++%E5%A4%9A%E6%80%81%E4%BE%8B%E5%AD%90%E4%B8%8EC%E8%AF%AD%E8%A8%80%E5%88%A9%E7%94%A8%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E5%AE%9E%E7%8E%B0%E5%A4%9A%E6%80%81/" itemprop="url">C++多态例子与C语言利用函数指针实现多态</a></h1>
+          <h1 class="post-title" itemprop="name headline">C++多态例子与C语言利用函数指针实现多态</h1>
         
 
         <div class="post-meta">
@@ -352,8 +353,16 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
 
           
+  	    <span class="post-meta-divider">|</span>
+  	    <span id="busuanzi_value_page_pv"></span>次阅读
+	  
 
           
             <div class="post-wordcount">
@@ -403,16 +412,12 @@
       
 
       
-        
-          
-            <p>本程序解释：诸葛亮交给赵云三个锦囊，三种情况下分别打开不同的锦囊。</p>
+        <p>本程序解释：诸葛亮交给赵云三个锦囊，三种情况下分别打开不同的锦囊。</p>
 <h1 id="C"><a href="#C" class="headerlink" title="C++"></a>C++</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _CRT_SECURE_NO_WARNINGS</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TIP</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">open_tip</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	TIP(<span class="built_in">string</span> from, <span class="built_in">string</span> to)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">this</span>-&gt;from = from;</span><br><span class="line">		<span class="keyword">this</span>-&gt;to = to;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="built_in">string</span> <span class="title">get_from</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>-&gt;from;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="built_in">string</span> <span class="title">get_to</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>-&gt;to;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="built_in">string</span> from;</span><br><span class="line">	<span class="built_in">string</span> to;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">tip1</span>:</span><span class="keyword">public</span> TIP</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	tip1(<span class="built_in">string</span> from, <span class="built_in">string</span> to) :TIP(from, to)</span><br><span class="line">	&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">open_tip</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"打开了锦囊"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"此锦囊由"</span> &lt;&lt; get_from() &lt;&lt; <span class="string">"写给"</span> &lt;&lt; get_to() &lt;&lt; <span class="string">"的"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"内容是:"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"一到东吴就拜会乔国老"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">tip2</span> :</span><span class="keyword">public</span> TIP</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	tip2(<span class="built_in">string</span> from, <span class="built_in">string</span> to) :TIP(from, to)</span><br><span class="line">	&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">open_tip</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"打开了锦囊"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"此锦囊由"</span> &lt;&lt; get_from() &lt;&lt; <span class="string">"写给"</span> &lt;&lt; get_to() &lt;&lt; <span class="string">"的"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"内容是:"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"如果主公乐不思蜀，就谎称曹贼来袭"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">tip3</span> :</span><span class="keyword">public</span> TIP</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	tip3(<span class="built_in">string</span> from, <span class="built_in">string</span> to) :TIP(from, to)</span><br><span class="line">	&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">open_tip</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"打开了锦囊"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"此锦囊由"</span> &lt;&lt; get_from() &lt;&lt; <span class="string">"写给"</span> &lt;&lt; get_to() &lt;&lt; <span class="string">"的"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"内容是:"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"如果被孙权追杀，向孙尚香求救"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">open_tips</span><span class="params">(TIP *tp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	tp-&gt;open_tip();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	tip1 *t1 = <span class="keyword">new</span> tip1(<span class="string">"孔明"</span>, <span class="string">"赵云"</span>);</span><br><span class="line">	tip2 *t2 = <span class="keyword">new</span> tip2(<span class="string">"孔明"</span>, <span class="string">"赵云"</span>);</span><br><span class="line">	tip3 *t3 = <span class="keyword">new</span> tip3(<span class="string">"孔明"</span>, <span class="string">"赵云"</span>);</span><br><span class="line">	open_tips(t1);</span><br><span class="line">	open_tips(t2);</span><br><span class="line">	open_tips(t3);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h1 id="C语言"><a href="#C语言" class="headerlink" title="C语言"></a>C语言</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _CRT_SECURE_NO_WARNINGS</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="comment">//抽象层</span></span><br><span class="line"><span class="comment">//定义一个拆开锦囊方法的类型</span></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">void</span><span class="params">(TIPS)</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="comment">//定义锦囊类型</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">tip</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">char</span> from[<span class="number">64</span>];<span class="comment">//谁写的</span></span><br><span class="line">	<span class="keyword">char</span> to[<span class="number">64</span>];<span class="comment">//写给谁的</span></span><br><span class="line">	TIPS *tp;<span class="comment">//相当于抽象类的纯虚函数</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//需要一个打开锦囊的架构函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">open_tip</span><span class="params">(struct tip *tip_p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"打开了锦囊"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"此锦囊由"</span> &lt;&lt; tip_p-&gt;from &lt;&lt; <span class="string">"写给"</span> &lt;&lt; tip_p-&gt;to &lt;&lt; <span class="string">"的"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"内容是："</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	tip_p-&gt;tp();<span class="comment">//发生多态现象</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//提供创建锦囊的方法</span></span><br><span class="line"><span class="function">struct tip* <span class="title">Create_tip</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *from, <span class="keyword">const</span> <span class="keyword">char</span> *to, TIPS *tp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">tip</span> *<span class="title">temp</span> = (<span class="title">struct</span> <span class="title">tip</span>*)<span class="title">malloc</span>(<span class="title">sizeof</span>(<span class="title">struct</span> <span class="title">tip</span>));</span></span><br><span class="line">	<span class="keyword">if</span> (temp == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">strcpy</span>(temp-&gt;from, from);</span><br><span class="line">	<span class="built_in">strcpy</span>(temp-&gt;to, to);</span><br><span class="line">	<span class="comment">//给一个回调函数赋值，一般称为注册回调函数</span></span><br><span class="line">	temp-&gt;tp = tp;</span><br><span class="line">	<span class="keyword">return</span> temp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//提供一个销毁锦囊的方法</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">destroy</span><span class="params">(struct tip *tp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (tp != <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">free</span>(tp);</span><br><span class="line">		tp = <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//实现层</span></span><br><span class="line"><span class="comment">//诸葛亮写了三个锦囊</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">tip1_func</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"一到东吴就拜会乔国老"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">tip2_func</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"如果主公乐不思蜀，就谎称曹贼来袭"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">tip3_func</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"如果被孙权追杀，向孙尚香求救"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//业务层</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//创建出三个锦囊</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">tip</span> *<span class="title">tip1</span> = <span class="title">Create_tip</span>("孔明", "赵云", <span class="title">tip1_func</span>);</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">tip</span> *<span class="title">tip2</span> = <span class="title">Create_tip</span>("孔明", "赵云", <span class="title">tip2_func</span>);</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">tip</span> *<span class="title">tip3</span> = <span class="title">Create_tip</span>("孔明", "赵云", <span class="title">tip3_func</span>);</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">//由赵云进行拆锦囊</span></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"刚刚来到东吴，赵云打开第一个锦囊"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	open_tip(tip1);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"刘备乐不思蜀，赵云打开第二个锦囊"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	open_tip(tip2);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"孙权大军追杀"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	open_tip(tip3);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	destroy(tip1);</span><br><span class="line">	destroy(tip2);</span><br><span class="line">	destroy(tip3);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-          
-        
       
     </div>
     
@@ -429,12 +434,12 @@
       
 
       
+      
+      
 
       
 
       
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -444,10 +449,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -455,6 +461,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -475,8 +485,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -531,6 +550,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C"><span class="nav-number">1.</span> <span class="nav-text">C++</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C语言"><span class="nav-number">2.</span> <span class="nav-text">C语言</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -700,6 +735,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
