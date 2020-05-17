@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="信号的机制和特点机制A给B发送信号，B收到信号之前执行自己的代码，收到信号后，不管执行到程序的什么位置，都要暂停运行，去处理信号，处理完毕再继续执行。 与硬件中断类似——异步模式。但信号是软件层面上实现的中断，常被称为“软中断”。 信号的特质：由于信号是通过软件方法实现，其实现手段导致信号有很强的延时性。但对于用户来说，这个延迟时间非常短，不易察觉。 每个进程收到的所有信号，都是由内核负责发送的，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信号">
+<meta property="og:url" content="http://yoursite.com/2020/05/17/%E4%BF%A1%E5%8F%B7/index.html">
+<meta property="og:site_name" content="AhDai">
+<meta property="og:description" content="信号的机制和特点机制A给B发送信号，B收到信号之前执行自己的代码，收到信号后，不管执行到程序的什么位置，都要暂停运行，去处理信号，处理完毕再继续执行。 与硬件中断类似——异步模式。但信号是软件层面上实现的中断，常被称为“软中断”。 信号的特质：由于信号是通过软件方法实现，其实现手段导致信号有很强的延时性。但对于用户来说，这个延迟时间非常短，不易察觉。 每个进程收到的所有信号，都是由内核负责发送的，">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-17T11:17:41.916Z">
+<meta property="article:modified_time" content="2020-05-17T11:18:44.131Z">
+<meta property="article:author" content="AhDai">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/05/17/信号/"/>
+
+
+
+
+
+  <title>信号 | AhDai</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">AhDai</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/17/%E4%BF%A1%E5%8F%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AhDai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AhDai">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">信号</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-17T19:17:41+08:00">
+                2020-05-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+          <span class="post-meta-divider">|</span>
+          <span class="post-meta-item-icon"
+          >
+          <i class="fa fa-"></i>
+           post.views: 
+    	  <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+	  </span>
+
+	  
+
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                   字 
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="信号的机制和特点"><a href="#信号的机制和特点" class="headerlink" title="信号的机制和特点"></a>信号的机制和特点</h1><h2 id="机制"><a href="#机制" class="headerlink" title="机制"></a>机制</h2><p>A给B发送信号，B收到信号之前执行自己的代码，收到信号后，不管执行到程序的什么位置，都要暂停运行，去处理信号，处理完毕再继续执行。</p>
+<p>与硬件中断类似——异步模式。但信号是软件层面上实现的中断，常被称为“软中断”。</p>
+<p>信号的特质：由于信号是通过软件方法实现，其实现手段导致信号有很强的延时性。但对于用户来说，这个延迟时间非常短，不易察觉。</p>
+<p><strong>每个进程收到的所有信号，都是由内核负责发送的，内核处理。</strong></p>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><p>1、简单<br>2、不能携带大量信息<br>3、满足某个特设条件才发送</p>
+<h1 id="信号四要素"><a href="#信号四要素" class="headerlink" title="信号四要素"></a>信号四要素</h1><p>1、编号<br>2、名称<br>3、事件<br>4、默认处理动作<br>默认动作：<br>    Term：终止进程<br>    Ign： 忽略信号 (默认即时对该种信号忽略操作)<br>    Core：终止进程，生成Core文件。(查验进程死亡原因， 用于gdb调试)<br>    Stop：停止（暂停）进程<br>    Cont：继续运行进程<br><strong>9) SIGKILL 和19) SIGSTOP信号，不允许忽略和捕捉，只能执行默认动作。甚至不能将其设置为阻塞。</strong></p>
+<h1 id="与信号相关的事件"><a href="#与信号相关的事件" class="headerlink" title="与信号相关的事件"></a>与信号相关的事件</h1><h2 id="递达和未决"><a href="#递达和未决" class="headerlink" title="递达和未决"></a>递达和未决</h2><h3 id="递达"><a href="#递达" class="headerlink" title="递达"></a>递达</h3><p>递达并且到达进程</p>
+<h3 id="未决"><a href="#未决" class="headerlink" title="未决"></a>未决</h3><p>产生和递达之间的状态，主要由于阻塞（屏蔽）导致该状态</p>
+<h4 id="阻塞信号集（信号屏蔽字）"><a href="#阻塞信号集（信号屏蔽字）" class="headerlink" title="阻塞信号集（信号屏蔽字）"></a>阻塞信号集（信号屏蔽字）</h4><p>将某些信号加入集合，对他们设置屏蔽，当屏蔽某信号后，再收到该信号，该信号的处理将推后(解除屏蔽后)</p>
+<h4 id="未决信号集"><a href="#未决信号集" class="headerlink" title="未决信号集"></a>未决信号集</h4><p>1、信号产生，未决信号集中描述该信号的位立刻翻转为1，表信号处于未决状态。当信号被处理对应位翻转回为0。这一时刻往往非常短暂。<br>2、信号产生后由于某些原因(主要是阻塞)不能抵达。这类信号的集合称之为未决信号集。在屏蔽解除前，信号一直处于未决状态。   </p>
+<h1 id="信号的处理方式"><a href="#信号的处理方式" class="headerlink" title="信号的处理方式"></a>信号的处理方式</h1><p>第一种是类似中断的处理程序，对于需要处理的信号，进程可以指定处理函数，由该函数来处理。</p>
+<p>第二种方法是，忽略某个信号，对该信号不做任何处理，就象未发生过一样。</p>
+<p>第三种方法是，对该信号的处理保留系统的默认值，这种缺省操作，对大部分的信号的缺省操作是使得进程终止。进程通过系统调用signal来指定进程对某个信号的处理行为。</p>
+<h1 id="产生信号"><a href="#产生信号" class="headerlink" title="产生信号"></a>产生信号</h1><p>1、按键产生，如：Ctrl+c、Ctrl+z、Ctrl+<br>2、系统调用产生，如：kill、raise、abort<br>3、软件条件产生，如：定时器alarm<br>4、硬件异常产生，如：非法访问内存(段错误)、除0(浮点数例外)、内存对齐出错(总线错误)<br>5、命令产生，如：kill命令</p>
+<h2 id="kill函数-命令产生信号"><a href="#kill函数-命令产生信号" class="headerlink" title="kill函数/命令产生信号"></a>kill函数/命令产生信号</h2><p>kill命令产生信号：kill -SIGKILL pid<br>kill函数：给指定进程发送指定信号(<strong>不一定杀死</strong>)<br>函数原型：int kill(pid_t pid, int sig)   成功：0；失败：-1 (ID非法，信号非法，普通用户杀init进程等权级问题)，设置errno</p>
+<p>sig：不推荐直接使用数字，应使用宏名，因为不同操作系统信号编号可能不同，但名称一致。<br>pid &gt; 0:  发送信号给指定的进程。<br>pid = 0:  发送信号给 与调用kill函数进程属于同一进程组的所有进程。<br>pid &lt; 0:  取|pid|发给对应进程组。<br>pid = -1：发送给进程有权限发送的系统中所有进程。</p>
+<p>进程组：每个进程都属于一个进程组，进程组是一个或多个进程集合，他们相互关联，共同完成一个实体任务，每个进程组都有一个进程组长，默认进程组ID与进程组长ID相同。</p>
+<p>权限保护：super用户(root)可以发送信号给任意用户，普通用户是不能向系统用户发送信号的<br>例如kill -9 (root用户的pid)  是不可以的。同样，普通用户也不能向其他普通用户发送信号，终止其进程。 只能向自己创建的进程发送信号。普通用户基本规则是：发送者实际或有效用户ID等于接收者实际或有效用户ID</p>
+<h2 id="raise和abort函数"><a href="#raise和abort函数" class="headerlink" title="raise和abort函数"></a>raise和abort函数</h2><p>raise 函数：给当前进程发送指定信号(自己给自己发)    <strong>raise(signo) == kill(getpid(), signo)</strong><br>函数原型：int raise(int sig)  成功：0，失败非0值</p>
+<p>abort 函数：给自己发送异常终止信号 6) SIGABRT 信号，终止并产生core文件<br>函数原型：void abort(void)  该函数无返回</p>
+<h2 id="alarm函数"><a href="#alarm函数" class="headerlink" title="alarm函数"></a>alarm函数</h2><p>作用：设置定时器(闹钟)<br>在指定seconds后，内核会给当前进程发送14）SIGALRM信号。进程收到该信号，默认动作终止。</p>
+<p><strong>每个进程都有且只有唯一个定时器。</strong></p>
+<p>函数原型：unsigned int alarm(unsigned int seconds) 返回0或剩余的秒数，无失败。<br><strong>常用：取消定时器使用alarm(0)，返回旧闹钟余下秒数。</strong><br>定时，与进程状态无关(自然定时法)，就绪、运行、挂起(阻塞、暂停)、终止、僵尸…无论进程处于何种状态，alarm都计时。<br>使用time命令查看程序执行的时间。    </p>
+<p><strong>程序运行的瓶颈在于IO，优化程序，首选优化IO。</strong><br>实际执行时间 = 系统时间 + 用户时间 + 等待时间</p>
+<h2 id="setitimer函数"><a href="#setitimer函数" class="headerlink" title="setitimer函数"></a>setitimer函数</h2><p>作用：设置定时器(闹钟)。 可代替alarm函数。精度微秒us，可以实现周期定时。<br>函数原型：int setitimer(int which, const struct itimerval *new_value, struct itimerval *old_value)    成功：0；失败：-1，设置errno</p>
+<p>参数<br>which：指定定时方式<br>1、自然定时：ITIMER_REAL → 14）SIGLAR——计算自然时间<br>2、虚拟空间计时(用户空间)：ITIMER_VIRTUAL → 26）SIGVTALRM——只计算进程占用cpu的时间<br>3、运行时计时(用户+内核)：ITIMER_PROF → 27）SIGPROF——计算占用cpu及执行系统调用的时间</p>
+<p><strong>it_interval：用来设定两次定时任务之间间隔的时间<br>it_value：定时的时长<br>两个参数都设置为0，即清0操作。</strong></p>
+<h3 id="setitimer函数实现alarm函数，实现计算机1秒数数程序。"><a href="#setitimer函数实现alarm函数，实现计算机1秒数数程序。" class="headerlink" title="setitimer函数实现alarm函数，实现计算机1秒数数程序。"></a>setitimer函数实现alarm函数，实现计算机1秒数数程序。</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	struct itimerval </span></span><br><span class="line"><span class="comment">	&#123;</span></span><br><span class="line"><span class="comment">		struct timeval</span></span><br><span class="line"><span class="comment">		&#123;</span></span><br><span class="line"><span class="comment">			it_value.tv_sec;</span></span><br><span class="line"><span class="comment">			it_value.tv_usec;	</span></span><br><span class="line"><span class="comment">		&#125;it_interval;//用来设定两次定时任务之间间隔的时间</span></span><br><span class="line"><span class="comment">		struct timeval</span></span><br><span class="line"><span class="comment">		&#123;</span></span><br><span class="line"><span class="comment">			it_value.tv_sec;</span></span><br><span class="line"><span class="comment">			it_value.tv_usec;	</span></span><br><span class="line"><span class="comment">		&#125;it_value;//定时的时长</span></span><br><span class="line"><span class="comment">	&#125;it, oldit;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">my_alarm</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> sec)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">itimerval</span> <span class="title">it</span>, <span class="title">oldit</span>;</span></span><br><span class="line">	<span class="keyword">int</span> ret;</span><br><span class="line">	it.it_value.tv_sec = sec;</span><br><span class="line">	it.it_value.tv_usec = <span class="number">0</span>;</span><br><span class="line">	it.it_interval.tv_sec = <span class="number">0</span>;<span class="comment">//两次定时之间的间隔</span></span><br><span class="line">	it.it_interval.tv_usec = <span class="number">0</span>;</span><br><span class="line">	ret = setitimer(ITIMER_REAL, &amp;it, &amp;oldit);</span><br><span class="line">	<span class="keyword">if</span>(ret == <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"setitimer\n"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> oldit.it_value.tv_sec;<span class="comment">//返回剩余的秒数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	my_alarm(<span class="number">1</span>);<span class="comment">//alarm(1);</span></span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		i++;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,i);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="利用setitimer函数的参数实现定时间隔"><a href="#利用setitimer函数的参数实现定时间隔" class="headerlink" title="利用setitimer函数的参数实现定时间隔"></a>利用setitimer函数的参数实现定时间隔</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myfunc</span><span class="params">(<span class="keyword">int</span> signo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"hello world\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">itimerval</span> <span class="title">it</span>, <span class="title">oldit</span>;</span></span><br><span class="line">	signal(SIGALRM, myfunc);<span class="comment">//注册SIGALRM信号的捕捉处理函数</span></span><br><span class="line">	it.it_value.tv_sec = <span class="number">5</span>;</span><br><span class="line">	it.it_value.tv_usec = <span class="number">0</span>;</span><br><span class="line">	it.it_interval.tv_sec = <span class="number">3</span>;</span><br><span class="line">	it.it_interval.tv_usec = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">if</span>(setitimer(ITIMER_REAL, &amp;it, &amp;oldit) == <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"setitimer error:"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="信号集"><a href="#信号集" class="headerlink" title="信号集"></a>信号集</h1><p>内核通过读取未决信号集来判断信号是否应被处理<br>信号屏蔽字mask可以影响未决信号集。而我们可以在应用程序中自定义set来改变mask。已达到屏蔽指定信号的目的。</p>
+<h2 id="信号集设定函数"><a href="#信号集设定函数" class="headerlink" title="信号集设定函数"></a>信号集设定函数</h2><p>sigset_t  set;        // typedef unsigned long sigset_t;<br>int sigemptyset(sigset_t *set)：将某个信号集清0<br>成功：0，失败：-1</p>
+<p>int sigfillset(sigset_t *set)：将某个信号集置1<br>成功：0，失败：-1</p>
+<p>int sigaddset(sigset_t *set, int signum)：将某个信号加入信号集<br>成功：0，失败：-1</p>
+<p>int sigdelset(sigset_t *set, int signum)    ：将某个信号清出信号集<br>成功：0，失败：-1</p>
+<p>int sigismember(const sigset_t *set, int signum)：判断某个信号是否在信号集中<br>返回值：在集合：1，不在：0，出错：-1  </p>
+<p><strong>sigset_t类型的本质是位图。但不应该直接使用位操作，而应该使用上述函数，保证跨系统操作有效。</strong></p>
+<h2 id="sigprocmask函数"><a href="#sigprocmask函数" class="headerlink" title="sigprocmask函数"></a>sigprocmask函数</h2><p>用来屏蔽信号、解除屏蔽也使用该函数。其本质，读取或修改进程的信号屏蔽字(PCB中)<br><strong>严格注意，屏蔽信号：只是将信号处理延后执行(延至解除屏蔽)；而忽略表示将信号丢处理。</strong><br>函数原型：int sigprocmask(int how, const sigset_t *set, sigset_t *oldset)    成功：0，失败：-1，设置errno<br>参数：<br>set：传入参数，是一个位图，set中哪位置1，就表示当前进程屏蔽哪个信号。oldset：传出参数，保存旧的信号屏蔽集。<br>how参数取值：假设当前的信号屏蔽字为mask。<br>1、SIG_BLOCK: 当how设置为此值，set表示需要屏蔽的信号。相当于 mask = mask|set<br>2、SIG_UNBLOCK: 当how设置为此，set表示需要解除屏蔽的信号。相当于 mask = mask &amp;~set<br>3、SIG_SETMASK: 当how设置为此，set表示用于替代原始屏蔽及的新屏蔽集。相当于 mask = set，若调用sigprocmask解除了对当前若干个信号的阻塞，则在sigprocmask返回前，至少将其中一个信号递达。</p>
+<h2 id="sigpending函数"><a href="#sigpending函数" class="headerlink" title="sigpending函数"></a>sigpending函数</h2><p>读取当前进程的未决信号集<br>函数原型：int sigpending(sigset_t *set)    set传出参数。<br>返回值：成功：0，失败：-1，设置errno</p>
+<h2 id="所有常规信号的未决状态打印至屏幕"><a href="#所有常规信号的未决状态打印至屏幕" class="headerlink" title="所有常规信号的未决状态打印至屏幕"></a>所有常规信号的未决状态打印至屏幕</h2><p>解释：在程序执行过程中使用终端按键产生信号观察未决信号集的变化</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printped</span><span class="params">(<span class="keyword">sigset_t</span> *ped)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">1</span>; i &lt; <span class="number">32</span>; i++)<span class="comment">//打印前31个未决信号集</span></span><br><span class="line">	&#123;	</span><br><span class="line">		<span class="keyword">if</span>(sigismember(ped, i) == <span class="number">1</span>)<span class="comment">//判断是否处于未决状态</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">putchar</span>(<span class="string">'1'</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> </span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">putchar</span>(<span class="string">'0'</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">sigset_t</span> myset, oldset, ped;</span><br><span class="line">	sigemptyset(&amp;myset);<span class="comment">//将myset置为空</span></span><br><span class="line">	sigaddset(&amp;myset, SIGQUIT);<span class="comment">//将三个信号添加到信号集中</span></span><br><span class="line">	sigaddset(&amp;myset, SIGINT);</span><br><span class="line">	sigaddset(&amp;myset, SIGTSTP);</span><br><span class="line">	<span class="keyword">int</span> ret = sigprocmask(SIG_BLOCK, &amp;myset, &amp;oldset);<span class="comment">//设置屏蔽信号</span></span><br><span class="line">	<span class="keyword">if</span>(ret == <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"sigprocmask error:"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		sigpending(&amp;ped);</span><br><span class="line">		printped(&amp;ped);</span><br><span class="line">		sleep(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="信号捕捉"><a href="#信号捕捉" class="headerlink" title="信号捕捉"></a>信号捕捉</h1><h2 id="signal函数"><a href="#signal函数" class="headerlink" title="signal函数"></a>signal函数</h2><p>作用：注册一个信号捕捉函数<br>typedef void (<em>sighandler_t)(int);<br>sighandler_t signal(int signum, sighandler_t handler);<br>*</em>该函数由ANSI定义，由于历史原因在不同版本的Unix和不同版本的Linux中可能有不同的行为。因此应该尽量避免使用它，取而代之使用sigaction函数。**</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">catchsigint</span><span class="params">(<span class="keyword">int</span> signo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"&gt;&gt;&gt;&gt;&gt;&gt;catch\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">__sighandler_t</span> handler;</span><br><span class="line">	handler = signal(SIGINT, catchsigint);<span class="comment">//捕捉SIGINT信号</span></span><br><span class="line">	<span class="comment">//当接收到SIGINT信号时，执行信号捕捉函数</span></span><br><span class="line">	<span class="keyword">if</span>(handler == SIG_ERR)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"signal error:"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="sigaction函数"><a href="#sigaction函数" class="headerlink" title="sigaction函数"></a>sigaction函数</h2><p>作用：修改信号处理动作（通常在Linux用其来注册一个信号的捕捉函数）<br>函数原型:int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact)<br>成功：0；失败：-1，设置errno</p>
+<p>参数：<br>act：传入参数，新的处理方式。<br>oldact：传出参数，旧的处理方式。</p>
+<p>struct sigaction结构体<br>struct sigaction {<br>    void     (<em>sa_handler)(int);<br>    void     (</em>sa_sigaction)(int, siginfo_t <em>, void *);<br>    sigset_t   sa_mask;<br>    int       sa_flags;<br>    void     (</em>sa_restorer)(void);<br>};<br>sa_restorer：该元素是过时的，不应该使用，POSIX.1标准将不指定该元素。(弃用)<br>sa_sigaction：当sa_flags被指定为SA_SIGINFO标志时，使用该信号处理程序。(很少使用)<br>1、sa_handler：指定信号捕捉后的处理函数名(即注册函数)。也可赋值为SIG_IGN表忽略 或 SIG_DFL表执行默认动作<br>2、sa_mask: 调用信号处理函数时，所要屏蔽的信号集合(信号屏蔽字)。<strong>注意：仅在处理函数被调用期间屏蔽生效，是临时性设置。</strong><br>3、sa_flags：通常设置为0，表使用默认属性。    </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">docatch</span><span class="params">(<span class="keyword">int</span> signo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d signal is catched\n"</span>,signo);</span><br><span class="line">	<span class="comment">//在此期间SIGQUIT信号被屏蔽，等到睡晚10秒以后SIGQUIT信号会被执行一次</span></span><br><span class="line">	sleep(<span class="number">10</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">sigaction</span> <span class="title">act</span>;</span></span><br><span class="line">	act.sa_handler = docatch;</span><br><span class="line">	sigemptyset(&amp;act.sa_mask);</span><br><span class="line">	sigaddset(&amp;act.sa_mask, SIGQUIT);</span><br><span class="line">	act.sa_flags = <span class="number">0</span>;<span class="comment">//使用默认属性 信号捕捉函数执行期间，屏蔽本信号</span></span><br><span class="line">	<span class="keyword">int</span> ret = sigaction(SIGINT, &amp;act, <span class="literal">NULL</span>);</span><br><span class="line">	<span class="keyword">if</span>(ret &lt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"sigaction error:"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		sleep(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//sleep(5);</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/16/%E5%88%A9%E7%94%A8mmap%E5%AE%9E%E7%8E%B0%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6/" rel="next" title="利用mmap实现多进程复制文件">
+                <i class="fa fa-chevron-left"></i> 利用mmap实现多进程复制文件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpg"
+                alt="AhDai" />
+            
+              <p class="site-author-name" itemprop="name">AhDai</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ahdai1" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#信号的机制和特点"><span class="nav-number">1.</span> <span class="nav-text">信号的机制和特点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#机制"><span class="nav-number">1.1.</span> <span class="nav-text">机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特点"><span class="nav-number">1.2.</span> <span class="nav-text">特点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#信号四要素"><span class="nav-number">2.</span> <span class="nav-text">信号四要素</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#与信号相关的事件"><span class="nav-number">3.</span> <span class="nav-text">与信号相关的事件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#递达和未决"><span class="nav-number">3.1.</span> <span class="nav-text">递达和未决</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#递达"><span class="nav-number">3.1.1.</span> <span class="nav-text">递达</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#未决"><span class="nav-number">3.1.2.</span> <span class="nav-text">未决</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞信号集（信号屏蔽字）"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">阻塞信号集（信号屏蔽字）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#未决信号集"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">未决信号集</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#信号的处理方式"><span class="nav-number">4.</span> <span class="nav-text">信号的处理方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#产生信号"><span class="nav-number">5.</span> <span class="nav-text">产生信号</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#kill函数-命令产生信号"><span class="nav-number">5.1.</span> <span class="nav-text">kill函数&#x2F;命令产生信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#raise和abort函数"><span class="nav-number">5.2.</span> <span class="nav-text">raise和abort函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alarm函数"><span class="nav-number">5.3.</span> <span class="nav-text">alarm函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setitimer函数"><span class="nav-number">5.4.</span> <span class="nav-text">setitimer函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#setitimer函数实现alarm函数，实现计算机1秒数数程序。"><span class="nav-number">5.4.1.</span> <span class="nav-text">setitimer函数实现alarm函数，实现计算机1秒数数程序。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用setitimer函数的参数实现定时间隔"><span class="nav-number">5.4.2.</span> <span class="nav-text">利用setitimer函数的参数实现定时间隔</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#信号集"><span class="nav-number">6.</span> <span class="nav-text">信号集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#信号集设定函数"><span class="nav-number">6.1.</span> <span class="nav-text">信号集设定函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sigprocmask函数"><span class="nav-number">6.2.</span> <span class="nav-text">sigprocmask函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sigpending函数"><span class="nav-number">6.3.</span> <span class="nav-text">sigpending函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#所有常规信号的未决状态打印至屏幕"><span class="nav-number">6.4.</span> <span class="nav-text">所有常规信号的未决状态打印至屏幕</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#信号捕捉"><span class="nav-number">7.</span> <span class="nav-text">信号捕捉</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#signal函数"><span class="nav-number">7.1.</span> <span class="nav-text">signal函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sigaction函数"><span class="nav-number">7.2.</span> <span class="nav-text">sigaction函数</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">AhDai</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">全站共  字</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
