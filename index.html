@@ -279,6 +279,186 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/18/%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%BC%82%E6%AD%A5I_O/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AhDai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AhDai">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/18/%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%BC%82%E6%AD%A5I_O/" itemprop="url">全局变量的异步I_O</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-18T16:12:37+08:00">
+                2020-05-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                   字 
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>以一个程序来演示：该程序是父子进程通过一个全局变量进行相互数数。</p>
+<h1 id="初级版（存在问题）"><a href="#初级版（存在问题）" class="headerlink" title="初级版（存在问题）"></a>初级版（存在问题）</h1><p>解释:通过flag变量标记程序实行进度。flag置1表示数数完成。flag置0表示给对方发送信号完成。<br>问题出现的位置，在父子进程kill函数之后需要紧接着调用 flag，将其置0，标记信号已经发送。但，在这期间很有可能被kernel调度，失去执行权利，而对方获取了执行时间，通过发送信号回调捕捉函数，从而修改了全局的flag。</p>
+<p>程序执行期间会造成程序无法唤醒的状态</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;//父子进程相互数数,全局变量的异步IO</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> n = <span class="number">0</span>, flag = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sys_err</span><span class="params">(<span class="keyword">char</span> *str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	perror(str);</span><br><span class="line">	<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_sig_child</span><span class="params">(<span class="keyword">int</span> num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"I am child %d\t%d\n"</span>, getpid(), n);</span><br><span class="line">	n += <span class="number">2</span>;</span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">	flag = <span class="number">1</span>;</span><br><span class="line">	<span class="comment">//sleep(1);</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_sig_parent</span><span class="params">(<span class="keyword">int</span> num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"I am parent %d\t%d\n"</span>, getpid(), n);</span><br><span class="line">	n += <span class="number">2</span>;</span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">	flag = <span class="number">1</span>;</span><br><span class="line">	<span class="comment">//sleep(1);</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">pid_t</span> pid;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">sigaction</span> <span class="title">act</span>;</span></span><br><span class="line">	<span class="keyword">if</span>((pid = fork()) &lt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		sys_err(<span class="string">"fork"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(pid &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		n = <span class="number">1</span>;</span><br><span class="line">		sleep(<span class="number">1</span>);</span><br><span class="line">		act.sa_handler = do_sig_parent;</span><br><span class="line">		sigemptyset(&amp;act.sa_mask);</span><br><span class="line">		act.sa_flags = <span class="number">0</span>;</span><br><span class="line">		sigaction(SIGUSR2, &amp;act, <span class="literal">NULL</span>);<span class="comment">//注册自己的信号捕捉函数</span></span><br><span class="line">		do_sig_parent(<span class="number">0</span>);		<span class="comment">//父使用SIGUSR2信号</span></span><br><span class="line">		<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">//等待信号</span></span><br><span class="line">			<span class="keyword">if</span>(flag == <span class="number">1</span>)<span class="comment">//父进程数数完成</span></span><br><span class="line">			&#123;</span><br><span class="line">				kill(pid, SIGUSR1);</span><br><span class="line">			<span class="comment">//----如果失去cpu，已给子进程发信号，此时flag = 1</span></span><br><span class="line">			<span class="comment">//子进程数完后给父进程发信号，数完之后，获得cpu</span></span><br><span class="line">			<span class="comment">//标志flag = 0,子进程已经发过信号，都在等待信号</span></span><br><span class="line">			<span class="comment">//所以flag一直会等于0 ，程序停止</span></span><br><span class="line">			<span class="comment">//在子进程同样位置有此时间空档情况</span></span><br><span class="line">				flag = <span class="number">0</span>;<span class="comment">//标志已给子进程发送完信号</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(pid == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		n = <span class="number">2</span>;</span><br><span class="line">		act.sa_handler = do_sig_child;</span><br><span class="line">		sigemptyset(&amp;act.sa_mask);</span><br><span class="line">		act.sa_flags = <span class="number">0</span>;</span><br><span class="line">		sigaction(SIGUSR1, &amp;act, <span class="literal">NULL</span>);<span class="comment">//父进程数数完成发送SIGUSR1</span></span><br><span class="line">		<span class="keyword">while</span>(<span class="number">1</span>)			<span class="comment">//给子进程</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">//等待信号</span></span><br><span class="line">			<span class="keyword">if</span>(flag == <span class="number">1</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				kill(getppid(), SIGUSR2);</span><br><span class="line"></span><br><span class="line">			<span class="comment">//</span></span><br><span class="line">				flag = <span class="number">0</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="完善版"><a href="#完善版" class="headerlink" title="完善版"></a>完善版</h1><p>通过在信号处理函数中父进程（子进程）数完数以后发送信号给子进程（父进程），避免了程序无法唤醒的状态</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;//父子进程交替数数升级版</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">perr</span><span class="params">(<span class="keyword">char</span> *str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	perror(str);</span><br><span class="line">	<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> num = <span class="number">1</span>, num1 = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">pid_t</span> son_pid;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">parent</span><span class="params">(<span class="keyword">int</span> signo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"parent\tnum = %d\n"</span>,num1);</span><br><span class="line">	num1 += <span class="number">2</span>;</span><br><span class="line">	kill(son_pid, SIGUSR2);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">child</span><span class="params">(<span class="keyword">int</span> signo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"child\tnum = %d\n"</span>, num);</span><br><span class="line">	num += <span class="number">2</span>;</span><br><span class="line">	kill(getppid(), SIGUSR1);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;	</span><br><span class="line">	<span class="keyword">pid_t</span> pid;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">sigaction</span> <span class="title">act1</span>, <span class="title">act2</span>;</span></span><br><span class="line">	pid = fork();</span><br><span class="line">	son_pid = pid;</span><br><span class="line">	<span class="keyword">if</span>(pid &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		act1.sa_handler = parent;</span><br><span class="line">		sigemptyset(&amp;act1.sa_mask);</span><br><span class="line">		act1.sa_flags = <span class="number">0</span>;</span><br><span class="line">		sigaction(SIGUSR1, &amp;act1, <span class="literal">NULL</span>);</span><br><span class="line">		<span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(pid == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		sleep(<span class="number">1</span>);<span class="comment">//让父进程先注册捕获函数</span></span><br><span class="line">		act2.sa_handler = child;</span><br><span class="line">		sigemptyset(&amp;act2.sa_mask);</span><br><span class="line">		act2.sa_flags = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">int</span> ret = sigaction(SIGUSR2, &amp;act2, <span class="literal">NULL</span>);</span><br><span class="line">		<span class="keyword">if</span>(ret &lt; <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			perr(<span class="string">"sigaction error"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		kill(getppid(), SIGUSR1);</span><br><span class="line">		<span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> </span><br><span class="line">	&#123;</span><br><span class="line">		perr(<span class="string">"fork error"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/18/%E7%AB%9E%E6%80%81%E6%9D%A1%E4%BB%B6%EF%BC%88%E6%97%B6%E5%BA%8F%E7%AB%9E%E6%80%81%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1836,7 +2016,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
