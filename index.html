@@ -279,6 +279,187 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/18/%E7%AB%9E%E6%80%81%E6%9D%A1%E4%BB%B6%EF%BC%88%E6%97%B6%E5%BA%8F%E7%AB%9E%E6%80%81%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AhDai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AhDai">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/18/%E7%AB%9E%E6%80%81%E6%9D%A1%E4%BB%B6%EF%BC%88%E6%97%B6%E5%BA%8F%E7%AB%9E%E6%80%81%EF%BC%89/" itemprop="url">竞态条件（时序竞态）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-18T10:26:48+08:00">
+                2020-05-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                   字 
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="pause函数"><a href="#pause函数" class="headerlink" title="pause函数"></a>pause函数</h1><p>调用该函数可以造成进程主动挂起，等待信号唤醒。<br>调用该系统调用的进程将处于阻塞状态(主动放弃cpu) 直到有信号递达将其唤醒。<br>函数原型：int pause(void）<br>返回值：-1 并设置errno为EINTR<br>返回值：<br>1、如果信号的默认处理动作是终止进程，则进程终止，pause函数没有机会返回。<br>2、如果信号的默认处理动作是忽略，进程继续处于挂起状态，pause函数不返回。<br>3、如果信号的处理动作是捕捉，则调用完信号处理函数之后，pause返回-1，errno设置为EINTR，表示“被信号中断”。<br>4、pause收到的信号不能被屏蔽，如果被屏蔽，那么pause就不能被唤醒。</p>
+<h1 id="sleep实现"><a href="#sleep实现" class="headerlink" title="sleep实现"></a>sleep实现</h1><h2 id="存在时序竞态问题"><a href="#存在时序竞态问题" class="headerlink" title="存在时序竞态问题"></a>存在时序竞态问题</h2><p>pause函数和alarm函数实现sleep<br>可以通过设置屏蔽SIGALRM的方法来控制程序执行逻辑，但无论如何设置，程序都有可能在“解除信号屏蔽”与“挂起等待信号”这个两个操作间隙失去cpu资源。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">catch_sigalarm</span><span class="params">(<span class="keyword">int</span> signo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">mysleep</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> seconds)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">sigaction</span> <span class="title">act</span>, <span class="title">oldact</span>;</span></span><br><span class="line">	act.sa_handler = catch_sigalarm;</span><br><span class="line">	sigemptyset(&amp;act.sa_mask);</span><br><span class="line">	act.sa_flags = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> ret = sigaction(SIGALRM, &amp;act, &amp;oldact);</span><br><span class="line">	<span class="keyword">if</span>(ret == <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"sigaction error:"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	alarm(seconds);</span></span><br><span class="line"><span class="comment">	//如果失去了CPU，优先级较高的程序较多，长时间没有分配CPU</span></span><br><span class="line"><span class="comment">	//如果2S后再获得CPU，先处理信号，程序则不能被唤醒</span></span><br><span class="line"><span class="comment">	ret = pause();</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	alarm(seconds);</span><br><span class="line">	<span class="comment">//屏蔽</span></span><br><span class="line">	ret = pause();</span><br><span class="line">	<span class="keyword">if</span>(ret == <span class="number">-1</span> &amp;&amp; errno == EINTR)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"pause successful\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	ret = alarm(<span class="number">0</span>);</span><br><span class="line">	sigaction(SIGALRM, &amp;oldact, <span class="literal">NULL</span>);<span class="comment">//恢复SIGALRM信号旧有的处理方式</span></span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> ret = mysleep(<span class="number">1</span>);<span class="comment">//睡1S</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%d------\n"</span>,ret);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>可将某个信号（如SIGALRM）从临时信号屏蔽字mask中删除，这样在调用sigsuspend时将解除对该信号的屏蔽，然后挂起等待，当sigsuspend返回时，进程的信号屏蔽字恢复为原来的值。如果原来对该信号是屏蔽态，sigsuspend函数返回后仍然屏蔽该信号。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sig_alrm</span><span class="params">(<span class="keyword">int</span> signo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">mysleep</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> nsecs)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">sigaction</span> <span class="title">newact</span>, <span class="title">oldact</span>;</span></span><br><span class="line">	<span class="keyword">sigset_t</span> newmask, oldmask, suspmask;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> unslept;</span><br><span class="line">	<span class="comment">//1、为SIGALRM设置捕捉函数</span></span><br><span class="line">	newact.sa_handler = sig_alrm;</span><br><span class="line">	sigemptyset(&amp;newact.sa_mask);</span><br><span class="line">	newact.sa_flags = <span class="number">0</span>;</span><br><span class="line">	sigaction(SIGALRM, &amp;newact, &amp;oldact);</span><br><span class="line">	<span class="comment">//2、设置阻塞信号集，阻塞SIGALRM信号</span></span><br><span class="line">	sigemptyset(&amp;newmask);</span><br><span class="line">	sigaddset(&amp;newmask, SIGALRM);</span><br><span class="line">	sigprocmask(SIG_BLOCK, &amp;newmask, &amp;oldmask);<span class="comment">//屏蔽信号字 mask</span></span><br><span class="line">	<span class="comment">//3、定时n秒，到时后可以产生SIGALRM信号</span></span><br><span class="line">	alarm(nsecs);</span><br><span class="line">	<span class="comment">//4、构造一个调用sigsuspend临时有效的阻塞信号集</span></span><br><span class="line">	<span class="comment">//在临时阻塞信号集里解除SIGALRM的阻塞</span></span><br><span class="line">	suspmask = oldmask;                 <span class="comment">//SIGALRM没有被阻塞</span></span><br><span class="line">	sigdelset(&amp;suspmask, SIGALRM);<span class="comment">//保证SIGALRM一定没有被屏蔽</span></span><br><span class="line">	<span class="comment">//5、sigsuspend调用期间，采用临时阻塞信号集suspmask替换原有</span></span><br><span class="line">	<span class="comment">//这个信号集中不包括SIGALRM信号，同时挂起等待</span></span><br><span class="line">	<span class="comment">//当sigsuspend被信号唤醒返回时，恢复原有的阻塞信号集</span></span><br><span class="line">	sigsuspend(&amp;suspmask);<span class="comment">//解除屏蔽调用信号处理函数，同时执行</span></span><br><span class="line">	unslept = alarm(<span class="number">0</span>);</span><br><span class="line">	<span class="comment">//6、恢复SIGALRM原有的处理动作-----回应注释1</span></span><br><span class="line">	sigaction(SIGALRM, &amp;oldact, <span class="literal">NULL</span>);</span><br><span class="line">	<span class="comment">//7、解除对SIGALRM阻塞-------回应注释2</span></span><br><span class="line">	sigprocmask(SIG_SETMASK, &amp;oldmask, <span class="literal">NULL</span>);</span><br><span class="line">	<span class="keyword">return</span> unslept;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		mysleep(<span class="number">2</span>);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"------\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>竞态条件，跟系统负载有很紧密的关系，体现出信号的不可靠性。系统负载越严重，信号不可靠性越强。</p>
+<p>不可靠由其实现原理所致：信号是通过软件方式实现(跟内核调度高度依赖，延时性强)，每次系统调用结束后，或中断处理处理结束后，需通过扫描PCB中的未决信号集，来判断是否应处理某个信号。当系统负载过重时，会出现时序混乱。</p>
+<p>这种意外情况只能在编写程序过程中，提早预见，主动规避，而无法通过gdb程序调试等其他手段弥补。且由于该错误不具规律性，后期捕捉和重现十分困难。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/17/%E4%BF%A1%E5%8F%B7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1655,7 +1836,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
