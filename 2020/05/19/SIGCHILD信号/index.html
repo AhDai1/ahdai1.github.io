@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="signal," />
 
 
 
@@ -87,8 +87,9 @@
 <meta property="og:description" content="SIGCHILD的产生条件1、子进程终止时2、子进程接收到SIGSTOP信号停止时3、子进程处在停止态，接受到SIGCONT后唤醒时 子进程结束status处理方式函数原型：pid_t waitpid(pid_t pid, int status, int options)*options：** WNOHANG：没有子进程结束，立即返回 WUNTRACED：如果子进程由于被停止产生的SIGCHLD，">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-19T08:38:49.333Z">
-<meta property="article:modified_time" content="2020-05-19T08:39:37.383Z">
+<meta property="article:modified_time" content="2020-05-19T08:54:41.364Z">
 <meta property="article:author" content="AhDai">
+<meta property="article:tag" content="signal">
 <meta name="twitter:card" content="summary">
 
 
@@ -347,6 +348,17 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/05/19/SIGCHILD%E4%BF%A1%E5%8F%B7/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/05/19/SIGCHILD信号/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -439,6 +451,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/signal/" rel="tag"># signal</a>
+          
+        </div>
+      
 
       
       
@@ -484,6 +502,16 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
 
   
 
@@ -554,6 +582,15 @@
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
             
 
           </nav>
@@ -647,17 +684,17 @@
 
   
     <span class="site-uv">
-      <i class="fa fa-user"></i>
+      <i class="fa fa-user"></i> 本站访客数
       <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      
+      人
     </span>
   
 
   
     <span class="site-pv">
-      <i class="fa fa-eye"></i>
+      <i class="fa fa-eye"></i> 本站总访问量
       <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      
+      次
     </span>
   
 </div>
@@ -785,6 +822,26 @@
 
   
 
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/05/19/SIGCHILD%E4%BF%A1%E5%8F%B7/';
+          this.page.identifier = '2020/05/19/SIGCHILD信号/';
+          this.page.title = 'SIGCHILD信号';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
 
   
 

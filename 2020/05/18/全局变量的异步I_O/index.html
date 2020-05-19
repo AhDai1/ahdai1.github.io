@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="process," />
 
 
 
@@ -87,8 +87,9 @@
 <meta property="og:description" content="以一个程序来演示：该程序是父子进程通过一个全局变量进行相互数数。 初级版（存在问题）解释:通过flag变量标记程序实行进度。flag置1表示数数完成。flag置0表示给对方发送信号完成。问题出现的位置，在父子进程kill函数之后需要紧接着调用 flag，将其置0，标记信号已经发送。但，在这期间很有可能被kernel调度，失去执行权利，而对方获取了执行时间，通过发送信号回调捕捉函数，从而修改了全局的">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-18T08:12:37.315Z">
-<meta property="article:modified_time" content="2020-05-18T08:13:28.252Z">
+<meta property="article:modified_time" content="2020-05-19T08:56:31.264Z">
 <meta property="article:author" content="AhDai">
+<meta property="article:tag" content="process">
 <meta name="twitter:card" content="summary">
 
 
@@ -347,6 +348,17 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/05/18/%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%BC%82%E6%AD%A5I_O/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/05/18/全局变量的异步I_O/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -434,6 +446,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/process/" rel="tag"># process</a>
+          
+        </div>
+      
 
       
       
@@ -483,6 +501,16 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
 
   
 
@@ -553,6 +581,15 @@
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
             
 
           </nav>
@@ -646,17 +683,17 @@
 
   
     <span class="site-uv">
-      <i class="fa fa-user"></i>
+      <i class="fa fa-user"></i> 本站访客数
       <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      
+      人
     </span>
   
 
   
     <span class="site-pv">
-      <i class="fa fa-eye"></i>
+      <i class="fa fa-eye"></i> 本站总访问量
       <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      
+      次
     </span>
   
 </div>
@@ -784,6 +821,26 @@
 
   
 
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/05/18/%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%BC%82%E6%AD%A5I_O/';
+          this.page.identifier = '2020/05/18/全局变量的异步I_O/';
+          this.page.title = '全局变量的异步I_O';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
 
   
 

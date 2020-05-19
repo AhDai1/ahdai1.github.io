@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="signal," />
 
 
 
@@ -87,8 +87,9 @@
 <meta property="og:description" content="信号的机制和特点机制A给B发送信号，B收到信号之前执行自己的代码，收到信号后，不管执行到程序的什么位置，都要暂停运行，去处理信号，处理完毕再继续执行。 与硬件中断类似——异步模式。但信号是软件层面上实现的中断，常被称为“软中断”。 信号的特质：由于信号是通过软件方法实现，其实现手段导致信号有很强的延时性。但对于用户来说，这个延迟时间非常短，不易察觉。 每个进程收到的所有信号，都是由内核负责发送的，">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-17T11:17:41.916Z">
-<meta property="article:modified_time" content="2020-05-17T11:18:44.131Z">
+<meta property="article:modified_time" content="2020-05-19T08:57:03.378Z">
 <meta property="article:author" content="AhDai">
+<meta property="article:tag" content="signal">
 <meta name="twitter:card" content="summary">
 
 
@@ -347,6 +348,17 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/05/17/%E4%BF%A1%E5%8F%B7/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/05/17/信号/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -476,6 +488,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/signal/" rel="tag"># signal</a>
+          
+        </div>
+      
 
       
       
@@ -525,6 +543,16 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
 
   
 
@@ -595,6 +623,15 @@
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
             
 
           </nav>
@@ -688,17 +725,17 @@
 
   
     <span class="site-uv">
-      <i class="fa fa-user"></i>
+      <i class="fa fa-user"></i> 本站访客数
       <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      
+      人
     </span>
   
 
   
     <span class="site-pv">
-      <i class="fa fa-eye"></i>
+      <i class="fa fa-eye"></i> 本站总访问量
       <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      
+      次
     </span>
   
 </div>
@@ -826,6 +863,26 @@
 
   
 
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/05/17/%E4%BF%A1%E5%8F%B7/';
+          this.page.identifier = '2020/05/17/信号/';
+          this.page.title = '信号';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
 
   
 

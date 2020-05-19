@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="IPC," />
 
 
 
@@ -87,8 +87,9 @@
 <meta property="og:description" content="管道是一种最基本的IPC机制作用于有血缘关系的进程之间，完成数据传递。 调用pipe系统函数即可创建一个管道。有如下特征：1.其本质是一个伪文件(实为内核缓冲区)2.由两个文件描述符引用，一个表示读端，一个表示写端。3.规定数据从管道的写端流入管道，从读端流出。 管道的原理：管道实为内核使用环形队列机制，借助内核缓冲区(4k)实现。 管道的局限性：1.数据自己读不能自己写。2. 数据一旦被读走，便">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-15T11:50:18.958Z">
-<meta property="article:modified_time" content="2020-05-15T11:51:02.838Z">
+<meta property="article:modified_time" content="2020-05-19T08:56:44.526Z">
 <meta property="article:author" content="AhDai">
+<meta property="article:tag" content="IPC">
 <meta name="twitter:card" content="summary">
 
 
@@ -347,6 +348,17 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/05/15/%E7%AE%A1%E9%81%93/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/05/15/管道/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -436,6 +448,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/IPC/" rel="tag"># IPC</a>
+          
+        </div>
+      
 
       
       
@@ -485,6 +503,16 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
 
   
 
@@ -555,6 +583,15 @@
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
             
 
           </nav>
@@ -648,17 +685,17 @@
 
   
     <span class="site-uv">
-      <i class="fa fa-user"></i>
+      <i class="fa fa-user"></i> 本站访客数
       <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      
+      人
     </span>
   
 
   
     <span class="site-pv">
-      <i class="fa fa-eye"></i>
+      <i class="fa fa-eye"></i> 本站总访问量
       <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      
+      次
     </span>
   
 </div>
@@ -786,6 +823,26 @@
 
   
 
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/05/15/%E7%AE%A1%E9%81%93/';
+          this.page.identifier = '2020/05/15/管道/';
+          this.page.title = '管道';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
 
   
 

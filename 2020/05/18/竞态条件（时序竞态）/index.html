@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="signal," />
 
 
 
@@ -87,8 +87,9 @@
 <meta property="og:description" content="pause函数调用该函数可以造成进程主动挂起，等待信号唤醒。调用该系统调用的进程将处于阻塞状态(主动放弃cpu) 直到有信号递达将其唤醒。函数原型：int pause(void）返回值：-1 并设置errno为EINTR返回值：1、如果信号的默认处理动作是终止进程，则进程终止，pause函数没有机会返回。2、如果信号的默认处理动作是忽略，进程继续处于挂起状态，pause函数不返回。3、如果信号的处">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-18T02:26:48.352Z">
-<meta property="article:modified_time" content="2020-05-18T02:27:28.761Z">
+<meta property="article:modified_time" content="2020-05-19T08:54:33.336Z">
 <meta property="article:author" content="AhDai">
+<meta property="article:tag" content="signal">
 <meta name="twitter:card" content="summary">
 
 
@@ -347,6 +348,17 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/05/18/%E7%AB%9E%E6%80%81%E6%9D%A1%E4%BB%B6%EF%BC%88%E6%97%B6%E5%BA%8F%E7%AB%9E%E6%80%81%EF%BC%89/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/05/18/竞态条件（时序竞态）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -435,6 +447,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/signal/" rel="tag"># signal</a>
+          
+        </div>
+      
 
       
       
@@ -484,6 +502,16 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
 
   
 
@@ -554,6 +582,15 @@
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
             
 
           </nav>
@@ -647,17 +684,17 @@
 
   
     <span class="site-uv">
-      <i class="fa fa-user"></i>
+      <i class="fa fa-user"></i> 本站访客数
       <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      
+      人
     </span>
   
 
   
     <span class="site-pv">
-      <i class="fa fa-eye"></i>
+      <i class="fa fa-eye"></i> 本站总访问量
       <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      
+      次
     </span>
   
 </div>
@@ -785,6 +822,26 @@
 
   
 
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/05/18/%E7%AB%9E%E6%80%81%E6%9D%A1%E4%BB%B6%EF%BC%88%E6%97%B6%E5%BA%8F%E7%AB%9E%E6%80%81%EF%BC%89/';
+          this.page.identifier = '2020/05/18/竞态条件（时序竞态）/';
+          this.page.title = '竞态条件（时序竞态）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
 
   
 
