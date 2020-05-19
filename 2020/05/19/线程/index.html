@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="LWP," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="线程概念LWP：light weight process 轻量级的进程，本质仍是进程(在Linux环境下) 进程：独立地址空间，拥有PCB线程：也有PCB，但没有独立的地址空间(共享)区别：在于是否共享地址空间。Linux下：线程：最小的执行单位进程：最小分配资源单位，可看成是只有一个线程的进程。 Linux内核线程实现原理1、线程也有PCB，创建线程使用的底层函数和进程一样，都是clone2、从">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程">
+<meta property="og:url" content="http://yoursite.com/2020/05/19/%E7%BA%BF%E7%A8%8B/index.html">
+<meta property="og:site_name" content="AhDai">
+<meta property="og:description" content="线程概念LWP：light weight process 轻量级的进程，本质仍是进程(在Linux环境下) 进程：独立地址空间，拥有PCB线程：也有PCB，但没有独立的地址空间(共享)区别：在于是否共享地址空间。Linux下：线程：最小的执行单位进程：最小分配资源单位，可看成是只有一个线程的进程。 Linux内核线程实现原理1、线程也有PCB，创建线程使用的底层函数和进程一样，都是clone2、从">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-19T12:21:23.172Z">
+<meta property="article:modified_time" content="2020-05-19T12:22:07.038Z">
+<meta property="article:author" content="AhDai">
+<meta property="article:tag" content="LWP">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/05/19/线程/"/>
+
+
+
+
+
+  <title>线程 | AhDai</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">AhDai</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/19/%E7%BA%BF%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AhDai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AhDai">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">线程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-19T20:21:23+08:00">
+                2020-05-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/05/19/%E7%BA%BF%E7%A8%8B/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/05/19/线程/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  2.2k 字 
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  9 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="线程概念"><a href="#线程概念" class="headerlink" title="线程概念"></a>线程概念</h1><p>LWP：light weight process 轻量级的进程，本质仍是进程(在Linux环境下)</p>
+<p>进程：独立地址空间，拥有PCB<br>线程：也有PCB，但没有独立的地址空间(共享)<br>区别：在于是否共享地址空间。<br>Linux下：<br><strong>线程：最小的执行单位<br>进程：最小分配资源单位，可看成是只有一个线程的进程。</strong></p>
+<h1 id="Linux内核线程实现原理"><a href="#Linux内核线程实现原理" class="headerlink" title="Linux内核线程实现原理"></a>Linux内核线程实现原理</h1><p>1、线程也有PCB，创建线程使用的底层函数和进程一样，都是clone<br>2、从内核里看进程和线程是一样的，都有各自不同的PCB，但是PCB中指向内存资源的三级页表是相同的<br>3、进程可以蜕变成线程<br>4、线程可看做寄存器和栈的集合<br>5、<strong>在linux下，线程最是小的执行单位；进程是最小的分配资源单位</strong></p>
+<p>对于进程来说，相同的地址(同一个虚拟地址)在不同的进程中，反复使用而不冲突。原因是他们虽虚拟址一样，但，页目录、页表、物理页面各不相同。相同的虚拟址，映射到不同的物理页面内存单元，最终访问不同的物理页面。</p>
+<p><strong>但线程不同</strong>，两个线程具有各自独立的PCB，但共享同一个页目录，也就共享同一个页表和物理页面。所以两个PCB共享一个地址空间。<br>实际上，无论是创建进程的fork，还是创建线程的pthread_create，底层实现都是调用同一个内核函数clone。<br>如果复制对方的地址空间，那么就产出一个“进程”；如果共享对方的地址空间，就产生一个“线程”。<br><strong>因此</strong>：Linux内核是不区分进程和线程的。只在用户层面上进行区分。所以，线程所有操作函数 pthread_* 是库函数，而非系统调用。</p>
+<h1 id="线程资源的共享与非共享"><a href="#线程资源的共享与非共享" class="headerlink" title="线程资源的共享与非共享"></a>线程资源的共享与非共享</h1><h2 id="共享"><a href="#共享" class="headerlink" title="共享"></a>共享</h2><p>1、文件描述符表<br>2、每种信号的处理方式<br>3、当前工作目录<br>4、用户ID和组ID<br>5、内存地址空间 (.text/.data/.bss/heap/共享库)</p>
+<h2 id="非共享"><a href="#非共享" class="headerlink" title="非共享"></a>非共享</h2><p>1、线程id<br>2、处理器现场和栈指针(内核栈)<br>3、独立的栈空间(用户空间栈)<br>4、errno变量<br>5、信号屏蔽字<br>6、调度优先级</p>
+<h1 id="线程的控制原语"><a href="#线程的控制原语" class="headerlink" title="线程的控制原语"></a>线程的控制原语</h1><h2 id="pthread-self函数"><a href="#pthread-self函数" class="headerlink" title="pthread_self函数"></a>pthread_self函数</h2><p>作用：获取线程ID。<br>函数原型：pthread_t pthread_self(void）<br>返回值：成功：线程ID；    失败：无</p>
+<p>线程ID：pthread_t类型，本质：在Linux下为无符号整数(%lu)，其他系统中可能是结构体实现</p>
+<p>线程ID是进程内部，识别标志。(两个进程间，线程ID允许相同)<br><strong>注意：不应使用全局变量 pthread_t tid，而在子线程中通过pthread_create传出参数来获取线程ID，而应使用pthread_self。</strong></p>
+<h2 id="pthread-create函数"><a href="#pthread-create函数" class="headerlink" title="pthread_create函数"></a>pthread_create函数</h2><p>作用：创建一个新线程。<br>函数原型：int pthread_create(pthread_t <em>thread, const pthread_attr_t *attr, void *(</em>start_routine) (void *), void *arg)<br>返回值：成功：0，    失败：错误号    —–Linux环境下，所有线程特点，失败均直接返回错误号。</p>
+<p>参数：<br>pthread_t：typedef unsigned long int pthread_t;<strong>(Linux)</strong><br>参数1：传出参数，保存系统为我们分配好的线程ID<br>参数2：通常传NULL，表示使用线程默认属性。若想使用具体属性也可以修改该参数。<br>参数3：函数指针，指向线程主函数(线程体)，该函数运行结束，则线程结束。<br>参数4：线程主函数执行期间所使用的参数。</p>
+<h2 id="创建新线程，打印线程ID"><a href="#创建新线程，打印线程ID" class="headerlink" title="创建新线程，打印线程ID"></a>创建新线程，打印线程ID</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">thrd_func</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"In thread:thread id = %lu\n"</span>, pthread_self());</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"pid = %u\n"</span>,getpid());</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">pthread_t</span> tid;</span><br><span class="line">	<span class="keyword">int</span> ret;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"In main1:thread id = %lu\n"</span>, pthread_self());</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"pid = %u\n"</span>,getpid());</span><br><span class="line">	ret = pthread_create(&amp;tid, <span class="literal">NULL</span>, thrd_func, <span class="literal">NULL</span>);</span><br><span class="line">	<span class="keyword">if</span>(ret != <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span> ,<span class="string">"pthread_create error:%s\n"</span>,strerror(ret));</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"pthread_create error\n"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"In main2:thread id = %lu\n"</span>, pthread_self());</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"pid = %u\n"</span>,getpid());</span><br><span class="line">	sleep(<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="循环创建多个线程"><a href="#循环创建多个线程" class="headerlink" title="循环创建多个线程"></a>循环创建多个线程</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">thrd_func</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//int i = *(int *)arg;这样是错误的</span></span><br><span class="line">	<span class="keyword">int</span> i = (<span class="keyword">int</span>)arg;</span><br><span class="line">	sleep(i);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%dth thread:"</span>,i+<span class="number">1</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"In thread:thread id = %lu\n"</span>, pthread_self());</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"pid = %u\n"</span>,getpid());</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">pthread_t</span> tid;</span><br><span class="line">	<span class="keyword">int</span> ret;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)</span><br><span class="line">	&#123;		</span><br><span class="line">		<span class="comment">//在线程取地址之后，有可能i的值发生变化</span></span><br><span class="line">		<span class="comment">//ret = pthread_create(&amp;tid, NULL, thrd_func, (void *)&amp;i);</span></span><br><span class="line">		ret = pthread_create(&amp;tid, <span class="literal">NULL</span>, thrd_func, (<span class="keyword">void</span> *)i);</span><br><span class="line">		<span class="keyword">if</span>(ret != <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">fprintf</span>(<span class="built_in">stderr</span> ,<span class="string">"pthread_create error:%s\n"</span>,strerror(ret));</span><br><span class="line">			<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	sleep(<span class="number">5</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="线程之间共享全局变量"><a href="#线程之间共享全局变量" class="headerlink" title="线程之间共享全局变量"></a>线程之间共享全局变量</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;//线程之间共享全局变量</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> var = <span class="number">100</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">tfn</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	var = <span class="number">200</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"thread\n"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"at first var = %d\n"</span>, var);</span><br><span class="line">	<span class="keyword">pthread_t</span> tid;</span><br><span class="line">	pthread_create(&amp;tid, <span class="literal">NULL</span>, tfn, <span class="literal">NULL</span>);</span><br><span class="line">	sleep(<span class="number">1</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"after pthread_create, var = %d\n"</span>, var);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="pthread-exit函数"><a href="#pthread-exit函数" class="headerlink" title="pthread_exit函数"></a>pthread_exit函数</h2><p>作用：将单个线程退出<br>函数原型：void pthread_exit(void <em>retval)<br>参数：retval表示线程退出状态，通常传NULL<br>*</em>注意：线程中，禁止使用exit函数，会导致进程内所有线程全部退出。**</p>
+<h2 id="pthread-join函数"><a href="#pthread-join函数" class="headerlink" title="pthread_join函数"></a>pthread_join函数</h2><p>作用：阻塞等待线程退出，获取线程退出状<br>函数原型：int pthread_join(pthread_t thread, void **retval)</p>
+<p>成功：0；失败：错误号<br>参数：thread：线程ID,retval：存储线程结束状态。</p>
+<p>1、如果thread线程通过return返回，retval所指向的单元里存放的是thread线程函数的返回值。<br>2、如果thread线程被别的线程调用pthread_cancel异常终止掉，retval所指向的单元里存放的是常数PTHREAD_CANCELED。<br>3、如果thread线程是自己调用pthread_exit终止的，retval所指向的单元存放的是传给pthread_exit的参数。<br>4、如果对thread线程的终止状态不感兴趣，可以传NULL给retval参数。</p>
+<h2 id="回收多个子线程"><a href="#回收多个子线程" class="headerlink" title="回收多个子线程"></a>回收多个子线程</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;//循环回收多个子线程</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> var = <span class="number">100</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">tfn</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	i = (<span class="keyword">int</span>)arg;</span><br><span class="line">	sleep(i);</span><br><span class="line">	<span class="keyword">if</span>(i == <span class="number">1</span>)<span class="comment">//第二个线程修改val=333</span></span><br><span class="line">	&#123;</span><br><span class="line">		var = <span class="number">333</span>;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"var = %d\n"</span>,var);</span><br><span class="line">		<span class="keyword">return</span> (<span class="keyword">void</span> *)var;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(i == <span class="number">3</span>)<span class="comment">//第4个线程修改val=777</span></span><br><span class="line">	&#123;</span><br><span class="line">		var = <span class="number">777</span>;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"I'm %dth pthread, id = %lu\n var = %d\n"</span>,i+<span class="number">1</span>, pthread_self(), var);</span><br><span class="line">		pthread_exit((<span class="keyword">void</span> *)var);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;	</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"I'm %dth pthread, id = %lu\n var = %d\n"</span>,i+<span class="number">1</span>, pthread_self(), var);</span><br><span class="line">		pthread_exit((<span class="keyword">void</span> *)var);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">pthread_t</span> tid[<span class="number">5</span>];</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="keyword">int</span> *ret[<span class="number">5</span>];</span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		pthread_create(&amp;tid[i], <span class="literal">NULL</span>, tfn, (<span class="keyword">void</span> *)i);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">5</span> ;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		pthread_join(tid[i], (<span class="keyword">void</span> **)&amp;ret[i]);<span class="comment">//回收子线程</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%d 's ret = %d\n"</span>, i+<span class="number">1</span>, (<span class="keyword">int</span>)ret[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"I'm main pthread tid = %lu\t var = %d\n"</span>,pthread_self(), var);</span><br><span class="line">	sleep(i);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="pthread-deatch函数"><a href="#pthread-deatch函数" class="headerlink" title="pthread_deatch函数"></a>pthread_deatch函数</h2><p>作用：实现线程分离<br>函数原型：int pthread_detach(pthread_t thread<br>成功：0，失败：错误号<br><strong>线程分离状态</strong>：指定该状态，线程主动与主控线程断开关系。线程结束后，其退出状态不由其他线程获取，而直接自己自动释放<br>网络、多线程服务器常用。</p>
+<h2 id="pthread-cancel函数"><a href="#pthread-cancel函数" class="headerlink" title="pthread_cancel函数"></a>pthread_cancel函数</h2><p>作用：杀死(取消)线程<br>函数原型：int pthread_cancel(pthread_t thread<br>成功：0，失败：错误号</p>
+<p>线程的取消并不是实时的，而有一定的延时。需要等待线程到达某个取消点(检查点)。<br><strong>取消点</strong>：是线程检查是否被取消，并按请求进行动作的一个位置。通常是一些系统调用creat，open，pause，close，read，write….. </p>
+<p>可粗略认为一个系统调用(进入内核)即为一个取消点。如线程中没有取消点，可以通过调用pthreestcancel函数自行设置一个取消点。</p>
+<p>被取消的线程，退出值定义在Linux的pthread库中<br>常数PTHREAD_CANCELED的值是-1。可在头文件pthread.h中找到它的定义：#define PTHREAD_CANCELED ((void *) -1)。因此当我们对一个已经被取消的线程使用pthread_join回收时，得到的返回值为-1。</p>
+<h2 id="杀死线程的三种方式"><a href="#杀死线程的三种方式" class="headerlink" title="杀死线程的三种方式"></a>杀死线程的三种方式</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;//杀死线程3种方式</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">tfn1</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"thread 1 returning\n"</span>);</span><br><span class="line">	<span class="keyword">return</span> (<span class="keyword">void</span> *)<span class="number">111</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">tfn2</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"thread 2 exiting\n"</span>);</span><br><span class="line">	pthread_exit((<span class="keyword">void</span> *)<span class="number">222</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">tfn3</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//printf("thread 3:I'm going to die in 3 seconds\n");</span></span><br><span class="line">		<span class="comment">//sleep(1);</span></span><br><span class="line">		pthread_testcancel();<span class="comment">//自己设置取消点</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> (<span class="keyword">void</span> *)<span class="number">666</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">pthread_t</span> tid;</span><br><span class="line">	<span class="keyword">void</span> *tred = <span class="literal">NULL</span>;</span><br><span class="line">	pthread_create(&amp;tid, <span class="literal">NULL</span>, tfn1, <span class="literal">NULL</span>);</span><br><span class="line">	pthread_join(tid, &amp;tred);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"thread 1 exit code = %d\n\n"</span>, (<span class="keyword">int</span>)tred);</span><br><span class="line"></span><br><span class="line">	pthread_create(&amp;tid, <span class="literal">NULL</span>, tfn2, <span class="literal">NULL</span>);</span><br><span class="line">	pthread_join(tid, &amp;tred);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"thread 2 exit code = %d\n\n"</span>, (<span class="keyword">int</span>)tred);</span><br><span class="line">	</span><br><span class="line">	pthread_create(&amp;tid, <span class="literal">NULL</span>, tfn3, <span class="literal">NULL</span>);</span><br><span class="line">	sleep(<span class="number">3</span>);</span><br><span class="line">	pthread_cancel(tid);<span class="comment">//需要到达某个取消点 系统调用</span></span><br><span class="line">	pthread_join(tid, &amp;tred);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"thread 3 exit code = %d\n\n"</span>, (<span class="keyword">int</span>)tred);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LWP/" rel="tag"># LWP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/19/SIGCHILD%E4%BF%A1%E5%8F%B7/" rel="next" title="SIGCHILD信号">
+                <i class="fa fa-chevron-left"></i> SIGCHILD信号
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpg"
+                alt="AhDai" />
+            
+              <p class="site-author-name" itemprop="name">AhDai</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ahdai1" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#线程概念"><span class="nav-number">1.</span> <span class="nav-text">线程概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux内核线程实现原理"><span class="nav-number">2.</span> <span class="nav-text">Linux内核线程实现原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程资源的共享与非共享"><span class="nav-number">3.</span> <span class="nav-text">线程资源的共享与非共享</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#共享"><span class="nav-number">3.1.</span> <span class="nav-text">共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非共享"><span class="nav-number">3.2.</span> <span class="nav-text">非共享</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程的控制原语"><span class="nav-number">4.</span> <span class="nav-text">线程的控制原语</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-self函数"><span class="nav-number">4.1.</span> <span class="nav-text">pthread_self函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-create函数"><span class="nav-number">4.2.</span> <span class="nav-text">pthread_create函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建新线程，打印线程ID"><span class="nav-number">4.3.</span> <span class="nav-text">创建新线程，打印线程ID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#循环创建多个线程"><span class="nav-number">4.4.</span> <span class="nav-text">循环创建多个线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程之间共享全局变量"><span class="nav-number">4.5.</span> <span class="nav-text">线程之间共享全局变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-exit函数"><span class="nav-number">4.6.</span> <span class="nav-text">pthread_exit函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-join函数"><span class="nav-number">4.7.</span> <span class="nav-text">pthread_join函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回收多个子线程"><span class="nav-number">4.8.</span> <span class="nav-text">回收多个子线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-deatch函数"><span class="nav-number">4.9.</span> <span class="nav-text">pthread_deatch函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-cancel函数"><span class="nav-number">4.10.</span> <span class="nav-text">pthread_cancel函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#杀死线程的三种方式"><span class="nav-number">4.11.</span> <span class="nav-text">杀死线程的三种方式</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">AhDai</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">12.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">全站共 12.6k 字</span>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/05/19/%E7%BA%BF%E7%A8%8B/';
+          this.page.identifier = '2020/05/19/线程/';
+          this.page.title = '线程';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
