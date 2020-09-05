@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="signal," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="SIGCHILD的产生条件1、子进程终止时2、子进程接收到SIGSTOP信号停止时3、子进程处在停止态，接受到SIGCONT后唤醒时 子进程结束status处理方式函数原型：pid_t waitpid(pid_t pid, int status, int options)*options：** WNOHANG：没有子进程结束，立即返回 WUNTRACED：如果子进程由于被停止产生的SIGCHLD，">
+<meta name="description" content="TCP通讯时序三次握手1、客户端发送一个带SYN标志的TCP报文到服务器。这是三次握手过程中的段1。2、服务器端回应客户端，是三次握手中的第2个报文段，同时带ACK标志和SYN标志。它表示对刚才客户端SYN的回应；同时又发送SYN给客户端，询问客户端是否准备好进行数据通讯。3、客户必须再次回应服务器端一个ACK报文，这是报文段3。数据传输1、客户端发出段4，包含从序号1001开始的20个字节数据。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SIGCHILD信号">
-<meta property="og:url" content="http://yoursite.com/2020/05/19/SIGCHILD%E4%BF%A1%E5%8F%B7/index.html">
+<meta property="og:title" content="TCP协议">
+<meta property="og:url" content="http://yoursite.com/2020/09/05/TCP%E5%8D%8F%E8%AE%AE/index.html">
 <meta property="og:site_name" content="AhDai">
-<meta property="og:description" content="SIGCHILD的产生条件1、子进程终止时2、子进程接收到SIGSTOP信号停止时3、子进程处在停止态，接受到SIGCONT后唤醒时 子进程结束status处理方式函数原型：pid_t waitpid(pid_t pid, int status, int options)*options：** WNOHANG：没有子进程结束，立即返回 WUNTRACED：如果子进程由于被停止产生的SIGCHLD，">
+<meta property="og:description" content="TCP通讯时序三次握手1、客户端发送一个带SYN标志的TCP报文到服务器。这是三次握手过程中的段1。2、服务器端回应客户端，是三次握手中的第2个报文段，同时带ACK标志和SYN标志。它表示对刚才客户端SYN的回应；同时又发送SYN给客户端，询问客户端是否准备好进行数据通讯。3、客户必须再次回应服务器端一个ACK报文，这是报文段3。数据传输1、客户端发出段4，包含从序号1001开始的20个字节数据。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-05-19T08:38:49.333Z">
-<meta property="article:modified_time" content="2020-05-19T08:54:41.364Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200213153208834.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NzY5NDY3,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200213153538726.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NzY5NDY3,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2020-09-05T02:38:49.927Z">
+<meta property="article:modified_time" content="2020-09-05T02:39:26.675Z">
 <meta property="article:author" content="AhDai">
-<meta property="article:tag" content="signal">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200213153208834.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NzY5NDY3,size_16,color_FFFFFF,t_70#pic_center">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/05/19/SIGCHILD信号/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/09/05/TCP协议/"/>
 
 
 
 
 
-  <title>SIGCHILD信号 | AhDai</title>
+  <title>TCP协议 | AhDai</title>
   
 
 
@@ -283,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/19/SIGCHILD%E4%BF%A1%E5%8F%B7/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/05/TCP%E5%8D%8F%E8%AE%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="AhDai">
@@ -300,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">SIGCHILD信号</h1>
+          <h1 class="post-title" itemprop="name headline">TCP协议</h1>
         
 
         <div class="post-meta">
@@ -312,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-19T16:38:49+08:00">
-                2020-05-19
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-05T10:38:49+08:00">
+                2020-09-05
               </time>
             
 
@@ -353,9 +355,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/05/19/SIGCHILD%E4%BF%A1%E5%8F%B7/#comments" itemprop="discussionUrl">
+                <a href="/2020/09/05/TCP%E5%8D%8F%E8%AE%AE/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2020/05/19/SIGCHILD信号/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2020/09/05/TCP协议/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -387,7 +389,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  510 字 
+                  1.1k 字 
                 </span>
               
 
@@ -403,7 +405,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  2 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -424,18 +426,20 @@
       
 
       
-        <h1 id="SIGCHILD的产生条件"><a href="#SIGCHILD的产生条件" class="headerlink" title="SIGCHILD的产生条件"></a>SIGCHILD的产生条件</h1><p>1、子进程终止时<br>2、子进程接收到SIGSTOP信号停止时<br>3、子进程处在停止态，接受到SIGCONT后唤醒时</p>
-<h1 id="子进程结束status处理方式"><a href="#子进程结束status处理方式" class="headerlink" title="子进程结束status处理方式"></a>子进程结束status处理方式</h1><p>函数原型：pid_t waitpid(pid_t pid, int <em>status, int options)<br>*</em>options：**</p>
-<p>WNOHANG：没有子进程结束，立即返回</p>
-<p>WUNTRACED：如果子进程由于被停止产生的SIGCHLD，waitpid则立即返回</p>
-<p>WCONTINUED：如果子进程由于被SIGCONT唤醒而产生的SIGCHLD，waitpid则立即返回</p>
-<p><strong>status：</strong><br>    WIFEXITED(status):子进程正常exit终止，返回真<br>    WEXITSTATUS(status):返回子进程正常退出值<br>    WIFSIGNALED(status):子进程被信号终止，返回真<br>    WTERMSIG(status):返回终止子进程的信号值<br>    WIFSTOPPED(status):子进程被停止，返回真<br>    WSTOPSIG(status):返回停止子进程的信号值<br>    WIFCONTINUED(status):子进程接收到SIGCONT信号继续执行</p>
-<h1 id="借助SIGCHILD信号回收子进程"><a href="#借助SIGCHILD信号回收子进程" class="headerlink" title="借助SIGCHILD信号回收子进程"></a>借助SIGCHILD信号回收子进程</h1><p>解释:子进程结束运行，其父进程会收到SIGCHLD信号。该信号的默认处理动作是忽略。可以捕捉该信号，在捕捉函数中完成子进程状态的回收。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sys_err</span><span class="params">(<span class="keyword">char</span> *str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	perror(str);</span><br><span class="line">	<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_sig_child</span><span class="params">(<span class="keyword">int</span> signo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> status;</span><br><span class="line">	<span class="keyword">pid_t</span> pid;</span><br><span class="line">	<span class="comment">//如果用if 在linux内核中，收到多个信号，只会记录一个信号</span></span><br><span class="line">	<span class="comment">//用if的话只会回收其中的某些子进程</span></span><br><span class="line">	<span class="keyword">while</span>((pid = waitpid(<span class="number">0</span>, &amp;status, WNOHANG)) &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(WIFEXITED(status))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"child %d exit %d\n"</span>,pid, WEXITSTATUS(status));</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(WIFSIGNALED(status))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"child %d cancel signal %d\n"</span>,pid, WTERMSIG(status));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">pid_t</span> pid;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="comment">//阻塞SIGCHLD</span></span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>((pid = fork()) == <span class="number">0</span>)</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(pid &lt; <span class="number">0</span>)</span><br><span class="line">			sys_err(<span class="string">"fork "</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(pid == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> n = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">while</span>(n--)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"child ID %d\n"</span>,getpid());</span><br><span class="line">			sleep(<span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> i+<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(pid &gt; <span class="number">0</span> )<span class="comment">//父进程捕捉SIGCHILD信号</span></span><br><span class="line">	&#123;</span><br><span class="line">		struct sigaction act;</span><br><span class="line">		act.sa_handler = do_sig_child;</span><br><span class="line">		sigemptyset(&amp;act.sa_mask);</span><br><span class="line">		act.sa_flags = <span class="number">0</span>;</span><br><span class="line">		sigaction(SIGCHLD, &amp;act, <span class="literal">NULL</span>);</span><br><span class="line">		<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"parent ID %d\n"</span>, getpid());</span><br><span class="line">			sleep(<span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
+        <h1 id="TCP通讯时序"><a href="#TCP通讯时序" class="headerlink" title="TCP通讯时序"></a>TCP通讯时序</h1><p><img src="https://img-blog.csdnimg.cn/20200213153208834.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NzY5NDY3,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>三次握手<br>1、客户端发送一个带SYN标志的TCP报文到服务器。这是三次握手过程中的段1。<br>2、服务器端回应客户端，是三次握手中的第2个报文段，同时带ACK标志和SYN标志。它表示对刚才客户端SYN的回应；同时又发送SYN给客户端，询问客户端是否准备好进行数据通讯。<br>3、客户必须再次回应服务器端一个ACK报文，这是报文段3。<br>数据传输<br>1、客户端发出段4，包含从序号1001开始的20个字节数据。<br>2、服务器发出段5，确认序号为1021，对序号为1001-1020的数据表示确认收到，同时请求发送序号1021开始的数据，服务器在应答的同时也向客户端发送从序号8001开始的10个字节数据，这称为piggyback。<br>3、客户端发出段6，对服务器发来的序号为8001-8010的数据表示确认收到，请求发送序号8011开始的数据。<br>四次握手<br>1、客户端发出段7，FIN位表示关闭连接的请求。<br>2、服务器发出段8，应答客户端的关闭连接请求。<br>3、服务器发出段9，其中也包含FIN位，向客户端发送关闭连接请求。<br>4、客户端发出段10，应答服务器的关闭连接请求。</p>
+<h1 id="TCP状态转换图"><a href="#TCP状态转换图" class="headerlink" title="TCP状态转换图"></a>TCP状态转换图</h1><p><img src="https://img-blog.csdnimg.cn/20200213153538726.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NzY5NDY3,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>CLOSED：表示初始状态。</p>
+<p>LISTEN：该状态表示服务器端的某个SOCKET处于监听状态，可以接受连接。</p>
+<p>SYN_SENT：这个状态与SYN_RCVD遥相呼应，当客户端SOCKET执行CONNECT连接时，它首先发送SYN报文，随即进入到了SYN_SENT状态，并等待服务端的发送三次握手中的第2个报文。SYN_SENT状态表示客户端已发送SYN报文。</p>
+<p>SYN_RCVD: 该状态表示接收到SYN报文，在正常情况下，这个状态是服务器端的SOCKET在建立TCP连接时的三次握手会话过程中的一个中间状态，很短暂。此种状态时，当收到客户端的ACK报文后，会进入到ESTABLISHED状态。</p>
+<p>ESTABLISHED：表示连接已经建立。</p>
+<p>FIN_WAIT_1: FIN_WAIT_1和FIN_WAIT_2状态的真正含义都是表示等待对方的FIN报文。区别是：</p>
+<p>FIN_WAIT_1状态是当socket在ESTABLISHED状态时，想主动关闭连接，向对方发送了FIN报文，此时该socket进入到FIN_WAIT_1状态。</p>
+<p>FIN_WAIT_2状态是当对方回应ACK后，该socket进入到FIN_WAIT_2状态，正常情况下，对方应马上回应ACK报文，所以FIN_WAIT_1状态一般较难见到，而FIN_WAIT_2状态可用<br>netstat看到。</p>
+<p>FIN_WAIT_2：主动关闭链接的一方，发出FIN收到ACK以后进入该状态。称之为半连接或半关闭状态。该状态下的socket只能接收数据，不能发。</p>
+<p>TIME_WAIT: 表示收到了对方的FIN报文，并发送出了ACK报文，等2MSL后即可回到CLOSED可用状态。如果FIN_WAIT_1状态下，收到对方同时带 FIN标志和ACK标志的报文时，可以直接进入到TIME_WAIT状态，而无须经过FIN_WAIT_2状态。</p>
+<p>CLOSING: 这种状态较特殊，属于一种较罕见的状态。正常情况下，当你发送FIN报文后，按理来说是应该先收到（或同时收到）对方的 ACK报文，再收到对方的FIN报文。但是<br>CLOSING状态表示你发送FIN报文后，并没有收到对方的ACK报文，反而却也收到了对方的FIN报文。什么情况下会出现此种情况呢？如果双方几乎在同时close一个SOCKET的话，那么就出现了双方同时发送FIN报文的情况，也即会出现CLOSING状态，表示双方都正在关闭<br>SOCKET连接。</p>
+<p>CLOSE_WAIT: 此种状态表示在等待关闭。当对方关闭一个SOCKET后发送FIN报文给自己，系统会回应一个ACK报文给对方，此时则进入到CLOSE_WAIT状态。接下来呢，察看是否还有数据发送给对方，如果没有可以 close这个SOCKET，发送FIN报文给对方，即关闭连接。所以在CLOSE_WAIT状态下，需要关闭连接。</p>
+<p>LAST_ACK: 该状态是被动关闭一方在发送FIN报文后，最后等待对方的ACK报文。当收到ACK报文后，即可以进入到CLOSED可用状态。</p>
 
       
     </div>
@@ -451,12 +455,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/signal/" rel="tag"># signal</a>
-          
-        </div>
-      
 
       
       
@@ -466,8 +464,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/05/18/%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%BC%82%E6%AD%A5I_O/" rel="next" title="全局变量的异步I_O">
-                <i class="fa fa-chevron-left"></i> 全局变量的异步I_O
+              <a href="/2020/09/05/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="next" title="Linux网络编程基础">
+                <i class="fa fa-chevron-left"></i> Linux网络编程基础
               </a>
             
           </div>
@@ -476,8 +474,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/05/19/%E7%BA%BF%E7%A8%8B/" rel="prev" title="线程">
-                线程 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/09/05/Socket%E7%BC%96%E7%A8%8B/" rel="prev" title="Socket编程">
+                Socket编程 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -634,7 +632,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SIGCHILD的产生条件"><span class="nav-number">1.</span> <span class="nav-text">SIGCHILD的产生条件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#子进程结束status处理方式"><span class="nav-number">2.</span> <span class="nav-text">子进程结束status处理方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#借助SIGCHILD信号回收子进程"><span class="nav-number">3.</span> <span class="nav-text">借助SIGCHILD信号回收子进程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP通讯时序"><span class="nav-number">1.</span> <span class="nav-text">TCP通讯时序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP状态转换图"><span class="nav-number">2.</span> <span class="nav-text">TCP状态转换图</span></a></li></ol></div>
             
 
           </div>
@@ -847,9 +845,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2020/05/19/SIGCHILD%E4%BF%A1%E5%8F%B7/';
-          this.page.identifier = '2020/05/19/SIGCHILD信号/';
-          this.page.title = 'SIGCHILD信号';
+          this.page.url = 'http://yoursite.com/2020/09/05/TCP%E5%8D%8F%E8%AE%AE/';
+          this.page.identifier = '2020/09/05/TCP协议/';
+          this.page.title = 'TCP协议';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://.disqus.com/embed.js';
