@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="多进程1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889#include&lt;stdio.h&gt;#incl">
+<meta name="description" content="const替换#define这个规则也许可以改为“宁可以编译器替换预处理器”，#define不被视作语言的一部分，这正是问题的所在。 1#define ASPECT_RATIO 1.653 记号名称ASPECT_RATIO也许从未被编译器看见，它在编译器开始处理之前就被预处理器移走了，于是这个记号名称并没有进入记号表（symbol table）内。当使用这个常量但是却或者一个编译错误信息时，这个错">
 <meta property="og:type" content="article">
-<meta property="og:title" content="并发服务器">
-<meta property="og:url" content="http://yoursite.com/2020/09/05/%E5%B9%B6%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8/index.html">
+<meta property="og:title" content="尽量以const,enum,inline替换#define">
+<meta property="og:url" content="http://yoursite.com/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const,enum,inline%E6%9B%BF%E6%8D%A2#define/index.html">
 <meta property="og:site_name" content="AhDai">
-<meta property="og:description" content="多进程1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889#include&lt;stdio.h&gt;#incl">
+<meta property="og:description" content="const替换#define这个规则也许可以改为“宁可以编译器替换预处理器”，#define不被视作语言的一部分，这正是问题的所在。 1#define ASPECT_RATIO 1.653 记号名称ASPECT_RATIO也许从未被编译器看见，它在编译器开始处理之前就被预处理器移走了，于是这个记号名称并没有进入记号表（symbol table）内。当使用这个常量但是却或者一个编译错误信息时，这个错">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-09-05T04:41:28.154Z">
-<meta property="article:modified_time" content="2020-09-05T04:42:19.548Z">
+<meta property="article:published_time" content="2020-10-18T08:35:34.666Z">
+<meta property="article:modified_time" content="2020-10-18T08:36:16.275Z">
 <meta property="article:author" content="AhDai">
 <meta name="twitter:card" content="summary">
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/09/05/并发服务器/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/10/18/尽量以const,enum,inline替换#define/"/>
 
 
 
 
 
-  <title>并发服务器 | AhDai</title>
+  <title>尽量以const,enum,inline替换#define | AhDai</title>
   
 
 
@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/05/%E5%B9%B6%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const,enum,inline%E6%9B%BF%E6%8D%A2#define/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="AhDai">
@@ -333,7 +333,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">并发服务器</h1>
+          <h1 class="post-title" itemprop="name headline">尽量以const,enum,inline替换#define</h1>
         
 
         <div class="post-meta">
@@ -345,8 +345,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-05T12:41:28+08:00">
-                2020-09-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-18T16:35:34+08:00">
+                2020-10-18
               </time>
             
 
@@ -368,8 +368,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
                   </a>
                 </span>
 
@@ -386,9 +386,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/09/05/%E5%B9%B6%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8/#comments" itemprop="discussionUrl">
+                <a href="/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const,enum,inline%E6%9B%BF%E6%8D%A2#define/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2020/09/05/并发服务器/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2020/10/18/尽量以const,enum,inline替换#define/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -420,7 +420,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  586 字 
+                  592 字 
                 </span>
               
 
@@ -436,7 +436,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  3 分钟
+                  2 分钟
                 </span>
               
             </div>
@@ -457,9 +457,21 @@
       
 
       
-        <h1 id="多进程"><a href="#多进程" class="headerlink" title="多进程"></a>多进程</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"wrap.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;strings.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;ctype.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SERV_PORT 8888</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SERV_IP <span class="meta-string">"192.168.44.138"</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">wait_child</span><span class="params">(<span class="keyword">int</span> signo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">pid_t</span> n;</span><br><span class="line">        <span class="keyword">while</span>((n = waitpid(<span class="number">0</span>, <span class="literal">NULL</span>, WNOHANG)) &gt; <span class="number">0</span>); </span><br><span class="line"><span class="comment">/*      while(1)</span></span><br><span class="line"><span class="comment">        &#123;</span></span><br><span class="line"><span class="comment">                n = waitpid(0, NULL, WNOHANG);</span></span><br><span class="line"><span class="comment">                if(n == -1)</span></span><br><span class="line"><span class="comment">                &#123;</span></span><br><span class="line"><span class="comment">                        perror("waitpid error");</span></span><br><span class="line"><span class="comment">                &#125;</span></span><br><span class="line"><span class="comment">        &#125;*/</span></span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">pid_t</span> pid;</span><br><span class="line">        <span class="keyword">char</span> buf[BUFSIZ], clie_IP[BUFSIZ];</span><br><span class="line">        <span class="keyword">socklen_t</span> clie_addr_len;</span><br><span class="line">        <span class="keyword">int</span> lfd, cfd;</span><br><span class="line">        <span class="keyword">int</span> n;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">serv_addr</span>, <span class="title">clie_addr</span>;</span></span><br><span class="line">        lfd = Socket(AF_INET, SOCK_STREAM, <span class="number">0</span>); </span><br><span class="line">        bzero(&amp;serv_addr, <span class="keyword">sizeof</span>(serv_addr));</span><br><span class="line">        serv_addr.sin_family = AF_INET;</span><br><span class="line">        serv_addr.sin_port = htons(SERV_PORT);</span><br><span class="line">        <span class="comment">//serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);</span></span><br><span class="line">        inet_pton(AF_INET, SERV_IP, &amp;serv_addr.sin_addr.s_addr);</span><br><span class="line">        <span class="keyword">int</span> opt = <span class="number">1</span>;</span><br><span class="line">        setsockopt(lfd, SOL_SOCKET, SO_REUSEADDR, &amp;opt, <span class="keyword">sizeof</span>(opt));</span><br><span class="line">        Bind(lfd, (struct sockaddr *)&amp;serv_addr, <span class="keyword">sizeof</span>(serv_addr));</span><br><span class="line">        Listen(lfd, <span class="number">128</span>);</span><br><span class="line">        <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                clie_addr_len = <span class="keyword">sizeof</span>(clie_addr);</span><br><span class="line">                cfd = Accept(lfd, (struct sockaddr *)&amp;clie_addr, &amp;clie_addr_len);</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"client IP :%s, port:%d\n"</span>, inet_ntop(AF_INET, &amp;clie_addr.sin_addr.s_addr, clie_IP, <span class="keyword">sizeof</span>(clie_IP)), ntohs(clie_addr.sin_port));</span><br><span class="line">                pid = fork();</span><br><span class="line">                <span class="keyword">if</span>(pid &lt; <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                        perror(<span class="string">"fork error"</span>);</span><br><span class="line">                        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(pid == <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                        Close(lfd);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                        Close(cfd);</span><br><span class="line">                        signal(SIGCHLD, wait_child);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(pid == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                        n = Read(cfd, buf, <span class="keyword">sizeof</span>(buf));</span><br><span class="line">                        <span class="keyword">if</span>(n == <span class="number">0</span>)<span class="comment">//client close</span></span><br><span class="line">                        &#123;</span><br><span class="line">                                Close(cfd);</span><br><span class="line">                                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">else</span> <span class="keyword">if</span>(n == <span class="number">-1</span>)</span><br><span class="line">                        &#123;</span><br><span class="line">                                perror(<span class="string">"read error"</span>);</span><br><span class="line">                                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">else</span></span><br><span class="line">                        &#123;</span><br><span class="line">                                <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">                                        buf[i] = <span class="built_in">toupper</span>(buf[i]);</span><br><span class="line">                                <span class="built_in">write</span>(cfd, buf, n);</span><br><span class="line">                        &#125;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;ctype.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"wrap.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAXLINE 8192</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SERV_PORT 8888</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">s_info</span>//将地址与<span class="title">cfd</span>捆绑</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">clie_addr</span>;</span></span><br><span class="line">        <span class="keyword">int</span> connfd;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">do_work</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n, i;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">s_info</span> *<span class="title">ts</span> = (<span class="title">struct</span> <span class="title">s_info</span> *)<span class="title">arg</span>;</span></span><br><span class="line">        <span class="keyword">char</span> buf[BUFSIZ];</span><br><span class="line">        <span class="keyword">char</span> str[INET_ADDRSTRLEN];</span><br><span class="line">        <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                n = Read(ts-&gt;connfd, buf, MAXLINE);</span><br><span class="line">                <span class="keyword">if</span>(n == <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                        <span class="built_in">printf</span>(<span class="string">"the client %d closed \n"</span>, ts-&gt;connfd);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"received from %s at PORT %d\n"</span>, inet_ntop(AF_INET, &amp;(*ts).clie_addr.sin_addr.s_addr, str, <span class="keyword">sizeof</span>(str)), ntohs((*ts).clie_addr.sin_port));</span><br><span class="line">                <span class="keyword">for</span>(i = <span class="number">0</span> ;i &lt; n ;i++)</span><br><span class="line">                        buf[i] = <span class="built_in">toupper</span>(buf[i]);</span><br><span class="line">                Write(STDOUT_FILENO, buf, n); </span><br><span class="line">                Write(ts-&gt;connfd, buf, n); </span><br><span class="line">        &#125;</span><br><span class="line">        Close(ts-&gt;connfd);</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">void</span> *)<span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">serv_addr</span>, <span class="title">clie_addr</span>;</span></span><br><span class="line">        <span class="keyword">socklen_t</span> clie_addr_len;</span><br><span class="line">        <span class="keyword">int</span> listenfd, connfd;</span><br><span class="line">        <span class="keyword">pthread_t</span> tid;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">s_info</span> <span class="title">ts</span>[256];</span></span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        listenfd = Socket(AF_INET, SOCK_STREAM, <span class="number">0</span>); </span><br><span class="line">        bzero(&amp;serv_addr, <span class="keyword">sizeof</span>(serv_addr));</span><br><span class="line">        serv_addr.sin_family = AF_INET;</span><br><span class="line">        serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);</span><br><span class="line">        serv_addr.sin_port = htons(SERV_PORT);</span><br><span class="line">        <span class="keyword">int</span> opt = <span class="number">1</span>;</span><br><span class="line">        setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &amp;opt, <span class="keyword">sizeof</span>(opt));</span><br><span class="line">        Bind(listenfd, (struct sockaddr *)&amp;serv_addr, <span class="keyword">sizeof</span>(serv_addr));</span><br><span class="line">        Listen(listenfd, <span class="number">128</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Acceptint client connect \n"</span>);</span><br><span class="line">        <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                clie_addr_len = <span class="keyword">sizeof</span>(clie_addr);</span><br><span class="line">                connfd = Accept(listenfd, (struct sockaddr *)&amp;clie_addr, &amp;clie_addr_len);<span class="comment">//阻塞监听客户端链接请求</span></span><br><span class="line">                ts[i].clie_addr = clie_addr;</span><br><span class="line">                ts[i].connfd = connfd;</span><br><span class="line">                <span class="comment">//达到线程最大时，pthread_create出错处理，增加服务器稳定性</span></span><br><span class="line">                pthread_create(&amp;tid, <span class="literal">NULL</span>, do_work, (<span class="keyword">void</span> *)&amp;ts[i]);</span><br><span class="line">                pthread_detach(tid);</span><br><span class="line">                i++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+        <h1 id="const替换-define"><a href="#const替换-define" class="headerlink" title="const替换#define"></a>const替换#define</h1><p>这个规则也许可以改为“宁可以编译器替换预处理器”，#define不被视作语言的一部分，这正是问题的所在。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ASPECT_RATIO 1.653</span></span><br></pre></td></tr></table></figure>
+<p>记号名称ASPECT_RATIO也许从未被编译器看见，它在编译器开始处理之前就被预处理器移走了，于是这个记号名称并没有进入记号表（symbol table）内。<br>当使用这个常量但是却或者一个编译错误信息时，这个错误信息也许会提到1.653而绝不会提到ASPECT_RATIO。如果这个记号被定义在一个非本人写的头文件内，肯定对1.653毫无概念。而这解决方法便是用const替换#define</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> AspectRatio = <span class="number">1.653</span>;</span><br></pre></td></tr></table></figure>
+<p>作为一个语言常量肯定会被编译器所看到。</p>
+<p>值得注意的是class专属变量。为了将常量的作用域限制于class内，必须让它称为class的一个成员，而还需要确保此常量最多只有一份实体，所以必须用static修饰。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GamePlayer</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="comment">//static const int Numturns;//常量声明,位于头文件内</span></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> Numturns = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">int</span> scores[Numturns];</span><br><span class="line">    …</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//const int GamePlayer::Numturns = 5;//常量定义，位于实现文件内</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> GamePlayer::Numturns;</span><br><span class="line"><span class="comment">//如果程序不需要取Numturns的地址，则可以不用定义</span></span><br></pre></td></tr></table></figure>
+<p>我们无法用#define创建一个class专属常量，因为#define并不重视作用域。一旦宏被定义，就在其后的编译过程中有效。这就意味着#define不仅不能用来定义class专属变量，也不能提供任何的封装性。</p>
+<h1 id="enum替换-define"><a href="#enum替换-define" class="headerlink" title="enum替换#define"></a>enum替换#define</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Gameplayer</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">enum</span> &#123; Numturns = <span class="number">5</span>&#125;;<span class="comment">//令Numturns成为5的一个记号名称</span></span><br><span class="line">	<span class="keyword">int</span> scores[Numturns];</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>enum的行为与#define比较相似，例如取一个#define的地址是非法的，同样取一个enum的地址也是非法的。</p>
+<h1 id="inline替换-define"><a href="#inline替换-define" class="headerlink" title="inline替换#define"></a>inline替换#define</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CALL_WITH_MAX(a,b) f((a) &gt; (b) ? (a) : (b))</span></span><br></pre></td></tr></table></figure>
+<p>这样的宏函数有非常多的缺点，必须为所有的实参加上小括号。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">callWithMax</span><span class="params">(<span class="keyword">const</span> T&amp; a,<span class="keyword">const</span> T&amp; b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	f(a &gt; b ? a : b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里不需要在函数体内中为参数加上括号。</p>
+<p><strong>总结：</strong><br> <strong>1. 对于单纯常量，最好以const对象或enums替换#define。<br> 2. 对于形似函数的宏，最好以inline函数替换#define</strong></p>
 
       
     </div>
@@ -484,8 +496,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/09/05/Socket%E7%BC%96%E7%A8%8B/" rel="next" title="Socket编程">
-                <i class="fa fa-chevron-left"></i> Socket编程
+              <a href="/2020/09/06/%E5%A4%9A%E6%92%AD%EF%BC%88%E7%BB%84%E6%92%AD%EF%BC%89/" rel="next" title="多播（组播）">
+                <i class="fa fa-chevron-left"></i> 多播（组播）
               </a>
             
           </div>
@@ -493,10 +505,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/09/06/%E5%A4%9A%E8%B7%AFI_O%E8%BD%AC%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8select/" rel="prev" title="多路I_O转接服务器select">
-                多路I_O转接服务器select <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -652,7 +660,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#多进程"><span class="nav-number">1.</span> <span class="nav-text">多进程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多线程"><span class="nav-number">2.</span> <span class="nav-text">多线程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#const替换-define"><span class="nav-number">1.</span> <span class="nav-text">const替换#define</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#enum替换-define"><span class="nav-number">2.</span> <span class="nav-text">enum替换#define</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#inline替换-define"><span class="nav-number">3.</span> <span class="nav-text">inline替换#define</span></a></li></ol></div>
             
 
           </div>
@@ -865,9 +873,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2020/09/05/%E5%B9%B6%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8/';
-          this.page.identifier = '2020/09/05/并发服务器/';
-          this.page.title = '并发服务器';
+          this.page.url = 'http://yoursite.com/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const,enum,inline%E6%9B%BF%E6%8D%A2#define/';
+          this.page.identifier = '2020/10/18/尽量以const,enum,inline替换#define/';
+          this.page.title = '尽量以const,enum,inline替换#define';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://.disqus.com/embed.js';
