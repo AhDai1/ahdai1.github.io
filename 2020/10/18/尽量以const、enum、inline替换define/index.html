@@ -81,13 +81,13 @@
 
 <meta name="description" content="const替换#define这个规则也许可以改为“宁可以编译器替换预处理器”，#define不被视作语言的一部分，这正是问题的所在。 1#define ASPECT_RATIO 1.653 记号名称ASPECT_RATIO也许从未被编译器看见，它在编译器开始处理之前就被预处理器移走了，于是这个记号名称并没有进入记号表（symbol table）内。当使用这个常量但是却或者一个编译错误信息时，这个错">
 <meta property="og:type" content="article">
-<meta property="og:title" content="尽量以const,enum,inline替换#define">
-<meta property="og:url" content="http://yoursite.com/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const,enum,inline%E6%9B%BF%E6%8D%A2#define/index.html">
+<meta property="og:title" content="尽量以const、enum、inline替换define">
+<meta property="og:url" content="http://yoursite.com/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const%E3%80%81enum%E3%80%81inline%E6%9B%BF%E6%8D%A2define/index.html">
 <meta property="og:site_name" content="AhDai">
 <meta property="og:description" content="const替换#define这个规则也许可以改为“宁可以编译器替换预处理器”，#define不被视作语言的一部分，这正是问题的所在。 1#define ASPECT_RATIO 1.653 记号名称ASPECT_RATIO也许从未被编译器看见，它在编译器开始处理之前就被预处理器移走了，于是这个记号名称并没有进入记号表（symbol table）内。当使用这个常量但是却或者一个编译错误信息时，这个错">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-10-18T08:35:34.666Z">
-<meta property="article:modified_time" content="2020-10-18T08:36:16.275Z">
+<meta property="article:published_time" content="2020-10-18T08:59:19.681Z">
+<meta property="article:modified_time" content="2020-10-18T08:59:27.059Z">
 <meta property="article:author" content="AhDai">
 <meta name="twitter:card" content="summary">
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/10/18/尽量以const,enum,inline替换#define/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/10/18/尽量以const、enum、inline替换define/"/>
 
 
 
 
 
-  <title>尽量以const,enum,inline替换#define | AhDai</title>
+  <title>尽量以const、enum、inline替换define | AhDai</title>
   
 
 
@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const,enum,inline%E6%9B%BF%E6%8D%A2#define/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const%E3%80%81enum%E3%80%81inline%E6%9B%BF%E6%8D%A2define/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="AhDai">
@@ -333,7 +333,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">尽量以const,enum,inline替换#define</h1>
+          <h1 class="post-title" itemprop="name headline">尽量以const、enum、inline替换define</h1>
         
 
         <div class="post-meta">
@@ -345,7 +345,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-18T16:35:34+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-18T16:59:19+08:00">
                 2020-10-18
               </time>
             
@@ -356,28 +356,6 @@
           </span>
 
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index">
-                    <span itemprop="name">C++</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -386,9 +364,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const,enum,inline%E6%9B%BF%E6%8D%A2#define/#comments" itemprop="discussionUrl">
+                <a href="/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const%E3%80%81enum%E3%80%81inline%E6%9B%BF%E6%8D%A2define/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2020/10/18/尽量以const,enum,inline替换#define/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2020/10/18/尽量以const、enum、inline替换define/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -873,9 +851,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const,enum,inline%E6%9B%BF%E6%8D%A2#define/';
-          this.page.identifier = '2020/10/18/尽量以const,enum,inline替换#define/';
-          this.page.title = '尽量以const,enum,inline替换#define';
+          this.page.url = 'http://yoursite.com/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const%E3%80%81enum%E3%80%81inline%E6%9B%BF%E6%8D%A2define/';
+          this.page.identifier = '2020/10/18/尽量以const、enum、inline替换define/';
+          this.page.title = '尽量以const、enum、inline替换define';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://.disqus.com/embed.js';

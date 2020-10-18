@@ -594,8 +594,8 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct
       </categories>
   </entry>
   <entry>
-    <title>尽量以const,enum,inline替换#define</title>
-    <url>/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const,enum,inline%E6%9B%BF%E6%8D%A2#define/</url>
+    <title>尽量以const、enum、inline替换define</title>
+    <url>/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const%E3%80%81enum%E3%80%81inline%E6%9B%BF%E6%8D%A2define/</url>
     <content><![CDATA[<h1 id="const替换-define"><a href="#const替换-define" class="headerlink" title="const替换#define"></a>const替换#define</h1><p>这个规则也许可以改为“宁可以编译器替换预处理器”，#define不被视作语言的一部分，这正是问题的所在。</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ASPECT_RATIO 1.653</span></span><br></pre></td></tr></table></figure>
 <p>记号名称ASPECT_RATIO也许从未被编译器看见，它在编译器开始处理之前就被预处理器移走了，于是这个记号名称并没有进入记号表（symbol table）内。<br>当使用这个常量但是却或者一个编译错误信息时，这个错误信息也许会提到1.653而绝不会提到ASPECT_RATIO。如果这个记号被定义在一个非本人写的头文件内，肯定对1.653毫无概念。而这解决方法便是用const替换#define</p>
@@ -612,8 +612,5 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct
 <p>这里不需要在函数体内中为参数加上括号。</p>
 <p><strong>总结：</strong><br> <strong>1. 对于单纯常量，最好以const对象或enums替换#define。<br> 2. 对于形似函数的宏，最好以inline函数替换#define</strong></p>
 ]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
   </entry>
 </search>
