@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="process," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,17 +79,16 @@
 
 
 
-<meta name="description" content="一个进程在终止时会关闭所有文件描述符，释放在用户空间分配的内存，但它的PCB还保留着，内核在其中保存了一些信息： 如果是正常终止则保存着退出状态，如果是异常终止则保存着导致该进程终止的信号是哪个。这个进程的父进程可以调用wait或waitpid获取这些信息，然后彻底清除掉这个进程。 我们知道一个进程的退出状态可以在Shell中用特殊变量$?查看，因为Shell是它的父进程，当它终止时Shell调用">
+<meta name="description" content="使用初始化列表12345678910111213141516171819202122232425262728class PhoneNumber&amp;#123;……&amp;#125;;class ABEntry&amp;#123;public:	ABEntry(const string&amp; name,const string&amp; address,					const list&lt;PhoneNumber">
 <meta property="og:type" content="article">
-<meta property="og:title" content="回收子进程">
-<meta property="og:url" content="http://yoursite.com/2020/05/15/%E5%9B%9E%E6%94%B6%E5%AD%90%E8%BF%9B%E7%A8%8B/index.html">
+<meta property="og:title" content="确定对象被使用前已先被初始化">
+<meta property="og:url" content="http://yoursite.com/2020/10/18/%E7%A1%AE%E5%AE%9A%E5%AF%B9%E8%B1%A1%E8%A2%AB%E4%BD%BF%E7%94%A8%E5%89%8D%E5%B7%B2%E5%85%88%E8%A2%AB%E5%88%9D%E5%A7%8B%E5%8C%96/index.html">
 <meta property="og:site_name" content="AhDai">
-<meta property="og:description" content="一个进程在终止时会关闭所有文件描述符，释放在用户空间分配的内存，但它的PCB还保留着，内核在其中保存了一些信息： 如果是正常终止则保存着退出状态，如果是异常终止则保存着导致该进程终止的信号是哪个。这个进程的父进程可以调用wait或waitpid获取这些信息，然后彻底清除掉这个进程。 我们知道一个进程的退出状态可以在Shell中用特殊变量$?查看，因为Shell是它的父进程，当它终止时Shell调用">
+<meta property="og:description" content="使用初始化列表12345678910111213141516171819202122232425262728class PhoneNumber&amp;#123;……&amp;#125;;class ABEntry&amp;#123;public:	ABEntry(const string&amp; name,const string&amp; address,					const list&lt;PhoneNumber">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-05-15T02:27:56.067Z">
-<meta property="article:modified_time" content="2020-05-19T08:58:18.487Z">
+<meta property="article:published_time" content="2020-10-18T12:39:36.550Z">
+<meta property="article:modified_time" content="2020-10-18T12:40:02.459Z">
 <meta property="article:author" content="AhDai">
-<meta property="article:tag" content="process">
 <meta name="twitter:card" content="summary">
 
 
@@ -120,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/05/15/回收子进程/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/10/18/确定对象被使用前已先被初始化/"/>
 
 
 
 
 
-  <title>回收子进程 | AhDai</title>
+  <title>确定对象被使用前已先被初始化 | AhDai</title>
   
 
 
@@ -317,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/15/%E5%9B%9E%E6%94%B6%E5%AD%90%E8%BF%9B%E7%A8%8B/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/18/%E7%A1%AE%E5%AE%9A%E5%AF%B9%E8%B1%A1%E8%A2%AB%E4%BD%BF%E7%94%A8%E5%89%8D%E5%B7%B2%E5%85%88%E8%A2%AB%E5%88%9D%E5%A7%8B%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="AhDai">
@@ -334,7 +333,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">回收子进程</h1>
+          <h1 class="post-title" itemprop="name headline">确定对象被使用前已先被初始化</h1>
         
 
         <div class="post-meta">
@@ -346,8 +345,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-15T10:27:56+08:00">
-                2020-05-15
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-18T20:39:36+08:00">
+                2020-10-18
               </time>
             
 
@@ -369,8 +368,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
                   </a>
                 </span>
 
@@ -387,9 +386,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/05/15/%E5%9B%9E%E6%94%B6%E5%AD%90%E8%BF%9B%E7%A8%8B/#comments" itemprop="discussionUrl">
+                <a href="/2020/10/18/%E7%A1%AE%E5%AE%9A%E5%AF%B9%E8%B1%A1%E8%A2%AB%E4%BD%BF%E7%94%A8%E5%89%8D%E5%B7%B2%E5%85%88%E8%A2%AB%E5%88%9D%E5%A7%8B%E5%8C%96/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2020/05/15/回收子进程/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2020/10/18/确定对象被使用前已先被初始化/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -421,7 +420,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  1.1k 字 
+                  885 字 
                 </span>
               
 
@@ -437,7 +436,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  4 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -458,31 +457,17 @@
       
 
       
-        <p>一个进程在终止时会关闭所有文件描述符，释放在用户空间分配的内存，但它的PCB还保留着，内核在其中保存了一些信息：</p>
-<p>如果是正常终止则保存着退出状态，如果是异常终止则保存着导致该进程终止的信号是哪个。这个进程的父进程可以调用wait或waitpid获取这些信息，然后彻底清除掉这个进程。</p>
-<p>我们知道一个进程的退出状态可以在Shell中用特殊变量$?查看，因为Shell是它的父进程，当它终止时Shell调用wait或waitpid得到它的退出状态同时彻底清除掉这个进程。</p>
-<h1 id="孤儿进程"><a href="#孤儿进程" class="headerlink" title="孤儿进程"></a>孤儿进程</h1><p>父进程先于子进程结束，则子进程成为孤儿进程，子进程的父进程成为init进程，称为init进程领养孤儿进程。</p>
-<h1 id="僵尸进程"><a href="#僵尸进程" class="headerlink" title="僵尸进程"></a>僵尸进程</h1><p>进程终止，父进程尚未回收，子进程残留资源（PCB）存放于内核中，变成僵尸（Zombie）进程。</p>
-<h1 id="wait"><a href="#wait" class="headerlink" title="wait()"></a>wait()</h1><p>该函数有三个功能：<br>① 阻塞等待子进程退出<br>② 回收子进程残留资源<br>③ 获取子进程结束状态(退出原因)。</p>
-<p> 原型:pid_t wait(int *status)</p>
-<p>成功：清理掉的子进程ID；失败：-1 (没有子进程)</p>
-<p>当进程终止时，操作系统的隐式回收机制：</p>
-<p>1.关闭所有文件描述符 </p>
-<p>2.释放用户空间分配的内存。内核的PCB仍存在。其中保存该进程的退出状态。(正常终止→退出值；异常终止→终止信号)</p>
-<p>可使用wait函数传出参数status来保存进程的退出状态。</p>
-<p>借助宏函数来进一步判断进程终止的具体原因。宏函数可分为如下三组：<br> 1.WIFEXITED(status) 为非0    → 进程正常结束<br>    WEXITSTATUS(status) 如上宏为真，使用此宏 → 获取进程退出状态 (exit的参数)</p>
-<p> 2.WIFSIGNALED(status) 为非0 → 进程异常终止<br>    WTERMSIG(status) 如上宏为真，使用此宏 → 取得使进程终止的那个信号的编号。</p>
-<p>3.WIFSTOPPED(status) 为非0 → 进程处于暂停状态<br>    WSTOPSIG(status) 如上宏为真，使用此宏 → 取得使进程暂停的那个信号的编号。<br>    WIFCONTINUED(status) 为真 → 进程暂停后已经继续运行</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> status;</span><br><span class="line">        <span class="keyword">pid_t</span> pid,wpid;</span><br><span class="line">        pid = fork();</span><br><span class="line">        <span class="keyword">if</span>(pid == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"I'm child,my parent = %d,going to sleep 10s\n"</span>,getppid());</span><br><span class="line">                sleep(<span class="number">10</span>);</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"child die\n"</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">76</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(pid &gt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                wpid = wait(&amp;status);<span class="comment">//阻塞等待回收</span></span><br><span class="line">                <span class="keyword">if</span>(wpid == <span class="number">-1</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                        perror(<span class="string">"wait "</span>);</span><br><span class="line">                        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(WIFEXITED(status))</span><br><span class="line">                &#123;</span><br><span class="line">                        <span class="built_in">printf</span>(<span class="string">"child exit with %d\n"</span>,WEXITSTATUS(status));</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(WIFSIGNALED(status))</span><br><span class="line">                &#123;</span><br><span class="line">                        <span class="built_in">printf</span>(<span class="string">"child killed by%d\n"</span>,WTERMSIG(status));</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                        <span class="built_in">printf</span>(<span class="string">"I'm parent,pid = %d,myson =%d\n"</span>,getpid(),pid);</span><br><span class="line">                        sleep(<span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">                perror(<span class="string">"fork "</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="waitpid"><a href="#waitpid" class="headerlink" title="waitpid()"></a>waitpid()</h1><p>原型：pid_t waitpid(pid_t pid, int *status, in options)    </p>
-<p>成功：返回清理掉的子进程ID  失败：-1(无子进程)</p>
-<p>特殊参数和返回情况<br>参数pid:<br>pid &gt; 0 回收指定ID的子进程<br>pid = -1 回收任意子进程（相当于wait）<br>pid = 0 回收和当前调用waitpid一个组的所有子进程<br>pid &lt; -1 回收指定进程组内的任意子进程</p>
-<p>参数options指定为WNOHANG，设置为非阻塞，且子进程正在运行</p>
-<p>注意：一次wait或waitpid调用只能清理一个子进程，清理多个子进程应使用循环。</p>
-<h2 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h2><p>当程序执行之后，通过while(1)阻止父进程结束，可通过ps aux查看是否存在僵尸进程</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = <span class="number">5</span>,i;</span><br><span class="line">        <span class="keyword">pid_t</span> pid;</span><br><span class="line">        <span class="keyword">pid_t</span> wpid;</span><br><span class="line">        <span class="keyword">int</span> q,p;</span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)</span><br><span class="line">        &#123;</span><br><span class="line">                p = fork();</span><br><span class="line">                <span class="keyword">if</span>(p == <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                        <span class="keyword">break</span>;  </span><br><span class="line">                &#125;    </span><br><span class="line">                <span class="comment">//else if(i == 3)</span></span><br><span class="line">                <span class="comment">//&#123;</span></span><br><span class="line">                <span class="comment">//        q = p;//设置回收指定子进程</span></span><br><span class="line">                <span class="comment">//&#125;</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(n == i)<span class="comment">//父进程</span></span><br><span class="line">        &#123;</span><br><span class="line">                sleep(n);<span class="comment">//等待子进程执行完</span></span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"I'm parent,pid = %d\n"</span>,getppid());</span><br><span class="line">                <span class="keyword">do</span></span><br><span class="line">                &#123;</span><br><span class="line">                        wpid = waitpid(<span class="number">-1</span>, <span class="literal">NULL</span>, WNOHANG);</span><br><span class="line">                        <span class="keyword">if</span>(wpid &gt; <span class="number">0</span>)</span><br><span class="line">                        &#123;</span><br><span class="line">                                n--;</span><br><span class="line">                        &#125;</span><br><span class="line">                        sleep(<span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">while</span>(n &gt; <span class="number">0</span>); </span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"wait finish\n"</span>);</span><br><span class="line">                <span class="comment">//while(waitpid(q, NULL, WNOHANG))</span></span><br><span class="line">				<span class="comment">//wait(NULL);</span></span><br><span class="line">                <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">                sleep(i);</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"I'm %dth child, pid = %d, gpid = %d\n"</span>,i+<span class="number">1</span>, getpid(),getppid());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+        <h1 id="使用初始化列表"><a href="#使用初始化列表" class="headerlink" title="使用初始化列表"></a>使用初始化列表</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PhoneNumber</span>&#123;</span>……&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ABEntry</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	ABEntry(<span class="keyword">const</span> <span class="built_in">string</span>&amp; name,<span class="keyword">const</span> <span class="built_in">string</span>&amp; address,</span><br><span class="line">					<span class="keyword">const</span> <span class="built_in">list</span>&lt;PhoneNumber&gt;&amp;phones);</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="built_in">string</span> theName;</span><br><span class="line">	<span class="built_in">string</span> theAddress;</span><br><span class="line">	<span class="built_in">list</span>&lt;PhoneNumber&gt; thePhones;</span><br><span class="line">	<span class="keyword">int</span> numTimeConsulted;</span><br><span class="line">&#125;;</span><br><span class="line">ABEntry::ABEntry(<span class="keyword">const</span> <span class="built_in">string</span>&amp; name,<span class="keyword">const</span> <span class="built_in">string</span>&amp; address,</span><br><span class="line">					<span class="keyword">const</span> <span class="built_in">list</span>&lt;PhoneNumber&gt;&amp;phones)</span><br><span class="line">&#123;</span><br><span class="line">	theName = name;<span class="comment">//这些都是赋值而非初始化</span></span><br><span class="line">	theAddress = address;</span><br><span class="line">	thePhones = phones;</span><br><span class="line">	numTimesConsulted = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;					</span><br><span class="line">ABEntry::ABEntry(<span class="keyword">const</span> <span class="built_in">string</span>&amp; name,<span class="keyword">const</span> <span class="built_in">string</span>&amp; address,</span><br><span class="line">					<span class="keyword">const</span> <span class="built_in">list</span>&lt;PhoneNumber&gt;&amp;phones)</span><br><span class="line">:theName(name),<span class="comment">//现在这些都是初始化</span></span><br><span class="line">theAddress(address),</span><br><span class="line">thePhones(phones),</span><br><span class="line">numTimeConsulted(<span class="number">0</span>)</span><br><span class="line">&#123;&#125;	<span class="comment">//构造函数本体内不必有任何动作</span></span><br></pre></td></tr></table></figure>
+<p>下面这个构造函数与上面那个构造函数最终结果相同，但通常效率较高。基于赋值的版本，首先调用默认构造函数为成员变量设初值，然后立刻对它们赋值。默认构造的以切因此浪费了。使用初始化列表则避免了这一问题。本例中theName以name为初值进行copy构造其余成员变量同样，对大多数类型而言，比先调用默认构造函数再调用copy assignment操作符，单只调用一次copy构造函数是比较高效的。<br><strong>如果成员变量是const或引用则必须使用初始化而不能赋值。</strong></p>
+<h1 id="不同编译单元内定义non-local-static对象的初始化次序"><a href="#不同编译单元内定义non-local-static对象的初始化次序" class="headerlink" title="不同编译单元内定义non-local static对象的初始化次序"></a>不同编译单元内定义non-local static对象的初始化次序</h1><p>所谓编译单元是指产出单一目标文件的那些源码，基本上是单一源码文件加上其所含入的头文件。<br>现在我们关心的至少是两个源码文件<br>假设有一个FileSystem class，让互联网上的文件看起来好像在本机</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileSystem</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	……</span><br><span class="line">	<span class="function"><span class="keyword">size_t</span> <span class="title">numDisk</span><span class="params">()</span> <span class="keyword">const</span></span>;<span class="comment">//众多成员函数之一</span></span><br><span class="line">	……</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">extern</span> FileSystem tfs;<span class="comment">//预备给客户使用的对象</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Directory</span>//由程序库客户建立</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Directory(params);</span><br><span class="line">	……</span><br><span class="line">&#125;;</span><br><span class="line">Directory::Directory(params)</span><br><span class="line">&#123;</span><br><span class="line">	……</span><br><span class="line">	<span class="keyword">size_t</span> disks = tfs.numDisks();<span class="comment">//使用tfs对象</span></span><br><span class="line">	……</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>进一步假设，客户决定创建一个Directory对象用于放置临时文件</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Directory <span class="title">tempDir</span><span class="params">(params)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>现在初始化次序的重要性就显现出来了，除非tfs在tempDir之前被初始化，否则tempDir的构造函数会用到未初始化的tfs。但tfs和tempDir是不同的人在不同的时间于不同的源码文件建立起来的，我们无法确定tfs和tempDir谁先被初始化。<strong>当然可以用一个设计巧妙解决这个问题。</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileSystem</span>&#123;</span>……&#125;;<span class="comment">//同前</span></span><br><span class="line"><span class="function">FileSystem&amp; <span class="title">tfs</span><span class="params">()</span><span class="comment">//这个函数用来替换tfs对象</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">static</span> FileSystem fs;<span class="comment">//定义并初始化一个local static对象</span></span><br><span class="line">	<span class="keyword">return</span> fs;	<span class="comment">//返回一个对象的引用</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Directory</span>&#123;</span>……&#125;;<span class="comment">//同前</span></span><br><span class="line">Directory::Directory(params)</span><br><span class="line">&#123;</span><br><span class="line">	……</span><br><span class="line">	<span class="keyword">size_t</span> disks = tfs().numDisks();<span class="comment">//原版本的tfs改为tfs()</span></span><br><span class="line">	……</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">Directory&amp; <span class="title">tempdir</span><span class="params">()</span><span class="comment">//用来替换tempDir对象</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">static</span> Directory td;</span><br><span class="line">	<span class="keyword">return</span> td;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改之后客户完全像以前一样去使用它，唯一不同的是现在使用tfs()和tempDir()而不是tfs和tempDir，也就是说它们使用函数返回指向static对象的引用，而不再是static对象的本身。这样就可以保证使用的tfs是初始化以后的。</p>
+<p><strong>总结</strong></p>
+<p> <strong>1. 为内置对象进行手工初始化，因为c++不保证初始化它们。<br> 2. 构造函数最好使用成员初始化列表，而不要在构造函数本体内使用赋值操作。初始化列列出的成员变量，其排列次序应该和他们在class中的声明次序相同。<br> 3. 为免除“跨编译单元之初始化次序”问题，请以local static对象替换non-local static对象。</strong></p>
 
       
     </div>
@@ -498,12 +483,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/process/" rel="tag"># process</a>
-          
-        </div>
-      
 
       
       
@@ -513,8 +492,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/05/14/%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA%E4%BB%A5%E5%8F%8Aexec%E6%97%8F%E5%87%BD%E6%95%B0%E7%9A%84%E5%BA%94%E7%94%A8/" rel="next" title="进程的创建以及exec族函数的应用">
-                <i class="fa fa-chevron-left"></i> 进程的创建以及exec族函数的应用
+              <a href="/2020/10/18/%E5%B0%BD%E5%8F%AF%E8%83%BD%E4%BD%BF%E7%94%A8const/" rel="next" title="尽可能使用const">
+                <i class="fa fa-chevron-left"></i> 尽可能使用const
               </a>
             
           </div>
@@ -522,10 +501,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/05/15/%E7%AE%A1%E9%81%93/" rel="prev" title="管道">
-                管道 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -681,7 +656,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#孤儿进程"><span class="nav-number">1.</span> <span class="nav-text">孤儿进程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#僵尸进程"><span class="nav-number">2.</span> <span class="nav-text">僵尸进程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wait"><span class="nav-number">3.</span> <span class="nav-text">wait()</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实例"><span class="nav-number">3.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#waitpid"><span class="nav-number">4.</span> <span class="nav-text">waitpid()</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实例-1"><span class="nav-number">4.1.</span> <span class="nav-text">实例</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用初始化列表"><span class="nav-number">1.</span> <span class="nav-text">使用初始化列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#不同编译单元内定义non-local-static对象的初始化次序"><span class="nav-number">2.</span> <span class="nav-text">不同编译单元内定义non-local static对象的初始化次序</span></a></li></ol></div>
             
 
           </div>
@@ -894,9 +869,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2020/05/15/%E5%9B%9E%E6%94%B6%E5%AD%90%E8%BF%9B%E7%A8%8B/';
-          this.page.identifier = '2020/05/15/回收子进程/';
-          this.page.title = '回收子进程';
+          this.page.url = 'http://yoursite.com/2020/10/18/%E7%A1%AE%E5%AE%9A%E5%AF%B9%E8%B1%A1%E8%A2%AB%E4%BD%BF%E7%94%A8%E5%89%8D%E5%B7%B2%E5%85%88%E8%A2%AB%E5%88%9D%E5%A7%8B%E5%8C%96/';
+          this.page.identifier = '2020/10/18/确定对象被使用前已先被初始化/';
+          this.page.title = '确定对象被使用前已先被初始化';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://.disqus.com/embed.js';
