@@ -680,4 +680,21 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct
         <category>C++</category>
       </categories>
   </entry>
+  <entry>
+    <title>若不想使用编译器自动生成的函数，就该明确拒绝</title>
+    <url>/2020/10/20/%E8%8B%A5%E4%B8%8D%E6%83%B3%E4%BD%BF%E7%94%A8%E7%BC%96%E8%AF%91%E5%99%A8%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E7%9A%84%E5%87%BD%E6%95%B0%EF%BC%8C%E5%B0%B1%E8%AF%A5%E6%98%8E%E7%A1%AE%E6%8B%92%E7%BB%9D/</url>
+    <content><![CDATA[<p>如果你想这个类对象独一无二，那么你肯定不想下面的代码成功</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeForSale</span>&#123;</span>……&#125;;</span><br><span class="line">HomeForSale h1;</span><br><span class="line">HomeForSale h2;</span><br><span class="line"><span class="function">HomeForSale <span class="title">h3</span><span class="params">(h1)</span></span>;<span class="comment">//希望它失败</span></span><br><span class="line">h1 = h2;<span class="comment">//同样希望它失败</span></span><br></pre></td></tr></table></figure>
+<p>你可以做以下的设计</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeForSale</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	……</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	……</span><br><span class="line">	HomeForSale(<span class="keyword">const</span> HomeForSale&amp; );<span class="comment">//只有声明</span></span><br><span class="line">	HomeForSale&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> HomeForSale&amp; );</span><br><span class="line">&#125;：</span><br></pre></td></tr></table></figure>
+<p>令这些函数为private，使你得以阻止调用它，如果member函数和friend函数调用private函数，会获得一个连接错误。</p>
+<p>还有一种便是设计一个base class</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Uncopyable</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	Uncopyable();<span class="comment">//允许derived class对象构造和析构</span></span><br><span class="line">	~Uncopyable();</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Uncopyable(<span class="keyword">const</span> Uncopyable&amp;);</span><br><span class="line">	Uncopyable&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Uncopyable&amp; );<span class="comment">//但阻止copy</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeForSale</span>:</span><span class="keyword">private</span> Uncopyable&#123;……&#125;;</span><br><span class="line"><span class="comment">//class不再声明copy构造函数和copy assignment操作符</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>总结：<br>    为驳回编译器自动提供的机制，可将相应的成员函数声明为private并且不与实现。使用像Uncopyable这样的base class也是一种做法</strong></p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+  </entry>
 </search>
