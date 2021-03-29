@@ -746,4 +746,23 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct
         <category>algorithm</category>
       </categories>
   </entry>
+  <entry>
+    <title>递归翻转链表的一部分</title>
+    <url>/2021/03/29/%E9%80%92%E5%BD%92%E7%BF%BB%E8%BD%AC%E9%93%BE%E8%A1%A8%E7%9A%84%E4%B8%80%E9%83%A8%E5%88%86/</url>
+    <content><![CDATA[<p>首先我们直接想翻转链表中间的一部分的时候，我们可以先想到如何翻转一整条链表。</p>
+<h1 id="翻转一整条链表"><a href="#翻转一整条链表" class="headerlink" title="翻转一整条链表"></a>翻转一整条链表</h1><p>1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;nullptr</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">ListNode* <span class="title">Reverse</span><span class="params">(ListNode *head)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(head-&gt;next==<span class="literal">nullptr</span>)</span><br><span class="line">		<span class="keyword">return</span> head;</span><br><span class="line">	ListNode *last = Reverse(head-&gt;next);</span><br><span class="line">	head-&gt;next-&gt;next = head;</span><br><span class="line">	head-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">	<span class="keyword">return</span> last;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，递归的边界条件为if(head-&gt;next==nullptr)，当递归到链表的最后一个结点时，也就意味着翻转已经完成。<br>简单的描述一下思想：<br>① 1-&gt;Reverse(2-&gt;3-&gt;4-&gt;5)-&gt;nullptr（注意不要一层一层跳进递归，考虑整体会带来什么结果）<br>② nullptr&lt;-1&lt;-Reverse(2-&gt;3-&gt;4-&gt;5)<br>现在我们完成了一整条链表的翻转，接下来我们进行翻转链表的前n个结点。</p>
+<h1 id="翻转链表的前n个结点"><a href="#翻转链表的前n个结点" class="headerlink" title="翻转链表的前n个结点"></a>翻转链表的前n个结点</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">ListNode *Nptr;</span><br><span class="line"><span class="function">ListNode* <span class="title">ReverseN</span><span class="params">(ListNode *head, <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(n == <span class="number">1</span>)&#123;</span><br><span class="line">		Nptr = head-&gt;next;</span><br><span class="line">		<span class="keyword">return</span> head;</span><br><span class="line">	&#125;</span><br><span class="line">	ListNode *last = Reverse(head-&gt;next, n<span class="number">-1</span>);</span><br><span class="line">	head-&gt;next-&gt;next = head;</span><br><span class="line">	head-&gt;next = Nptr;</span><br><span class="line">	<span class="keyword">return</span> last;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这与翻转整条链表有一些区别</p>
+<p>①  首先函数的参数ListNode* Reverse(ListNode *head, int n)新增了int n，表示前n个结点。<br>② if(n == 1)这个递归出口表示，当递归到了n个节点以后，将Nptr指向n+1这个节点，以便当前n个结点翻转完以后，将第一个结点的next指向n+1这个结点。</p>
+<h1 id="翻转链表中一部分"><a href="#翻转链表中一部分" class="headerlink" title="翻转链表中一部分"></a>翻转链表中一部分</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">ListNode* <span class="title">ReverseBetween</span><span class="params">(ListNode *head, <span class="keyword">int</span> m, <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(m == <span class="number">1</span>)&#123;</span><br><span class="line">		<span class="keyword">return</span> ReverseN(head, n);</span><br><span class="line">	&#125;</span><br><span class="line">	head-&gt;next = ReverseBetween(head-&gt;next, m<span class="number">-1</span>, n<span class="number">-1</span>);</span><br><span class="line">	<span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在我们已经能够翻转前n个结点，而翻转链表中一部分的话，可以通过递归思想调用ReverseN()。</p>
+<p>如果我们想要翻转2-5这个部分，那么m=2,n=5，然而我们可以把第二个结点看作头结点，然后可以看作翻转1-4(m=1,n=4)这个部分，也就是翻转前4个结点，这样我们就可以调用ReverseN(ListNode *head, int n)来翻转。在翻转以后再使第一个结点的next指向ReverseN()的返回值。这样就完成了翻转链表中的一部分结点。</p>
+]]></content>
+      <categories>
+        <category>algorithm</category>
+      </categories>
+  </entry>
 </search>
