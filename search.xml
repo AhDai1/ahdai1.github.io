@@ -765,4 +765,25 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct
         <category>algorithm</category>
       </categories>
   </entry>
+  <entry>
+    <title>k个一组翻转链表</title>
+    <url>/2021/03/30/k%E4%B8%AA%E4%B8%80%E7%BB%84%E7%BF%BB%E8%BD%AC%E9%93%BE%E8%A1%A8/</url>
+    <content><![CDATA[<p>假设我们要2个一组翻转链表，我们可以看到本问题有递归思想，也就是reverse(head, 2)，而第二个结点后的内容就是子问题，只要解决了原问题，子问题也就迎刃而解了。<br>首先我们先利用迭代来翻转整条链表</p>
+<h1 id="翻转一整条链表"><a href="#翻转一整条链表" class="headerlink" title="翻转一整条链表"></a>翻转一整条链表</h1><p>1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;nullptr<br>可以通过三个指针来控制链表进行翻转<br>1&lt;-2-&gt;3-&gt;4-&gt;5-&gt;nullptr<br>1&lt;-2&lt;-3-&gt;4-&gt;5-&gt;nullptr<br>以此往下，改变每一个结点的指向。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">ListNode <span class="title">reverse</span><span class="params">(ListNode *head)</span> </span>&#123;</span><br><span class="line">    ListNode *pre, *cur, *nxt;</span><br><span class="line">    pre = <span class="literal">nullptr</span>; cur = head; nxt = head;</span><br><span class="line">    <span class="keyword">while</span> (cur != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        nxt = cur.next;        </span><br><span class="line">        cur.next = pre；</span><br><span class="line">        pre = cur;</span><br><span class="line">        cur = nxt;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> pre;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="翻转a-b结点"><a href="#翻转a-b结点" class="headerlink" title="翻转a~b结点"></a>翻转a~b结点</h1><p>接下来如果我们想翻转前a~b个结点，我们只需要把第b+1个结点看作上方代码最后一个结点指向的空值。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">ListNode* <span class="title">reverseab</span><span class="params">(ListNode *a,ListNode *b)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        ListNode *pre,*cur,*nxt;</span><br><span class="line">        pre=<span class="literal">nullptr</span>;</span><br><span class="line">        cur=a;</span><br><span class="line">        nxt=a;</span><br><span class="line">        <span class="keyword">while</span>(cur != b)&#123;</span><br><span class="line">            nxt=cur-&gt;next;</span><br><span class="line">            cur-&gt;next=pre;</span><br><span class="line">            pre=cur;</span><br><span class="line">            cur=nxt;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> pre;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>只需要把nullptr编程b结点即可。</p>
+<h1 id="k个一组翻转链表"><a href="#k个一组翻转链表" class="headerlink" title="k个一组翻转链表"></a>k个一组翻转链表</h1><p>我们只需要利用上述代码，在翻转完前k个结点以后，递归调用本身，继续翻转k+1~2k这个部分。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">ListNode* <span class="title">reverseKGroup</span><span class="params">(ListNode* head, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        ListNode *a, *b;</span><br><span class="line">        a=b=head;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;k;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(b==<span class="literal">nullptr</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> head;</span><br><span class="line">            &#125;</span><br><span class="line">            b=b-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode *newHead = reverseab(a,b);<span class="comment">//翻转后的新头结点</span></span><br><span class="line">        a-&gt;next=reverseKGroup(b,k);<span class="comment">//递归调用本身</span></span><br><span class="line">        <span class="keyword">return</span> newHead;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+]]></content>
+      <categories>
+        <category>algorithm</category>
+      </categories>
+  </entry>
 </search>
