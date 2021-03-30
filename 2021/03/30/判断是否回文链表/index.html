@@ -81,11 +81,15 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="AhDai">
-<meta property="og:url" content="http://yoursite.com/archives/2020/05/page/2/index.html">
+<meta name="description" content="双指针法解答思路：① 首先先找到链表的中间位置。② 将中间位置以后的结点进行翻转。③ 将两个链表从头开始相比，如果每一个结点都相等，则是回文链表。 找到中间结点12345678910111213ListNode* endhalflist(ListNode* head)&amp;#123;        ListNode *slow,*fast;        slow&#x3D;head;        fast&#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="判断是否回文链表">
+<meta property="og:url" content="http://yoursite.com/2021/03/30/%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/index.html">
 <meta property="og:site_name" content="AhDai">
+<meta property="og:description" content="双指针法解答思路：① 首先先找到链表的中间位置。② 将中间位置以后的结点进行翻转。③ 将两个链表从头开始相比，如果每一个结点都相等，则是回文链表。 找到中间结点12345678910111213ListNode* endhalflist(ListNode* head)&amp;#123;        ListNode *slow,*fast;        slow&#x3D;head;        fast&#x3D;">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-30T11:42:36.110Z">
+<meta property="article:modified_time" content="2021-03-30T11:44:10.295Z">
 <meta property="article:author" content="AhDai">
 <meta name="twitter:card" content="summary">
 
@@ -117,7 +121,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/2020/05/page/2/"/>
+  <link rel="canonical" href="http://yoursite.com/2021/03/30/判断是否回文链表/"/>
 
 
 
@@ -127,7 +131,7 @@
 
 
 
-  <title>Archive | AhDai</title>
+  <title>判断是否回文链表 | AhDai</title>
   
 
 
@@ -146,7 +150,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -304,188 +308,227 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
-        
-        
-         
-        
-        OK! 33 posts in total. Keep on posting.
-      </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/30/%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/">
 
-      
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AhDai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AhDai">
+    </span>
+
+    
+      <header class="post-header">
 
         
         
+          <h1 class="post-title" itemprop="name headline">判断是否回文链表</h1>
         
 
-        
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-03-30T19:42:36+08:00">
+                2021-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2020">2020</h1>
-          </div>
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/05/15/%E7%AE%A1%E9%81%93/" itemprop="url">
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
               
-                <span itemprop="name">管道</span>
+                <span class="post-meta-item-text">In</span>
               
-            </a>
-        
-      </h2>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithm</span>
+                  </a>
+                </span>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-05-15T19:50:18+08:00"
-              content="2020-05-15" >
-          05-15
-        </time>
-      </div>
+                
+                
+              
+            </span>
+          
 
-    </header>
-  </article>
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/03/30/%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2021/03/30/判断是否回文链表/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+          <span class="post-meta-divider">|</span>
+          <span class="post-meta-item-icon"
+          >
+          <i class="fa fa-"></i>
+           post.views: 
+    	  <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+	  </span>
+
+	  
 
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  496 字 
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  2 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/05/15/%E5%9B%9E%E6%94%B6%E5%AD%90%E8%BF%9B%E7%A8%8B/" itemprop="url">
-              
-                <span itemprop="name">回收子进程</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-05-15T10:27:56+08:00"
-              content="2020-05-15" >
-          05-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
+      
+        <h1 id="双指针法"><a href="#双指针法" class="headerlink" title="双指针法"></a>双指针法</h1><p>解答思路：<br>① 首先先找到链表的中间位置。<br>② 将中间位置以后的结点进行翻转。<br>③ 将两个链表从头开始相比，如果每一个结点都相等，则是回文链表。</p>
+<h2 id="找到中间结点"><a href="#找到中间结点" class="headerlink" title="找到中间结点"></a>找到中间结点</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ListNode* <span class="title">endhalflist</span><span class="params">(ListNode* head)</span></span>&#123;</span><br><span class="line">        ListNode *slow,*fast;</span><br><span class="line">        slow=head;</span><br><span class="line">        fast=head;</span><br><span class="line">        <span class="keyword">while</span>(fast != <span class="literal">nullptr</span> &amp;&amp; fast-&gt;next != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            fast=fast-&gt;next-&gt;next;</span><br><span class="line">            slow=slow-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(fast != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            slow=slow-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slow;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/05/14/%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA%E4%BB%A5%E5%8F%8Aexec%E6%97%8F%E5%87%BD%E6%95%B0%E7%9A%84%E5%BA%94%E7%94%A8/" itemprop="url">
-              
-                <span itemprop="name">进程的创建以及exec族函数的应用</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-05-14T20:37:00+08:00"
-              content="2020-05-14" >
-          05-14
-        </time>
-      </div>
-
-    </header>
-  </article>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(fast != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            slow=slow-&gt;next;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>这一段代码代表的是，如果链表结点是奇数，则slow指向的是中间结点，而我们要把slow指向中间结点的下一个。<br>例如：<br>1-&gt;2-&gt;3-&gt;2-&gt;1-&gt;nullptr<br>如果没有这一句判断，那么slow将会指向值为3的这个结点，在后续进行链表比对的时候会出现错误。</p>
+<h2 id="翻转链表"><a href="#翻转链表" class="headerlink" title="翻转链表"></a>翻转链表</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ListNode* <span class="title">reverselist</span><span class="params">(ListNode *head)</span></span>&#123;</span><br><span class="line">        ListNode *pre,*cur,*nxt;</span><br><span class="line">        pre=<span class="literal">nullptr</span>;cur=head;nxt=head;</span><br><span class="line">        <span class="keyword">while</span>(cur != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            nxt=cur-&gt;next;</span><br><span class="line">            cur-&gt;next=pre;</span><br><span class="line">            pre=cur;</span><br><span class="line">            cur=nxt;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> pre;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>此方法在上两篇文章已经提及，可以参考。</p>
+<h2 id="综合"><a href="#综合" class="headerlink" title="综合"></a>综合</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isPalindrome</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        ListNode *mid = endhalflist(head);</span><br><span class="line">        mid = reverselist(mid);</span><br><span class="line">        <span class="keyword">while</span>(mid != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(head-&gt;val != mid-&gt;val)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            head=head-&gt;next;</span><br><span class="line">            mid=mid-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">ListNode* <span class="title">endhalflist</span><span class="params">(ListNode* head)</span></span>&#123;</span><br><span class="line">        ListNode *slow,*fast;</span><br><span class="line">        slow=head;</span><br><span class="line">        fast=head;</span><br><span class="line">        <span class="keyword">while</span>(fast != <span class="literal">nullptr</span> &amp;&amp; fast-&gt;next != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            fast=fast-&gt;next-&gt;next;</span><br><span class="line">            slow=slow-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(fast != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            slow=slow-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slow;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">ListNode* <span class="title">reverselist</span><span class="params">(ListNode *head)</span></span>&#123;</span><br><span class="line">        ListNode *pre,*cur,*nxt;</span><br><span class="line">        pre=<span class="literal">nullptr</span>;cur=head;nxt=head;</span><br><span class="line">        <span class="keyword">while</span>(cur != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            nxt=cur-&gt;next;</span><br><span class="line">            cur-&gt;next=pre;</span><br><span class="line">            pre=cur;</span><br><span class="line">            cur=nxt;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> pre;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
 
+<h1 id="递归判断链表是否回文"><a href="#递归判断链表是否回文" class="headerlink" title="递归判断链表是否回文"></a>递归判断链表是否回文</h1><p>解答思路：<br>将每一个结点压入栈中，然后在弹出的时候进行比对。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">ListNode *left;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isPalindrome</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        left=head;</span><br><span class="line">        <span class="keyword">return</span> traverse(head);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">traverse</span><span class="params">(ListNode *right)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(right == <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">bool</span> res = traverse(right-&gt;next);</span><br><span class="line">        <span class="keyword">if</span>(left-&gt;val != right-&gt;val)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        left=left-&gt;next;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>实际上就是一种利用了函数栈的方法。</p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/05/14/C++%E5%A4%9A%E6%80%81%E4%BE%8B%E5%AD%90%E4%B8%8EC%E8%AF%AD%E8%A8%80%E5%88%A9%E7%94%A8%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E5%AE%9E%E7%8E%B0%E5%A4%9A%E6%80%81/" itemprop="url">
-              
-                <span itemprop="name">C++多态例子与C语言利用函数指针实现多态</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-05-14T19:10:00+08:00"
-              content="2020-05-14" >
-          05-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/03/30/k%E4%B8%AA%E4%B8%80%E7%BB%84%E7%BF%BB%E8%BD%AC%E9%93%BE%E8%A1%A8/" rel="next" title="k个一组翻转链表">
+                <i class="fa fa-chevron-left"></i> k个一组翻转链表
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/2020/05/">&lt;</a><a class="page-number" href="/archives/2020/05/">1</a><span class="page-number current">2</span>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -493,6 +536,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -513,8 +570,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -588,6 +654,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#双指针法"><span class="nav-number">1.</span> <span class="nav-text">双指针法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#找到中间结点"><span class="nav-number">1.1.</span> <span class="nav-text">找到中间结点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#翻转链表"><span class="nav-number">1.2.</span> <span class="nav-text">翻转链表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#综合"><span class="nav-number">1.3.</span> <span class="nav-text">综合</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#递归判断链表是否回文"><span class="nav-number">2.</span> <span class="nav-text">递归判断链表是否回文</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -771,6 +853,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -788,6 +874,18 @@
       <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2021/03/30/%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/';
+          this.page.identifier = '2021/03/30/判断是否回文链表/';
+          this.page.title = '判断是否回文链表';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
