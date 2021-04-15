@@ -81,15 +81,15 @@
 
 
 
-<meta name="description" content="const替换#define这个规则也许可以改为“宁可以编译器替换预处理器”，#define不被视作语言的一部分，这正是问题的所在。 1#define ASPECT_RATIO 1.653 记号名称ASPECT_RATIO也许从未被编译器看见，它在编译器开始处理之前就被预处理器移走了，于是这个记号名称并没有进入记号表（symbol table）内。当使用这个常量但是却或者一个编译错误信息时，这个错">
+<meta name="description" content="题目给你一个字符串 s ，请你去除字符串中重复的字母，使得每个字母只出现一次。需保证 返回结果的字典序最小（要求不能打乱其他字符的相对位置）。 示例1输入：s &#x3D; “bcabc”输出：”abc” 示例2输入：s &#x3D; “cbacdcbc”输出：”acdb” 解答思路①首先由题可知，要去除重复字母②去重字符串的相对位置不能改变③去重字符串的字典序保证最小，例如”bcabc”可以去重成”bac”，也可以">
 <meta property="og:type" content="article">
-<meta property="og:title" content="尽量以const、enum、inline替换define">
-<meta property="og:url" content="http://yoursite.com/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const%E3%80%81enum%E3%80%81inline%E6%9B%BF%E6%8D%A2define/index.html">
+<meta property="og:title" content="去除重复字母">
+<meta property="og:url" content="http://yoursite.com/2021/04/15/%E5%8E%BB%E9%99%A4%E9%87%8D%E5%A4%8D%E5%AD%97%E6%AF%8D/index.html">
 <meta property="og:site_name" content="AhDai">
-<meta property="og:description" content="const替换#define这个规则也许可以改为“宁可以编译器替换预处理器”，#define不被视作语言的一部分，这正是问题的所在。 1#define ASPECT_RATIO 1.653 记号名称ASPECT_RATIO也许从未被编译器看见，它在编译器开始处理之前就被预处理器移走了，于是这个记号名称并没有进入记号表（symbol table）内。当使用这个常量但是却或者一个编译错误信息时，这个错">
+<meta property="og:description" content="题目给你一个字符串 s ，请你去除字符串中重复的字母，使得每个字母只出现一次。需保证 返回结果的字典序最小（要求不能打乱其他字符的相对位置）。 示例1输入：s &#x3D; “bcabc”输出：”abc” 示例2输入：s &#x3D; “cbacdcbc”输出：”acdb” 解答思路①首先由题可知，要去除重复字母②去重字符串的相对位置不能改变③去重字符串的字典序保证最小，例如”bcabc”可以去重成”bac”，也可以">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-10-18T08:59:19.681Z">
-<meta property="article:modified_time" content="2020-10-18T11:41:52.263Z">
+<meta property="article:published_time" content="2021-04-15T02:10:07.967Z">
+<meta property="article:modified_time" content="2021-04-15T02:11:00.075Z">
 <meta property="article:author" content="AhDai">
 <meta name="twitter:card" content="summary">
 
@@ -121,7 +121,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/10/18/尽量以const、enum、inline替换define/"/>
+  <link rel="canonical" href="http://yoursite.com/2021/04/15/去除重复字母/"/>
 
 
 
@@ -131,7 +131,7 @@
 
 
 
-  <title>尽量以const、enum、inline替换define | AhDai</title>
+  <title>去除重复字母 | AhDai</title>
   
 
 
@@ -322,7 +322,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const%E3%80%81enum%E3%80%81inline%E6%9B%BF%E6%8D%A2define/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/15/%E5%8E%BB%E9%99%A4%E9%87%8D%E5%A4%8D%E5%AD%97%E6%AF%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="AhDai">
@@ -339,7 +339,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">尽量以const、enum、inline替换define</h1>
+          <h1 class="post-title" itemprop="name headline">去除重复字母</h1>
         
 
         <div class="post-meta">
@@ -351,8 +351,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-18T16:59:19+08:00">
-                2020-10-18
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-04-15T10:10:07+08:00">
+                2021-04-15
               </time>
             
 
@@ -374,8 +374,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index">
-                    <span itemprop="name">C++</span>
+                  <a href="/categories/algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithm</span>
                   </a>
                 </span>
 
@@ -392,9 +392,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const%E3%80%81enum%E3%80%81inline%E6%9B%BF%E6%8D%A2define/#comments" itemprop="discussionUrl">
+                <a href="/2021/04/15/%E5%8E%BB%E9%99%A4%E9%87%8D%E5%A4%8D%E5%AD%97%E6%AF%8D/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2020/10/18/尽量以const、enum、inline替换define/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2021/04/15/去除重复字母/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -426,7 +426,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  592 字 
+                  542 字 
                 </span>
               
 
@@ -463,21 +463,16 @@
       
 
       
-        <h1 id="const替换-define"><a href="#const替换-define" class="headerlink" title="const替换#define"></a>const替换#define</h1><p>这个规则也许可以改为“宁可以编译器替换预处理器”，#define不被视作语言的一部分，这正是问题的所在。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ASPECT_RATIO 1.653</span></span><br></pre></td></tr></table></figure>
-<p>记号名称ASPECT_RATIO也许从未被编译器看见，它在编译器开始处理之前就被预处理器移走了，于是这个记号名称并没有进入记号表（symbol table）内。<br>当使用这个常量但是却或者一个编译错误信息时，这个错误信息也许会提到1.653而绝不会提到ASPECT_RATIO。如果这个记号被定义在一个非本人写的头文件内，肯定对1.653毫无概念。而这解决方法便是用const替换#define</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> AspectRatio = <span class="number">1.653</span>;</span><br></pre></td></tr></table></figure>
-<p>作为一个语言常量肯定会被编译器所看到。</p>
-<p>值得注意的是class专属变量。为了将常量的作用域限制于class内，必须让它称为class的一个成员，而还需要确保此常量最多只有一份实体，所以必须用static修饰。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GamePlayer</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="comment">//static const int Numturns;//常量声明,位于头文件内</span></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> Numturns = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">int</span> scores[Numturns];</span><br><span class="line">    …</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//const int GamePlayer::Numturns = 5;//常量定义，位于实现文件内</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> GamePlayer::Numturns;</span><br><span class="line"><span class="comment">//如果程序不需要取Numturns的地址，则可以不用定义</span></span><br></pre></td></tr></table></figure>
-<p>我们无法用#define创建一个class专属常量，因为#define并不重视作用域。一旦宏被定义，就在其后的编译过程中有效。这就意味着#define不仅不能用来定义class专属变量，也不能提供任何的封装性。</p>
-<h1 id="enum替换-define"><a href="#enum替换-define" class="headerlink" title="enum替换#define"></a>enum替换#define</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Gameplayer</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">enum</span> &#123; Numturns = <span class="number">5</span>&#125;;<span class="comment">//令Numturns成为5的一个记号名称</span></span><br><span class="line">	<span class="keyword">int</span> scores[Numturns];</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>enum的行为与#define比较相似，例如取一个#define的地址是非法的，同样取一个enum的地址也是非法的。</p>
-<h1 id="inline替换-define"><a href="#inline替换-define" class="headerlink" title="inline替换#define"></a>inline替换#define</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CALL_WITH_MAX(a,b) f((a) &gt; (b) ? (a) : (b))</span></span><br></pre></td></tr></table></figure>
-<p>这样的宏函数有非常多的缺点，必须为所有的实参加上小括号。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">callWithMax</span><span class="params">(<span class="keyword">const</span> T&amp; a,<span class="keyword">const</span> T&amp; b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	f(a &gt; b ? a : b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里不需要在函数体内中为参数加上括号。</p>
-<p><strong>总结：</strong><br> <strong>1. 对于单纯常量，最好以const对象或enums替换#define。<br> 2. 对于形似函数的宏，最好以inline函数替换#define</strong></p>
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你一个字符串 s ，请你去除字符串中重复的字母，使得每个字母只出现一次。需保证 返回结果的字典序最小（要求不能打乱其他字符的相对位置）。</p>
+<h1 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h1><p>输入：s = “bcabc”<br>输出：”abc”</p>
+<h1 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h1><p>输入：s = “cbacdcbc”<br>输出：”acdb”</p>
+<h1 id="解答思路"><a href="#解答思路" class="headerlink" title="解答思路"></a>解答思路</h1><p>①首先由题可知，要去除重复字母<br>②去重字符串的相对位置不能改变<br>③去重字符串的字典序保证最小，例如”bcabc”可以去重成”bac”，也可以去重成“abc”而为了保证字典序最小，则需要去重成”abc”<br>④我们可以想到利用栈进行操作，将每一个字母依次入栈，并进行判断，栈内是否存在相同字母，如相同则跳到下一个字母。以及字典序是否小于栈顶元素，将字典序大于目前将要入栈的元素的字母弹出栈，并将当前字母入栈。<br>⑤目前只能保证去重以及位置不变，如果我们按现在的思路，”bcac”经过操作会变成”ac”，而正确答案应该是”bac”，这是因为当我们将a入栈时，判断时将”bc“全部弹出，而这并不是我们想要的<br>⑥解决这个问题其实也很简单，只需要添加一个计数器，首先遍历字符串统计每个字母出现的次数，如果栈内的元素大于将要压栈的元素的字典序，但是字符串只有这一个元素，就不需要进行弹出</p>
+<h1 id="code"><a href="#code" class="headerlink" title="code"></a>code</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">removeDuplicateLetters</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">char</span>&gt; st;</span><br><span class="line">        <span class="keyword">int</span> count[<span class="number">256</span>]=&#123;<span class="number">0</span>&#125;;<span class="comment">//计数器</span></span><br><span class="line">        <span class="keyword">bool</span> instack[<span class="number">256</span>]=&#123;<span class="literal">false</span>&#125;;<span class="comment">//判断是否在栈中</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">char</span> c:s)&#123;<span class="comment">//统计每个元素出现的次数</span></span><br><span class="line">            count[c]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">char</span> c:s)&#123;</span><br><span class="line">            count[c]--;<span class="comment">//每遍历到这个元素，将次数减一</span></span><br><span class="line">            <span class="keyword">if</span>(instack[c])</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">while</span>(!st.empty()&amp;&amp;st.top()&gt;c)&#123;<span class="comment">//判断字典序</span></span><br><span class="line">                <span class="keyword">if</span>(count[st.top()]==<span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                instack[st.top()]=<span class="literal">false</span>;</span><br><span class="line">                st.pop();</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            st.push(c);</span><br><span class="line">            instack[c]=<span class="literal">true</span>;<span class="comment">//入栈后将元素标记为栈中</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">string</span> ans;</span><br><span class="line">        <span class="keyword">while</span>(!st.empty())&#123;</span><br><span class="line">            ans=st.top()+ans;</span><br><span class="line">            st.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
 
       
     </div>
@@ -502,8 +497,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/09/06/%E5%A4%9A%E6%92%AD%EF%BC%88%E7%BB%84%E6%92%AD%EF%BC%89/" rel="next" title="多播（组播）">
-                <i class="fa fa-chevron-left"></i> 多播（组播）
+              <a href="/2021/03/30/%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/" rel="next" title="判断是否回文链表">
+                <i class="fa fa-chevron-left"></i> 判断是否回文链表
               </a>
             
           </div>
@@ -511,10 +506,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/10/18/%E5%B0%BD%E5%8F%AF%E8%83%BD%E4%BD%BF%E7%94%A8const/" rel="prev" title="尽可能使用const">
-                尽可能使用const <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -670,7 +661,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#const替换-define"><span class="nav-number">1.</span> <span class="nav-text">const替换#define</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#enum替换-define"><span class="nav-number">2.</span> <span class="nav-text">enum替换#define</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#inline替换-define"><span class="nav-number">3.</span> <span class="nav-text">inline替换#define</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例1"><span class="nav-number">2.</span> <span class="nav-text">示例1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例2"><span class="nav-number">3.</span> <span class="nav-text">示例2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解答思路"><span class="nav-number">4.</span> <span class="nav-text">解答思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#code"><span class="nav-number">5.</span> <span class="nav-text">code</span></a></li></ol></div>
             
 
           </div>
@@ -883,9 +874,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2020/10/18/%E5%B0%BD%E9%87%8F%E4%BB%A5const%E3%80%81enum%E3%80%81inline%E6%9B%BF%E6%8D%A2define/';
-          this.page.identifier = '2020/10/18/尽量以const、enum、inline替换define/';
-          this.page.title = '尽量以const、enum、inline替换define';
+          this.page.url = 'http://yoursite.com/2021/04/15/%E5%8E%BB%E9%99%A4%E9%87%8D%E5%A4%8D%E5%AD%97%E6%AF%8D/';
+          this.page.identifier = '2021/04/15/去除重复字母/';
+          this.page.title = '去除重复字母';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://.disqus.com/embed.js';

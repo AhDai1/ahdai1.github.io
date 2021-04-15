@@ -807,4 +807,22 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct
         <category>algorithm</category>
       </categories>
   </entry>
+  <entry>
+    <title>去除重复字母</title>
+    <url>/2021/04/15/%E5%8E%BB%E9%99%A4%E9%87%8D%E5%A4%8D%E5%AD%97%E6%AF%8D/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你一个字符串 s ，请你去除字符串中重复的字母，使得每个字母只出现一次。需保证 返回结果的字典序最小（要求不能打乱其他字符的相对位置）。</p>
+<h1 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h1><p>输入：s = “bcabc”<br>输出：”abc”</p>
+<h1 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h1><p>输入：s = “cbacdcbc”<br>输出：”acdb”</p>
+<h1 id="解答思路"><a href="#解答思路" class="headerlink" title="解答思路"></a>解答思路</h1><p>①首先由题可知，要去除重复字母<br>②去重字符串的相对位置不能改变<br>③去重字符串的字典序保证最小，例如”bcabc”可以去重成”bac”，也可以去重成“abc”而为了保证字典序最小，则需要去重成”abc”<br>④我们可以想到利用栈进行操作，将每一个字母依次入栈，并进行判断，栈内是否存在相同字母，如相同则跳到下一个字母。以及字典序是否小于栈顶元素，将字典序大于目前将要入栈的元素的字母弹出栈，并将当前字母入栈。<br>⑤目前只能保证去重以及位置不变，如果我们按现在的思路，”bcac”经过操作会变成”ac”，而正确答案应该是”bac”，这是因为当我们将a入栈时，判断时将”bc“全部弹出，而这并不是我们想要的<br>⑥解决这个问题其实也很简单，只需要添加一个计数器，首先遍历字符串统计每个字母出现的次数，如果栈内的元素大于将要压栈的元素的字典序，但是字符串只有这一个元素，就不需要进行弹出</p>
+<h1 id="code"><a href="#code" class="headerlink" title="code"></a>code</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">removeDuplicateLetters</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">char</span>&gt; st;</span><br><span class="line">        <span class="keyword">int</span> count[<span class="number">256</span>]=&#123;<span class="number">0</span>&#125;;<span class="comment">//计数器</span></span><br><span class="line">        <span class="keyword">bool</span> instack[<span class="number">256</span>]=&#123;<span class="literal">false</span>&#125;;<span class="comment">//判断是否在栈中</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">char</span> c:s)&#123;<span class="comment">//统计每个元素出现的次数</span></span><br><span class="line">            count[c]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">char</span> c:s)&#123;</span><br><span class="line">            count[c]--;<span class="comment">//每遍历到这个元素，将次数减一</span></span><br><span class="line">            <span class="keyword">if</span>(instack[c])</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">while</span>(!st.empty()&amp;&amp;st.top()&gt;c)&#123;<span class="comment">//判断字典序</span></span><br><span class="line">                <span class="keyword">if</span>(count[st.top()]==<span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                instack[st.top()]=<span class="literal">false</span>;</span><br><span class="line">                st.pop();</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            st.push(c);</span><br><span class="line">            instack[c]=<span class="literal">true</span>;<span class="comment">//入栈后将元素标记为栈中</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">string</span> ans;</span><br><span class="line">        <span class="keyword">while</span>(!st.empty())&#123;</span><br><span class="line">            ans=st.top()+ans;</span><br><span class="line">            st.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>algorithm</category>
+      </categories>
+  </entry>
 </search>
