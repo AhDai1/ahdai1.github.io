@@ -910,4 +910,18 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct
         <category>algorithm</category>
       </categories>
   </entry>
+  <entry>
+    <title>动态规划解0-1背包问题</title>
+    <url>/2021/05/08/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E8%A7%A30-1%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给你一个可装载重量为W的背包和N个物品，每个物品有重量和价值两个属性。其中第i个物品的重量为wt[i]，价值为val[i]，现在让你用这个背包装物品，最多能装的价值是多少？</p>
+<p>举个简单的例子，输入如下：</p>
+<p>N = 3, W = 4<br>wt = [2, 1, 3]<br>val = [4, 2, 3]<br>算法返回 6，选择前两件物品装进背包，总重量 3 小于W，可以获得最大价值 6。</p>
+<h1 id="解答思路"><a href="#解答思路" class="headerlink" title="解答思路"></a>解答思路</h1><p>①首先我们想到背包问题的状态有两个，一个是背包的容量，一个是可选择的物品。<br>②选择就是装进背包与不装进背包。<br>③接下来就是要明白dp[i][w]的含义，比如dp[3][5]=6就是代表对于给定的一系列物品中，若只对前三个物品进行选择，当背包容量为5的时候最多可以装下价值为6。<br>④根据以上，可以知道最终结果就是dp[N][W]，base case就是dp[0][…]=0,dp[…][0]=0。因为没有物品活背包没有空间的时候，能装的最大价值为0。<br>⑤当选择不装进背包时dp[i][w]=dp[i-1][w]，不装就等于继承之前的结果。<br>⑥当选择装入背包时dp[i][w]=max(d[i-1][w], dp[i-1][w-wt[i-1]] + val[i-1])。寻求剩余重量w-wt[i-1]限制能装下的最大价值加上第i个物品的价值。</p>
+<h1 id="code"><a href="#code" class="headerlink" title="code"></a>code</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">knapsack</span><span class="params">(<span class="keyword">int</span> W, <span class="keyword">int</span> N, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; wt, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; val)</span> </span></span><br><span class="line"><span class="function">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">dp</span><span class="params">(N + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(W + <span class="number">1</span>, <span class="number">0</span>))</span></span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= N; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> w = <span class="number">1</span>; w &lt;= W; w++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (w - wt[i<span class="number">-1</span>] &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 当前背包容量装不下，只能选择不装入背包</span></span><br><span class="line">                dp[i][w] = dp[i - <span class="number">1</span>][w];</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 装入或者不装入背包，择优</span></span><br><span class="line">                dp[i][w] = max(dp[i - <span class="number">1</span>][w - wt[i<span class="number">-1</span>]] + val[i<span class="number">-1</span>], </span><br><span class="line">                               dp[i - <span class="number">1</span>][w]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dp[N][W];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>algorithm</category>
+      </categories>
+  </entry>
 </search>
