@@ -966,4 +966,29 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct
         <category>algorithm</category>
       </categories>
   </entry>
+  <entry>
+    <title>二叉树展开为链表</title>
+    <url>/2021/05/17/%E4%BA%8C%E5%8F%89%E6%A0%91%E5%B1%95%E5%BC%80%E4%B8%BA%E9%93%BE%E8%A1%A8/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>114.二叉树展开为链表<br>给你二叉树的根结点 root ，请你将它展开为一个单链表：</p>
+<p>展开后的单链表应该同样使用 TreeNode ，其中 right 子指针指向链表中下一个结点，而左子指针始终为 null 。<br>展开后的单链表应该与二叉树 先序遍历 顺序相同。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210517181952729.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NzY5NDY3,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p>示例 1：<br>输入：root = [1,2,5,3,4,null,6]<br>输出：[1,null,2,null,3,null,4,null,5,null,6]</p>
+<h1 id="解答思路"><a href="#解答思路" class="headerlink" title="解答思路"></a>解答思路</h1><p>①首先我们可以看出，题意就是将二叉树的左子树搬到右子树，然后将右子树接到当前右子树的末端。<br>②<strong>第一种可以用递归实现</strong><br>1、将root的左子树和右子树拉平<br>2、将root的右子树接到左子树的下方<br>3、然后将整个左子树作为右子树<br>需要注意的是当我们用递归实现算法的时候，一定不要跳进递归里面，而要明确函数在当前层的定义。<br>③我们发现递归方法消耗了空间，下面这种解法可以<strong>原地将二叉树拉成链表</strong>。<br>1、首先找到左子树的最右节点<br>2、然后将根节点的右子树放到左子树最右节点的右子树上<br>3、这时候再将根的左子树放到右子树上</p>
+<h1 id="code1-递归"><a href="#code1-递归" class="headerlink" title="code1(递归)"></a>code1(递归)</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">flatten</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> ;</span><br><span class="line">        &#125;</span><br><span class="line">        flatten(root-&gt;left);<span class="comment">//递归进入左子树</span></span><br><span class="line">        flatten(root-&gt;right);<span class="comment">//递归进入右子树</span></span><br><span class="line">        <span class="comment">//左右子树已经被拉成一条链表</span></span><br><span class="line">        TreeNode *left = root-&gt;left;</span><br><span class="line">        TreeNode *right = root-&gt;right;</span><br><span class="line">        root-&gt;left = <span class="literal">nullptr</span>;<span class="comment">//将节点的左子节点置为空</span></span><br><span class="line">        root-&gt;right = left;<span class="comment">//将节点的左子节点接到节点的右子节点</span></span><br><span class="line">        TreeNode *temp = root;</span><br><span class="line">        <span class="keyword">while</span>(temp-&gt;right != <span class="literal">nullptr</span>)&#123;<span class="comment">//将原先的右子节点接到当前右子树的末端</span></span><br><span class="line">            temp = temp-&gt;right;</span><br><span class="line">        &#125;</span><br><span class="line">        temp-&gt;right = right;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="code2"><a href="#code2" class="headerlink" title="code2"></a>code2</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">flatten</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(root != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(root-&gt;left != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">                TreeNode *most_right = root-&gt;left;<span class="comment">//左子树最右节点</span></span><br><span class="line">                <span class="keyword">while</span>(most_right-&gt;right != <span class="literal">nullptr</span>)&#123;<span class="comment">//找最右节点</span></span><br><span class="line">                    most_right = most_right-&gt;right;</span><br><span class="line">                &#125;</span><br><span class="line">                most_right-&gt;right = root-&gt;right;<span class="comment">//根的右子树接到最右节点的右子树</span></span><br><span class="line">                root-&gt;right = root-&gt;left;<span class="comment">//根的左子树接到右子树</span></span><br><span class="line">                root-&gt;left = <span class="literal">nullptr</span>;<span class="comment">//左子树置为空</span></span><br><span class="line">            &#125;</span><br><span class="line">            root = root-&gt;right;<span class="comment">//继续下一个节点</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>algorithm</category>
+      </categories>
+  </entry>
 </search>
