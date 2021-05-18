@@ -991,4 +991,65 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct
         <category>algorithm</category>
       </categories>
   </entry>
+  <entry>
+    <title>根据前中后序遍历构造二叉树</title>
+    <url>/2021/05/18/%E6%A0%B9%E6%8D%AE%E5%89%8D%E4%B8%AD%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86%E6%9E%84%E9%80%A0%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
+    <content><![CDATA[<h1 id="从前序与中序遍历中构造二叉树"><a href="#从前序与中序遍历中构造二叉树" class="headerlink" title="从前序与中序遍历中构造二叉树"></a>从前序与中序遍历中构造二叉树</h1><p>题目：<br>105. 从前序与中序遍历序列构造二叉树<br>根据一棵树的前序遍历与中序遍历构造二叉树。</p>
+<p>注意:<br>你可以假设树中没有重复的元素。</p>
+<p>例如，给出</p>
+<p>前序遍历 preorder = [3,9,20,15,7]<br>中序遍历 inorder = [9,3,15,20,7]<br>返回如下的二叉树：</p>
+<p>   3<br>   /  \<br>  9  20<br>    /       \<br>   15   7</p>
+<h2 id="解答思路"><a href="#解答思路" class="headerlink" title="解答思路"></a>解答思路</h2><p>①首先找到根节点比较简单，根节点就是前序遍历的第一个元素。<br>②然后<strong>关键就是</strong>通过根节点在中序遍历找出二叉树的左子树与右子树的元素以及数量，递归调用构造二叉树。<br>③如下图所示对于递归构造左子树，前序遍历的范围是[preStart + 1, preStart + leftSize]，中序遍历的范围是[inStart, index - 1]。<br>④对于递归构造右子树，前序遍历的范围是[preStart + leftSize + 1, preEnd]，中序遍历的范围是[index + 1, inEnd]。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210518171919635.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NzY5NDY3,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">TreeNode* <span class="title">buildTree</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; preorder, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; inorder)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> build(preorder, <span class="number">0</span>, preorder.size() - <span class="number">1</span>, inorder, <span class="number">0</span>, inorder.size() - <span class="number">1</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="function">TreeNode* <span class="title">build</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; preorder, <span class="keyword">int</span> preStart, <span class="keyword">int</span> preEnd, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; inorder, <span class="keyword">int</span> inStart, <span class="keyword">int</span> inEnd)</span></span>&#123;</span><br><span class="line">       <span class="keyword">if</span>(inStart &gt; inEnd)&#123;<span class="comment">//前序遍历数组左索引大于右索引就返回</span></span><br><span class="line">           <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">int</span> rootVal = preorder[preStart];<span class="comment">//root节点对应的值就是前序遍历数组的第一个</span></span><br><span class="line">       <span class="keyword">int</span> index = <span class="number">0</span>;<span class="comment">//rootVal在中序遍历数组中的索引</span></span><br><span class="line">       <span class="keyword">for</span>(<span class="keyword">int</span> i = inStart; i &lt;= inEnd; i++)&#123;</span><br><span class="line">           <span class="keyword">if</span>(rootVal == inorder[i])&#123;</span><br><span class="line">               index = i;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">int</span> leftSize = index - inStart;<span class="comment">//前序遍历数组中，左子树节点的数量</span></span><br><span class="line">       TreeNode *root = <span class="keyword">new</span> TreeNode(rootVal);<span class="comment">//构造当前节点</span></span><br><span class="line">       <span class="comment">//递归构造左右子树</span></span><br><span class="line">       root-&gt;left = build(preorder, preStart + <span class="number">1</span>, preStart + leftSize, inorder, inStart, index - <span class="number">1</span>);</span><br><span class="line">       root-&gt;right = build(preorder, preStart + leftSize + <span class="number">1</span>, preEnd, inorder, index + <span class="number">1</span>, inEnd);</span><br><span class="line">       <span class="keyword">return</span> root;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="从后序与中序遍历中构造二叉树"><a href="#从后序与中序遍历中构造二叉树" class="headerlink" title="从后序与中序遍历中构造二叉树"></a>从后序与中序遍历中构造二叉树</h1><p>题目：<br>106. 从中序与后序遍历序列构造二叉树<br>根据一棵树的中序遍历与后序遍历构造二叉树。</p>
+<p>注意:<br>你可以假设树中没有重复的元素。</p>
+<p>例如，给出</p>
+<p>中序遍历 inorder = [9,3,15,20,7]<br>后序遍历 postorder = [9,15,7,20,3]<br>返回如下的二叉树：</p>
+<p>   3<br>   / \<br>  9  20<br>    /  \<br>   15   7</p>
+<h2 id="解答思路-1"><a href="#解答思路-1" class="headerlink" title="解答思路"></a>解答思路</h2><p>与上一题相同，只需要找出根结点的左右子树对应中序遍历以及后序遍历的索引递归即可。</p>
+<h2 id="code-1"><a href="#code-1" class="headerlink" title="code"></a>code</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">TreeNode* <span class="title">buildTree</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; inorder, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; postorder)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> build(inorder, <span class="number">0</span>, inorder.size() - <span class="number">1</span>, postorder, <span class="number">0</span>, postorder.size() - <span class="number">1</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="function">TreeNode* <span class="title">build</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; inorder, <span class="keyword">int</span> inStart, <span class="keyword">int</span> inEnd, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; postorder, <span class="keyword">int</span> postStart, <span class="keyword">int</span> postEnd)</span></span>&#123;</span><br><span class="line">       <span class="keyword">if</span>(postStart &gt; postEnd)&#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">int</span> rootVal = postorder[postEnd];</span><br><span class="line">       <span class="keyword">int</span> index;</span><br><span class="line">       <span class="keyword">for</span>(<span class="keyword">int</span> i = inStart; i &lt;= inEnd; i++)&#123;</span><br><span class="line">           <span class="keyword">if</span>(rootVal == inorder[i])&#123;</span><br><span class="line">               index = i;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">int</span> leftSize = index - inStart;</span><br><span class="line">       TreeNode *root = <span class="keyword">new</span> TreeNode(rootVal);</span><br><span class="line">       root-&gt;left = build(inorder, inStart, index - <span class="number">1</span>,postorder, postStart, postStart + leftSize - <span class="number">1</span>);</span><br><span class="line">       root-&gt;right = build(inorder, index + <span class="number">1</span>, inEnd,postorder, postStart + leftSize, postEnd - <span class="number">1</span>);</span><br><span class="line">       <span class="keyword">return</span> root;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>algorithm</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>构造最大二叉树</title>
+    <url>/2021/05/18/%E6%9E%84%E9%80%A0%E6%9C%80%E5%A4%A7%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
+    <content><![CDATA[<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>654 最大二叉树<br>给定一个不含重复元素的整数数组 nums 。一个以此数组直接递归构建的 最大二叉树 定义如下：</p>
+<p>二叉树的根是数组 nums 中的最大元素。<br>左子树是通过数组中 最大值左边部分 递归构造出的最大二叉树。<br>右子树是通过数组中 最大值右边部分 递归构造出的最大二叉树。<br>返回有给定数组 nums 构建的 最大二叉树 。</p>
+<p> <img src="https://img-blog.csdnimg.cn/20210518164315528.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NzY5NDY3,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p>示例 1：</p>
+<p>输入：nums = [3,2,1,6,0,5]<br>输出：[6,3,5,null,2,0,null,null,1]<br>解释：递归调用如下所示：</p>
+<ul>
+<li>[3,2,1,6,0,5] 中的最大值是 6 ，左边部分是 [3,2,1] ，右边部分是 [0,5] 。<ul>
+<li>[3,2,1] 中的最大值是 3 ，左边部分是 [] ，右边部分是 [2,1] 。<ul>
+<li>空数组，无子节点。</li>
+<li>[2,1] 中的最大值是 2 ，左边部分是 [] ，右边部分是 [1] 。<ul>
+<li>空数组，无子节点。</li>
+<li>只有一个元素，所以子节点是一个值为 1 的节点。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>[0,5] 中的最大值是 5 ，左边部分是 [0] ，右边部分是 [] 。<ul>
+<li>只有一个元素，所以子节点是一个值为 0 的节点。</li>
+<li>空数组，无子节点。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="解答思路"><a href="#解答思路" class="headerlink" title="解答思路"></a>解答思路</h1><p>①对于构造二叉树，根节点要做的就是想办法把自己构造出来。<br>②先遍历数组找出最大值，然后把根节点构造出来，然后对最大值的左边数组和右边数组进行递归调用，作为根节点的左右子树。</p>
+<h1 id="code"><a href="#code" class="headerlink" title="code"></a>code</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">TreeNode* <span class="title">build</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(left &gt; right)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> max_num = INT_MIN;</span><br><span class="line">        <span class="keyword">int</span> index = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = left;i &lt;= right;i++)&#123;<span class="comment">//找到[left, right]中最大的元素，以及索引</span></span><br><span class="line">            <span class="keyword">if</span>(max_num &lt; nums[i])&#123;</span><br><span class="line">                max_num = nums[i];</span><br><span class="line">                index = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        TreeNode *root = <span class="keyword">new</span> TreeNode(max_num);<span class="comment">//将最大的元素构造成当前nums的根节点</span></span><br><span class="line">        root-&gt;left = build(nums, left, index - <span class="number">1</span>);</span><br><span class="line">        root-&gt;right = build(nums, index + <span class="number">1</span>, right);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">TreeNode* <span class="title">constructMaximumBinaryTree</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> build(nums, <span class="number">0</span>, nums.size() - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>algorithm</category>
+      </categories>
+  </entry>
 </search>
