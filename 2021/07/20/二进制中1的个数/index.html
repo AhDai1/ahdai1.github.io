@@ -81,13 +81,15 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="http://yoursite.com/tags/index.html">
+<meta name="description" content="题目请实现一个函数，输入一个整数，输出该数二进制表示中 1 的个数。 解题思路①第一种方法我们可以想到将一个整数的最右边一位和1进行与运算，判断是否为1，接着将整数右移一位继续和1进行与运算，可以统计出1的个数。但这只能适合正整数，如果是负数，当负数右移一位的时候，左边补的是1，这样循环就会无法结束。②第二种方法就可以解决这种问题，我们可以不右移目标数，而是首先将1和目标数进行与运算，然后将1进行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二进制中1的个数">
+<meta property="og:url" content="http://yoursite.com/2021/07/20/%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%AD1%E7%9A%84%E4%B8%AA%E6%95%B0/index.html">
 <meta property="og:site_name" content="AhDai">
+<meta property="og:description" content="题目请实现一个函数，输入一个整数，输出该数二进制表示中 1 的个数。 解题思路①第一种方法我们可以想到将一个整数的最右边一位和1进行与运算，判断是否为1，接着将整数右移一位继续和1进行与运算，可以统计出1的个数。但这只能适合正整数，如果是负数，当负数右移一位的时候，左边补的是1，这样循环就会无法结束。②第二种方法就可以解决这种问题，我们可以不右移目标数，而是首先将1和目标数进行与运算，然后将1进行">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-05-14T11:18:34.000Z">
-<meta property="article:modified_time" content="2020-05-19T08:51:48.428Z">
+<meta property="article:published_time" content="2021-07-20T03:31:39.520Z">
+<meta property="article:modified_time" content="2021-07-20T03:32:15.243Z">
 <meta property="article:author" content="AhDai">
 <meta name="twitter:card" content="summary">
 
@@ -119,7 +121,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/"/>
+  <link rel="canonical" href="http://yoursite.com/2021/07/20/二进制中1的个数/"/>
 
 
 
@@ -129,7 +131,7 @@
 
 
 
-  <title>tags | AhDai</title>
+  <title>二进制中1的个数 | AhDai</title>
   
 
 
@@ -308,40 +310,217 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/07/20/%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%AD1%E7%9A%84%E4%B8%AA%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AhDai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AhDai">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">tags</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                6 tags in total
+          <h1 class="post-title" itemprop="name headline">二进制中1的个数</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-07-20T11:31:39+08:00">
+                2021-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/07/20/%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%AD1%E7%9A%84%E4%B8%AA%E6%95%B0/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2021/07/20/二进制中1的个数/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+          <span class="post-meta-divider">|</span>
+          <span class="post-meta-item-icon"
+          >
+          <i class="fa fa-"></i>
+           post.views: 
+    	  <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+	  </span>
+
+	  
+
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  548 字 
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  1 分钟
+                </span>
+              
             </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/IPC/" style="font-size: 18px; color: #8e8e8e">IPC</a> <a href="/tags/LWP/" style="font-size: 24px; color: #4f4f4f">LWP</a> <a href="/tags/mmap/" style="font-size: 12px; color: #ccc">mmap</a> <a href="/tags/process/" style="font-size: 30px; color: #111">process</a> <a href="/tags/signal/" style="font-size: 24px; color: #4f4f4f">signal</a> <a href="/tags/tree/" style="font-size: 12px; color: #ccc">tree</a>
-            </div>
-          </div>
-        
-      </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>请实现一个函数，输入一个整数，输出该数二进制表示中 1 的个数。</p>
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>①第一种方法我们可以想到<strong>将一个整数的最右边一位和1进行与运算，判断是否为1，接着将整数右移一位继续和1进行与运算</strong>，可以统计出1的个数。但这只能适合正整数，如果是负数，当负数右移一位的时候，左边补的是1，这样循环就会无法结束。<br>②第二种方法就可以解决这种问题，我们可以不右移目标数，而是首先将1和目标数进行与运算，<strong>然后将1进行左移，这样就避免了负数左移是1的问题</strong>。这种方法，循环的次数是二进制的位数。<br><strong>③第三种方法可以将循环次数降低到二进制数中1的个数。</strong><br>首先我们先分析<strong>一个数减去1的情况</strong>：<br>1、如果一个整数不为0，那么二进制数中至少有一位是1，先假设最右边一位是1，那么减去1以后，最后一位变成0，其他位保持不变。<br>2、如果最右边一位不是1且位于m位，那么减去1时，第m位由1变成0，而第m位右边的0都变成1。例如一个二进制数为1100，当减去1以后变成1011。<br>结合以上两种情况我们发现一个二进制数减去1，都是把最右边的1变成0，如果它的右边还有0的，则把所有0变成1，而它左边的数不变。我们将原来的数和减去1的数进行与运算，也就是1100和1011进行与运算，结果就是1000。</p>
+<p><strong>最终的思路就是把一个整数减去1，再和原整数进行与运算，会把该整数的最右边的1变成0，那么一个二进制表示中有多少1，就可以进行多少次这样的操作。</strong></p>
+<p>以下是第三种方法的code</p>
+<h1 id="code"><a href="#code" class="headerlink" title="code"></a>code</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">NumOf1</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(n)&#123;</span><br><span class="line">		count++;</span><br><span class="line">		n = (n - <span class="number">1</span>) &amp; n;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/07/15/%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84%E7%9A%84%E6%9C%80%E5%B0%8F%E6%95%B0%E5%AD%97/" rel="next" title="旋转数组的最小数字">
+                <i class="fa fa-chevron-left"></i> 旋转数组的最小数字
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -384,8 +563,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -459,6 +647,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#code"><span class="nav-number">3.</span> <span class="nav-text">code</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -666,9 +870,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/tags/index.html';
-          this.page.identifier = 'tags/index.html';
-          this.page.title = 'tags';
+          this.page.url = 'http://yoursite.com/2021/07/20/%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%AD1%E7%9A%84%E4%B8%AA%E6%95%B0/';
+          this.page.identifier = '2021/07/20/二进制中1的个数/';
+          this.page.title = '二进制中1的个数';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://.disqus.com/embed.js';
