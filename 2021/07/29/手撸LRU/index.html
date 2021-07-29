@@ -81,11 +81,15 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="AhDai">
-<meta property="og:url" content="http://yoursite.com/categories/Linux/index.html">
+<meta name="description" content="题目运用你所掌握的数据结构，设计和实现一个  LRU (最近最少使用) 缓存机制 。实现 LRUCache 类： LRUCache(int capacity) 以正整数作为容量 capacity 初始化 LRU 缓存int get(int key) 如果关键字 key 存在于缓存中，则返回关键字的值，否则返回 -1 。void put(int key, int value) 如果关键字已经存在，则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="手撸LRU">
+<meta property="og:url" content="http://yoursite.com/2021/07/29/%E6%89%8B%E6%92%B8LRU/index.html">
 <meta property="og:site_name" content="AhDai">
+<meta property="og:description" content="题目运用你所掌握的数据结构，设计和实现一个  LRU (最近最少使用) 缓存机制 。实现 LRUCache 类： LRUCache(int capacity) 以正整数作为容量 capacity 初始化 LRU 缓存int get(int key) 如果关键字 key 存在于缓存中，则返回关键字的值，否则返回 -1 。void put(int key, int value) 如果关键字已经存在，则">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-29T12:06:59.314Z">
+<meta property="article:modified_time" content="2021-07-29T12:07:38.080Z">
 <meta property="article:author" content="AhDai">
 <meta name="twitter:card" content="summary">
 
@@ -117,7 +121,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/Linux/"/>
+  <link rel="canonical" href="http://yoursite.com/2021/07/29/手撸LRU/"/>
 
 
 
@@ -127,7 +131,7 @@
 
 
 
-  <title>Category: Linux | AhDai</title>
+  <title>手撸LRU | AhDai</title>
   
 
 
@@ -146,7 +150,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -304,311 +308,223 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block category">
-
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>Linux<small>Category</small>
-        </h1>
-      </div>
-
-      
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/07/29/%E6%89%8B%E6%92%B8LRU/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AhDai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AhDai">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2020/09/06/%E5%A4%9A%E6%92%AD%EF%BC%88%E7%BB%84%E6%92%AD%EF%BC%89/" itemprop="url">
-              
-                <span itemprop="name">多播（组播）</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">手撸LRU</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-09-06T09:52:12+08:00"
-              content="2020-09-06" >
-          09-06
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-07-29T20:06:59+08:00">
+                2021-07-29
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/07/29/%E6%89%8B%E6%92%B8LRU/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2021/07/29/手撸LRU/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+          <span class="post-meta-divider">|</span>
+          <span class="post-meta-item-icon"
+          >
+          <i class="fa fa-"></i>
+           post.views: 
+    	  <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+	  </span>
+
+	  
+
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  1.1k 字 
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  4 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/09/06/UDP%E6%9C%8D%E5%8A%A1%E5%99%A8/" itemprop="url">
-              
-                <span itemprop="name">UDP服务器</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-09-06T09:43:16+08:00"
-              content="2020-09-06" >
-          09-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/09/06/epoll/" itemprop="url">
-              
-                <span itemprop="name">epoll</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-09-06T09:40:25+08:00"
-              content="2020-09-06" >
-          09-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/09/06/poll/" itemprop="url">
-              
-                <span itemprop="name">poll</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-09-06T09:34:05+08:00"
-              content="2020-09-06" >
-          09-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/09/06/%E5%A4%9A%E8%B7%AFI_O%E8%BD%AC%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8select/" itemprop="url">
-              
-                <span itemprop="name">多路I_O转接服务器select</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-09-06T09:30:53+08:00"
-              content="2020-09-06" >
-          09-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/09/05/%E5%B9%B6%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8/" itemprop="url">
-              
-                <span itemprop="name">并发服务器</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-09-05T12:41:28+08:00"
-              content="2020-09-05" >
-          09-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/09/05/Socket%E7%BC%96%E7%A8%8B/" itemprop="url">
-              
-                <span itemprop="name">Socket编程</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-09-05T11:00:58+08:00"
-              content="2020-09-05" >
-          09-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/09/05/TCP%E5%8D%8F%E8%AE%AE/" itemprop="url">
-              
-                <span itemprop="name">TCP协议</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-09-05T10:38:49+08:00"
-              content="2020-09-05" >
-          09-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/09/05/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" itemprop="url">
-              
-                <span itemprop="name">Linux网络编程基础</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-09-05T09:55:34+08:00"
-              content="2020-09-05" >
-          09-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/05/20/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%8B%B7%E8%B4%9D%E6%96%87%E4%BB%B6/" itemprop="url">
-              
-                <span itemprop="name">多线程拷贝文件</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-05-20T19:50:14+08:00"
-              content="2020-05-20" >
-          05-20
-        </time>
-      </div>
-
-    </header>
-  </article>
+        <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>运用你所掌握的数据结构，设计和实现一个  LRU (最近最少使用) 缓存机制 。<br>实现 LRUCache 类：</p>
+<p>LRUCache(int capacity) 以正整数作为容量 capacity 初始化 LRU 缓存<br>int get(int key) 如果关键字 key 存在于缓存中，则返回关键字的值，否则返回 -1 。<br>void put(int key, int value) 如果关键字已经存在，则变更其数据值；如果关键字不存在，则插入该组「关键字-值」。当缓存容量达到上限时，它应该在写入新数据之前删除最久未使用的数据值，从而为新的数据值留出空间。</p>
+<p>示例：</p>
+<p>输入<br>[“LRUCache”, “put”, “put”, “get”, “put”, “get”, “put”, “get”, “get”, “get”]<br>[[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]<br>输出<br>[null, null, null, 1, null, -1, null, -1, 3, 4]</p>
+<p>解释<br>LRUCache lRUCache = new LRUCache(2);<br>lRUCache.put(1, 1); // 缓存是 {1=1}<br>lRUCache.put(2, 2); // 缓存是 {1=1, 2=2}<br>lRUCache.get(1);    // 返回 1<br>lRUCache.put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}<br>lRUCache.get(2);    // 返回 -1 (未找到)<br>lRUCache.put(4, 4); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}<br>lRUCache.get(1);    // 返回 -1 (未找到)<br>lRUCache.get(3);    // 返回 3<br>lRUCache.get(4);    // 返回 4</p>
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>要让put()和get()时间复杂度为O(1)应该满足以下条件<br>①根据题目的要求，cache中的元素应该有时序以及要支持快速删除以及插入，符合这样要求的数据结构有链表。<br>②还要在cache中快速找到key并且对应的value，也就是使用哈希表。<br>③由以上两点，LRU的核心数据结构就是双向哈希链表。<br>④需要用双向链表是因为在删除节点的时候需要知道该节点的前驱节点，而只有双向链表可以做到O(1)时间复杂度下做到。<br><strong>注意:</strong><br>之所以在Node中储存key和value，考虑到当需要删除最近最久未使用的节点的时候，如果Node中没有key而只有value，我们只能删除链表中的节点，而无法找到map中对应的键。</p>
+<p>其余细节见代码注释</p>
+<h1 id="code"><a href="#code" class="headerlink" title="code"></a>code</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">int</span> key, val;</span><br><span class="line">	Node *next, *prev;</span><br><span class="line">	Node(<span class="keyword">int</span> k, <span class="keyword">int</span> v) :key(k), val(v) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DoubleList</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Node *head, *tail;<span class="comment">//头尾节点</span></span><br><span class="line">	<span class="keyword">int</span> size;<span class="comment">//链表长度</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">/*初始化双向链表*/</span></span><br><span class="line">	DoubleList() &#123;</span><br><span class="line">		head = <span class="keyword">new</span> Node(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">		tail = <span class="keyword">new</span> Node(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">		head-&gt;next = tail;</span><br><span class="line">		tail-&gt;prev = head;</span><br><span class="line">		size = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/*在链表结尾添加节点x,O(1)*/</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">addLast</span><span class="params">(Node *x)</span> </span>&#123;</span><br><span class="line">		x-&gt;prev = tail-&gt;prev;</span><br><span class="line">		x-&gt;next = tail;</span><br><span class="line">		tail-&gt;prev-&gt;next = x;</span><br><span class="line">		tail-&gt;prev = x;</span><br><span class="line">		size++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/*在链表中删除x节点，O(1)*/</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">(Node *x)</span> </span>&#123;</span><br><span class="line">		x-&gt;prev-&gt;next = x-&gt;next;</span><br><span class="line">		x-&gt;next-&gt;prev = x-&gt;prev;</span><br><span class="line">		size--;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/*删除链表的第一个节点*/</span></span><br><span class="line">	<span class="function">Node* <span class="title">removeFirst</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (head-&gt;next == tail) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		Node *first = head-&gt;next;</span><br><span class="line">		remove(first);</span><br><span class="line">		<span class="keyword">return</span> first;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">Size</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="keyword">this</span>-&gt;size; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	LRUCache(<span class="keyword">int</span> capacity) &#123;</span><br><span class="line">		<span class="keyword">this</span>-&gt;cap = capacity;</span><br><span class="line">		DoubleList *cache = <span class="keyword">new</span> DoubleList();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (Map.find(key) == Map.end()) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		makeRecently(key);</span><br><span class="line">		<span class="built_in">map</span>&lt;<span class="keyword">int</span>, Node*&gt;::iterator iter = Map.find(key);<span class="comment">//在map中找到Node</span></span><br><span class="line">		<span class="keyword">int</span> val = (*iter).second-&gt;val;</span><br><span class="line">		<span class="keyword">return</span> val;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (Map.find(key) != Map.end()) &#123;<span class="comment">//如果map找到元素</span></span><br><span class="line">			deleteKey(key);<span class="comment">//删除这个元素并重新构造新的元素加入</span></span><br><span class="line">			addRencently(key, value);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (cap == cache.Size()) &#123;<span class="comment">//如果容量满了</span></span><br><span class="line">			removeLeastRencently();<span class="comment">//删除最近最久未使用的元素</span></span><br><span class="line">		&#125;</span><br><span class="line">		addRencently(key, value);<span class="comment">//构造元素加入</span></span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="comment">/*将某个key提升为最近使用过的*/</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">makeRecently</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">		<span class="built_in">map</span>&lt;<span class="keyword">int</span>, Node*&gt;::iterator iter = Map.find(key);<span class="comment">//在map中找到Node</span></span><br><span class="line">		Node *x = (*iter).second;</span><br><span class="line">		cache.remove(x);<span class="comment">//从链表中删除该节点</span></span><br><span class="line">		cache.addLast(x);<span class="comment">//添加到链表尾部</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/*添加最近使用过的元素*/</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">addRencently</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">		Node *x = <span class="keyword">new</span> Node(key, val);</span><br><span class="line">		cache.addLast(x);<span class="comment">//添加到链表尾部</span></span><br><span class="line">		Map.insert(make_pair(key, x));<span class="comment">//加入map中</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/*删除某一个key*/</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">deleteKey</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">		<span class="built_in">map</span>&lt;<span class="keyword">int</span>, Node*&gt;::iterator iter = Map.find(key);<span class="comment">//在map中找到Node</span></span><br><span class="line">		Node *x = (*iter).second;</span><br><span class="line">		cache.remove(x);<span class="comment">//从链表中删除该节点</span></span><br><span class="line">		Map.erase(iter);<span class="comment">//在map中删除</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/*删除最近最久未使用的元素*/</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">removeLeastRencently</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		Node *deleteNode = cache.removeFirst();</span><br><span class="line">		<span class="keyword">int</span> deletekey = deleteNode-&gt;key;</span><br><span class="line">		<span class="built_in">map</span>&lt;<span class="keyword">int</span>, Node*&gt;::iterator iter = Map.find(deletekey);<span class="comment">//在map中找到Node</span></span><br><span class="line">		Map.erase(iter);<span class="comment">//在map中删除</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">map</span>&lt;<span class="keyword">int</span>, Node*&gt; Map;</span><br><span class="line">	DoubleList cache;</span><br><span class="line">	<span class="keyword">int</span> cap;<span class="comment">//最大容量</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/07/28/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8C%B9%E9%85%8D/" rel="next" title="正则表达式匹配">
+                <i class="fa fa-chevron-left"></i> 正则表达式匹配
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/categories/Linux/page/2/">2</a><a class="page-number" href="/categories/Linux/page/3/">3</a><a class="extend next" rel="next" href="/categories/Linux/page/2/">&gt;</a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -616,6 +532,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -636,8 +566,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -711,6 +650,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#code"><span class="nav-number">3.</span> <span class="nav-text">code</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -894,6 +849,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -911,6 +870,18 @@
       <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2021/07/29/%E6%89%8B%E6%92%B8LRU/';
+          this.page.identifier = '2021/07/29/手撸LRU/';
+          this.page.title = '手撸LRU';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
