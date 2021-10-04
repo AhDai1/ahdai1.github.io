@@ -1251,4 +1251,23 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct
         <category>ucore</category>
       </categories>
   </entry>
+  <entry>
+    <title>在operator=中处理自我赋值</title>
+    <url>/2021/10/04/%E5%9C%A8operator=%E4%B8%AD%E5%A4%84%E7%90%86%E8%87%AA%E6%88%91%E8%B5%8B%E5%80%BC/</url>
+    <content><![CDATA[<p>众所周知，如果有两个指针或引用指向同一个对象时，当通过一个指针释放了对象，另一个指针就变成了野指针，这是危险的。类似于</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">a[i] = a[j]</span><br><span class="line"></span><br><span class="line">*px = *py</span><br></pre></td></tr></table></figure>
+<p>这都是潜在的自我赋值，如果px和py指向的是同一个对象，就是自我赋值。所以我们需要在重载=运算符中处理这种情况。</p>
+<h1 id="表面上合理的operator"><a href="#表面上合理的operator" class="headerlink" title="表面上合理的operator="></a>表面上合理的operator=</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bitmap</span>&#123;</span> ... &#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span>&#123;</span></span><br><span class="line">	...</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Bitmap *pb;<span class="comment">//一个指向从heap分配而得的对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">Widget&amp; Widget::<span class="keyword">operator</span>=(<span class="keyword">const</span> Widget&amp; rhs)&#123;</span><br><span class="line">	<span class="keyword">delete</span> pb;<span class="comment">//释放当前指向的对象</span></span><br><span class="line">	pb = <span class="keyword">new</span> Bitmap(*rhs.pb);<span class="comment">//使pb指向新的Bitmap</span></span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码的自我赋值的问题是，operator=函数内的<em>this可能和rhs是同一个对象，如果是同一个对象，那么在delete的时候就会将rhs的Bitmap也释放。*</em>这样导致的结果是当前的pb指向的是一个已经被删除的对象。**</p>
+<h1 id="加入证同测试的operator"><a href="#加入证同测试的operator" class="headerlink" title="加入证同测试的operator="></a>加入证同测试的operator=</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">Widget&amp; Widget::<span class="keyword">operator</span>=(<span class="keyword">const</span> Widget&amp; rhs)&#123;</span><br><span class="line">	<span class="keyword">if</span>(<span class="keyword">this</span> == &amp;rhs) <span class="keyword">return</span> *<span class="keyword">this</span>;<span class="comment">//证同测试</span></span><br><span class="line">	<span class="keyword">delete</span> pb;</span><br><span class="line">	pb = <span class="keyword">new</span> Bitmap(*rhs.bp);</span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>这样做具备了自我赋值安全性，但是却不具备异常安全性</strong>。确切的说如果new Bitmap时导致异常，Widget最终会持有一个指针，指向被删除的Bitmap。</p>
+<h1 id="具备异常安全性的operator"><a href="#具备异常安全性的operator" class="headerlink" title="具备异常安全性的operator="></a>具备异常安全性的operator=</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">Widget&amp; Widget::<span class="keyword">operator</span>=(<span class="keyword">const</span> Widget&amp; rhs)&#123;</span><br><span class="line">	Bitmap* pOrig = pb;<span class="comment">//记住原先的pb</span></span><br><span class="line">	pb = <span class="keyword">new</span> Bitmap(*rhs.bp);<span class="comment">//令pb指向新的Bitmap</span></span><br><span class="line">	<span class="keyword">delete</span> pOrig;<span class="comment">//删除原先的pb</span></span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在的operator=中，就具备了异常安全性，如果new Bitmap抛出异常，pb还是会保持原状。即使没有证同测试，这段代码还是能处理自我赋值。虽然不是效率最高的。</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+  </entry>
 </search>
