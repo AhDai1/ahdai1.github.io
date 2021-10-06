@@ -1270,4 +1270,51 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct
         <category>C++</category>
       </categories>
   </entry>
+  <entry>
+    <title>浅谈ucoreLab2</title>
+    <url>/2021/10/06/%E6%B5%85%E8%B0%88ucoreLab2/</url>
+    <content><![CDATA[<p>在lab2中，bootloader的工作有所增加，主要在两个方面，<strong>第一个是bootloader完成了对物理内存资源的探测工作</strong>，让ucore后续能够在探测出的物理内存情况下进行物理内存管理初始化工作。<strong>第二个是进入kern_init()函数之前，bootloader建立了一个C语言运行环境</strong>（设置堆栈），并且临时建立了一个段映射关系，为之后建立分页机制做一个准备。<br>lab2的主题是物理内存管理，ucore完成的主要工作包括：<br>1、初始化物理内存框架页面pmm_manager<br>2、建立空闲page链表<br>3、检查物理内存页分配算法<br>4、建立临时二级页表<br>5、建立一一映射关系的二级页表<br>6、使能分页机制<br>7、重新设置GDT<br>8、取消临时二级页表<br>9、检查页表建立是否正确<br>接下来分析ucore lab2的具体实现。</p>
+<h1 id="以页为单位管理物理内存"><a href="#以页为单位管理物理内存" class="headerlink" title="以页为单位管理物理内存"></a>以页为单位管理物理内存</h1><p>在获取可用物理内存范围之后，系统需要建立相应的数据结构来管理以物理页（4KB）为最小单位的物理内存。Page的数据结构如下:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Page</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> ref;        <span class="comment">//页面引用计数</span></span><br><span class="line">    <span class="keyword">uint32_t</span> flags; <span class="comment">//描述页面的属性</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> property;<span class="comment">//连续内存空闲块的个数</span></span><br><span class="line">    <span class="keyword">list_entry_t</span> page_link;<span class="comment">//空闲块链表指针</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="flags"><a href="#flags" class="headerlink" title="flags"></a>flags</h2><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PG_reserved                 0       <span class="comment">//页描述符预留给内核或无法使用</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PG_property                 1       <span class="comment">//页面是有效的</span></span></span><br></pre></td></tr></table></figure>
+<p><strong>目前flags用到了两个bit表示页面具有的两种属性</strong>，bit 0表示页面是否被保留，如果被保留的页，bit 0会被设置为1，且不能放到空闲页链表中。bit 1表示页面是否是free的，如果设置为1，表示页面是free的，可以被分配。</p>
+<h2 id="property"><a href="#property" class="headerlink" title="property"></a>property</h2><p>property用来记录连续内存空闲块的大小即空闲页的个数，但需要用到property这个成员变量的Page比较特殊，一般是这个空闲块地址最小的一页，即头一页（Head Page）。</p>
+<h1 id="Page结构的内存空间"><a href="#Page结构的内存空间" class="headerlink" title="Page结构的内存空间"></a>Page结构的内存空间</h1><p>在有了上述数据结构后，ucore就可以初步管理以页为单位的物理内存空间。而在这之前还需要确定两个问题：<br>1、管理页级物理内存空间所需的Page结构的内存空间从哪里开始，占多大空间？<br>2、空闲内存空间的起始地址在哪里？</p>
+<p>要解决这两个问题，首先要根据bootloader给出的内存布局信息找出最大的物理内存地址。<strong>根据最大物理地址maxpa就可以得知物理页的个数</strong>。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">npage = maxpa / PGSIZE</span><br></pre></td></tr></table></figure>
+
+<p><strong>有了物理页的数量，就可以得知Page数据结构需要的内存大小</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">sizeof</span>(struct Page) * npage</span><br></pre></td></tr></table></figure>
+
+<p>由于bootloader加载ucore的结束地址（end指针）以上的空间没有被使用，所以可以把end按页大小为边界取整后作为管理页物理内存空间所需Page结构的内存空间</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">pages = (struct Page *)ROUNDUP((<span class="keyword">void</span> *)<span class="built_in">end</span>, PGSIZE)</span><br></pre></td></tr></table></figure>
+
+<p>由以上可知，从0地址到地址pages + (sizeof(struct Page) * npage)物理内存空间设定已占用的物理内存空间，所以空闲空间的起始地址为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">uintptr_t</span> freemem = PADDR((<span class="keyword">uintptr_t</span>)pages + <span class="keyword">sizeof</span>(struct Page) * npage)</span><br></pre></td></tr></table></figure>
+
+<p>完成物理内存页管理初始化工作后，ucore的内存布局如下:<br><img src="https://img-blog.csdnimg.cn/img_convert/f200265c680a8ecb56db41c465f35c4b.png#pic_center" alt="在这里插入图片描述"></p>
+<h1 id="物理内存页的分配算法实现"><a href="#物理内存页的分配算法实现" class="headerlink" title="物理内存页的分配算法实现"></a>物理内存页的分配算法实现</h1><p>物理页内存分配由很多种算法，在lab2练习一中完成的是first-fit的分配算法，first_fit分配算法需要维护一个地址从小到大排列的空闲块的双向链表。具体实现在kern/mm/pmm.c中，具体代码就不贴出了。</p>
+<h1 id="实现分页机制"><a href="#实现分页机制" class="headerlink" title="实现分页机制"></a>实现分页机制</h1><h2 id="段页式管理基本概念"><a href="#段页式管理基本概念" class="headerlink" title="段页式管理基本概念"></a>段页式管理基本概念</h2><p><img src="https://img-blog.csdnimg.cn/img_convert/56b4dc43f3548a6750e8c61ddb721ef4.png#pic_center" alt="在这里插入图片描述"><br>如上图所示，x86体系结构将内存地址分为三种：<strong>逻辑地址、线性地址和物理地址</strong>，逻辑地址即使程序中使用的地址，物理地址是实际访问内存的地址。逻辑地址通过段式管理的地址映射可以得到线性地址，线性地址在页式管理的地址映射得到物理地址。<br><strong>但ucore弱化了段式管理，在ucore中段式管理将逻辑地址不加转换的直接映射成线性地址。</strong></p>
+<h2 id="系统执行地址映射的三个阶段"><a href="#系统执行地址映射的三个阶段" class="headerlink" title="系统执行地址映射的三个阶段"></a>系统执行地址映射的三个阶段</h2><h3 id="第一个阶段"><a href="#第一个阶段" class="headerlink" title="第一个阶段"></a>第一个阶段</h3><p>开启保护模式，创建启动段表，这是在bootloader阶段完成的任务。即从boot/bootasm.S/start函数到执行ucore kernel的kern_entry函数之前，其虚拟地址、线性地址和物理地址之间的关系如下:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">lab2 stage <span class="number">1</span>: virt addr = linear addr = phy addr</span><br></pre></td></tr></table></figure>
+<h3 id="第二个阶段"><a href="#第二个阶段" class="headerlink" title="第二个阶段"></a>第二个阶段</h3><p>创建初始页目录表，开启分页模式。从kern_enrty函数到pmm_init函数执行之前。</p>
+<p>编译好的ucore自带了一个设置好的页目录表和页表，将0-4M的线性地址一一映射到物理地址。目前的地址之间的关系如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">lab2 stage <span class="number">2</span> before:</span><br><span class="line">    virt addr = linear addr = phy addr # 线性地址在<span class="number">0</span>~<span class="number">4</span>MB之内三者的映射关系</span><br><span class="line">    virt addr = linear addr = phy addr + <span class="number">0xC0000000</span> # 线性地址在<span class="number">0xC0000000</span>~<span class="number">0xC0000000</span>+<span class="number">4</span>MB之内三者的映射关系</span><br></pre></td></tr></table></figure>
+<p>此时的内核还在0-4M的低虚拟地址运行，而在之后这个区域是要给用户程序使用的，所以这一阶段的目的就是更新映射关系的同时将内核从低虚拟地址迁移到高虚拟地址。</p>
+<h3 id="第三个阶段"><a href="#第三个阶段" class="headerlink" title="第三个阶段"></a>第三个阶段</h3><p>完善段表和页表，从pmm_init函数调用开始。<br>pmm_init函数将页目录表项扩充完成，然后更新了段映射机制。于是形成了地址之间的映射关系：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">lab2 stage <span class="number">3</span>: virt addr = linear addr = phy addr + <span class="number">0xC0000000</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="建立虚拟页和物理页帧的地址映射关系"><a href="#建立虚拟页和物理页帧的地址映射关系" class="headerlink" title="建立虚拟页和物理页帧的地址映射关系"></a>建立虚拟页和物理页帧的地址映射关系</h2><p>完成前一节前两个阶段的地址映射变化后，把物理地址一一映射到页目录项和页表项的内容，大致流程如下:<br>1、页目录表指针存储在boot_pgdir变量中<br>2、填充好0-4MB的首个页表<br>3、调用boot_map_segment函数建立映射关系</p>
+<p>对于第三点具体来讲，假设一个32bit线性地址la有一个对应的32bit物理地址pa，如果la的高10为索引值的页目录项中的存在位（PTE_P）为0，表示缺少对应的页表空间，则通过alloc_page获得一个空闲物理页给页表，具体填写页目录项如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">页目录项内容 = (页表起始物理地址 &amp; ~<span class="number">0x0FFF</span>) | PTE_U | PTE_W | PTE_P</span><br></pre></td></tr></table></figure>
+
+<p>填充页表项如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">页表项内容 = (pa &amp; ~<span class="number">0x0FFF</span>) | PTE_P | PTE_W</span><br></pre></td></tr></table></figure>
+<p>建立好一一映射的二级页表结构后，分页机制初始化完毕，新的段页式映射已经建立好了。</p>
+<p>本文参考：<a href="https://chyyuu.gitbooks.io/ucore_os_docs" target="_blank" rel="noopener">https://chyyuu.gitbooks.io/ucore_os_docs</a></p>
+]]></content>
+      <categories>
+        <category>ucore</category>
+      </categories>
+  </entry>
 </search>
