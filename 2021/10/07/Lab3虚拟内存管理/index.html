@@ -81,13 +81,19 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="AhDai">
-<meta property="og:url" content="http://yoursite.com/tags/signal/index.html">
+<meta name="description" content="虚拟内存简单而言就是程序员或CPU看到的内存，有以下几点特征：1、虚拟内存单元不一定有实际的物理内存单元对应，即实际的物理内存单元可能不存在。2、如果虚拟内存单元对应有实际的物理内存单元，二者的地址一般是不相等的。3、通过os实现的某种内存映射可建立虚拟内存与物理内存的对应关系，使得程序员或CPU访问虚拟内存地址时会自动转换为一个物理内存地址。 有了内存虚拟化，就可以通过设置页表项来限定软件运行时">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lab3虚拟内存管理">
+<meta property="og:url" content="http://yoursite.com/2021/10/07/Lab3%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
 <meta property="og:site_name" content="AhDai">
+<meta property="og:description" content="虚拟内存简单而言就是程序员或CPU看到的内存，有以下几点特征：1、虚拟内存单元不一定有实际的物理内存单元对应，即实际的物理内存单元可能不存在。2、如果虚拟内存单元对应有实际的物理内存单元，二者的地址一般是不相等的。3、通过os实现的某种内存映射可建立虚拟内存与物理内存的对应关系，使得程序员或CPU访问虚拟内存地址时会自动转换为一个物理内存地址。 有了内存虚拟化，就可以通过设置页表项来限定软件运行时">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a32add56fdc756e3196101f64a300595.png#pic_center">
+<meta property="article:published_time" content="2021-10-07T08:37:10.804Z">
+<meta property="article:modified_time" content="2021-10-07T08:37:40.880Z">
 <meta property="article:author" content="AhDai">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/img_convert/a32add56fdc756e3196101f64a300595.png#pic_center">
 
 
 
@@ -117,7 +123,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/signal/"/>
+  <link rel="canonical" href="http://yoursite.com/2021/10/07/Lab3虚拟内存管理/"/>
 
 
 
@@ -127,7 +133,7 @@
 
 
 
-  <title>Tag: signal | AhDai</title>
+  <title>Lab3虚拟内存管理 | AhDai</title>
   
 
 
@@ -146,7 +152,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -304,110 +310,240 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block tag">
-
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>signal<small>Tag</small>
-        </h1>
-      </div>
-
-      
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/07/Lab3%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AhDai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AhDai">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2020/05/19/SIGCHILD%E4%BF%A1%E5%8F%B7/" itemprop="url">
-              
-                <span itemprop="name">SIGCHILD信号</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">Lab3虚拟内存管理</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-05-19T16:38:49+08:00"
-              content="2020-05-19" >
-          05-19
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-10-07T16:37:10+08:00">
+                2021-10-07
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ucore%C2%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">ucore·</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/10/07/Lab3%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2021/10/07/Lab3虚拟内存管理/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+          <span class="post-meta-divider">|</span>
+          <span class="post-meta-item-icon"
+          >
+          <i class="fa fa-"></i>
+           post.views: 
+    	  <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+	  </span>
+
+	  
+
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  2.1k 字 
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  7 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/05/18/%E7%AB%9E%E6%80%81%E6%9D%A1%E4%BB%B6%EF%BC%88%E6%97%B6%E5%BA%8F%E7%AB%9E%E6%80%81%EF%BC%89/" itemprop="url">
-              
-                <span itemprop="name">竞态条件（时序竞态）</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-05-18T10:26:48+08:00"
-              content="2020-05-18" >
-          05-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
 
       
-        
+        <p>虚拟内存简单而言就是程序员或CPU看到的内存，有以下几点特征：<br>1、虚拟内存单元不一定有实际的物理内存单元对应，即实际的物理内存单元可能不存在。<br>2、如果虚拟内存单元对应有实际的物理内存单元，二者的地址一般是不相等的。<br>3、通过os实现的某种内存映射可建立虚拟内存与物理内存的对应关系，使得程序员或CPU访问虚拟内存地址时会自动转换为一个物理内存地址。</p>
+<p><strong>有了内存虚拟化，就可以通过设置页表项来限定软件运行时的访问空间，确保软件运行不越界。</strong></p>
+<h1 id="实验执行流程"><a href="#实验执行流程" class="headerlink" title="实验执行流程"></a>实验执行流程</h1><p>ucore总init函数中，在调用完idt_init函数后才进一步调用了lab3中才有的新函数vmm_init、ide_init和swap_init。vmm_init是用来检查练习1（给未被映射的地址映射上物理页）是否正确实现。ide_init是完成对用于页换入换出的硬盘（swap硬盘）的初始化工作。swap_init完成页面替换过程的主要功能模块。</p>
+<p>对于要实现上述描述的技术时，首先要解决一个问题：<strong>当程序运行中访问内存产生page fault异常时，如何判定这个引起异常的虚拟地址内存访问是越界、写只读页的非法地址访问还是由于数据被临时换出到磁盘上或还没有分配内存的合法地址访问？</strong></p>
+<h1 id="关键数据结构"><a href="#关键数据结构" class="headerlink" title="关键数据结构"></a>关键数据结构</h1><p>为了解决上述问题，ucore建立了相关的数据结构。page_fault函数不知道哪些是合法的虚拟页，所以ucore通过建立mm_struct和vma_struct数据结构，描述了ucore模拟应用程序运行所需的合法内存空间。当访问内存产生page fault异常时，通过获得的虚拟内存地址来查询是否属于vma_struct中描述的合法地址范围以及该内存是否可读可写等属性，如果地址在合法范围中，则可根据实际情况进行请求调页/页换入换出处理。如果不在则报错。<br>vma_struct和mm_struct数据结构如下：</p>
+<h2 id="vm-struct"><a href="#vm-struct" class="headerlink" title="vm_struct"></a>vm_struct</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">vma_struct</span> &#123;</span>  </span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">mm_struct</span> *<span class="title">vm_mm</span>;</span> <span class="comment">//指向一个比vma_struct更高的抽象层次的数据结构mm_struct </span></span><br><span class="line">        <span class="keyword">uintptr_t</span> vm_start;     <span class="comment">//vma的开始地址</span></span><br><span class="line">        <span class="keyword">uintptr_t</span> vm_end;       <span class="comment">//vma的结束地址</span></span><br><span class="line">        <span class="keyword">uint32_t</span> vm_flags;     <span class="comment">// 虚拟内存空间的属性</span></span><br><span class="line">        <span class="keyword">list_entry_t</span> list_link;<span class="comment">//双向链表，按照从小到大的顺序把虚拟内存空间链接起来</span></span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+<p>vm_start和vm_end描述的是一个合理的地址空间范围，确保vm_start &lt; vm_end的关系。<br>vm_flags表示了虚拟内存空间的属性：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> VM_READ 0x00000001   <span class="comment">//只读</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> VM_WRITE 0x00000002  <span class="comment">//可读写</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> VM_EXEC 0x00000004   <span class="comment">//可执行</span></span></span><br></pre></td></tr></table></figure>
+<p>vm_mm是一个指向mm_struct的指针。</p>
+<h2 id="mm-struct"><a href="#mm-struct" class="headerlink" title="mm_struct"></a>mm_struct</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">mm_struct</span> &#123;</span>  </span><br><span class="line">        <span class="keyword">list_entry_t</span> mmap_list;  <span class="comment">//双向链表头，连接了所有属于同一页目录表的虚拟内存空间</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">vma_struct</span> *<span class="title">mmap_cache</span>;</span>  <span class="comment">//指向当前正在使用的虚拟内存空间</span></span><br><span class="line">        <span class="keyword">pde_t</span> *pgdir; <span class="comment">//指向的就是 mm_struct数据结构所维护的页表</span></span><br><span class="line">        <span class="keyword">int</span> map_count; <span class="comment">//记录mmap_list里面链接的vma_struct的个数</span></span><br><span class="line">        <span class="keyword">void</span> *sm_priv; <span class="comment">//指向用来连接记录页访问情况的链表头</span></span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure>
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/05/17/%E4%BF%A1%E5%8F%B7/" itemprop="url">
-              
-                <span itemprop="name">信号</span>
-              
-            </a>
-        
-      </h2>
+<p>mmap_cache是指向当前正在使用的虚拟内存空间，由于操作系统的局部性原理，当前正在用到的虚拟内存空间在接下来的操作中可能还会用到。加快了访问速度。<br>pgdir所指向的就是mm_struct所维护的页表，通过访问pgdir可以查到某虚拟地址对应的页表项是否存在以及页表项的属性等。</p>
+<p>mm_struct和vma_struct数据结构结合页表示意图：<br><img src="https://img-blog.csdnimg.cn/img_convert/a32add56fdc756e3196101f64a300595.png#pic_center" alt="虚拟地址空间和物理地址空间的示意图"></p>
+<h1 id="page-fault异常处理"><a href="#page-fault异常处理" class="headerlink" title="page fault异常处理"></a>page fault异常处理</h1><p>实现虚存管理的关键就是page fault异常处理。在程序执行的过程中由于页面不存在或写到只读页时，使CPU无法访问到相应的物理内存单元，CPU就会产生一次页访问异常，从而需要进行相应的页访问异常的中断服务例程。产生页访问异常的主要原因有：<br>1、目标页帧不存在<br>2、相应的物理页帧不在内存中<br>3、不满足访问权限<br>当出现上面情况之一，那么就会产生page fault（#PF）异常，CPU会把产生异常的线性地址储存在CR2中，并且把页访问异常类型的值（页访问异常错误码，errorCode）保存在中断栈中。</p>
+<p>在ucore中处理page fault异常的函数就是do_pgfault函数。它根据从CPU的控制寄存器CR2中获取的页访问异常的物理地址以及根据errorCode的错误类型来查找此地址是否在某个vma的地址范围内以及是否满足正确的读写权限，如果在此范围内并读写权限也正确，便认为这是一次合法访问，但没有建立虚实对应关系。所以需要分配一个空闲的内存页，并修改页表完成虚地址到物理地址的映射，刷新TLB，然后调用IRET中断，返回到产生页访问异常的指令处重新执行此指令。如果该虚地址不在vma范围内，则认为是一次非法访问。</p>
+<h1 id="页面置换机制"><a href="#页面置换机制" class="headerlink" title="页面置换机制"></a>页面置换机制</h1><p>要实现页面置换机制还需要解决下面的问题</p>
+<h2 id="可以被换出的页"><a href="#可以被换出的页" class="headerlink" title="可以被换出的页"></a>可以被换出的页</h2><p>在操作系统的设计中，有一个基本的原则：并非并非所有的物理页都可以交换出去的，只有映射到用户空间且被用户程序直接访问的页面才能被交换，而被内核直接使用的内核空间的页面不能被换出。<br>主要是因为操作系统是执行的关键代码，需要保证运行的高效性和实时性，如果在操作系统执行中发生了缺页现象，则操作系统不得不等很长时间，这将导致整个系统运行低效。</p>
+<h2 id="虚存中的页与硬盘上的扇区之间的映射关系"><a href="#虚存中的页与硬盘上的扇区之间的映射关系" class="headerlink" title="虚存中的页与硬盘上的扇区之间的映射关系"></a>虚存中的页与硬盘上的扇区之间的映射关系</h2><p>如果一个页被置换到了硬盘上面，那操作系统该如何表示呢？在ucore的设计中，充分利用了页表项PTE来表示这种情况：<strong>当一个PTE用来描述一般意义上的物理页时</strong>，应该有PTE_P标记，而当<strong>用来描述一个被置换出去的物理页时</strong>，PTE用来维护该物理页与swap磁盘上扇区的映射关系。</p>
+<p>如果一个页（4KB/页）被置换到了硬盘某8个扇区（0.5KB/扇区），该PTE的最低位–present位应该位0，接下来的7位暂时保留用作各种扩展，而包括原来高20位页帧号的高24位数据，恰好可以用来表示此页在硬盘上的起始扇区的位置。如下图所示</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">swap_entry_t</span></span><br><span class="line">-------------------------</span><br><span class="line">| offset | reserved | <span class="number">0</span> |</span><br><span class="line">-------------------------</span><br><span class="line"><span class="number">24</span> bits    <span class="number">7</span> bits   <span class="number">1</span> <span class="built_in">bit</span></span><br></pre></td></tr></table></figure>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-05-17T19:17:41+08:00"
-              content="2020-05-17" >
-          05-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+<h2 id="执行换入换出的时机"><a href="#执行换入换出的时机" class="headerlink" title="执行换入换出的时机"></a>执行换入换出的时机</h2><h3 id="换入"><a href="#换入" class="headerlink" title="换入"></a>换入</h3><p>在lab3中，check_mm_struct数据结构表示了目前ucore认为合法的所有虚拟内存空间集合，而mm中的每个vma表示了一段地址连续的合法虚拟空间。当ucore或应用程序访问地址所在页不存在时，就会产生page fault异常，引起调用do_pgfault函数，此函数会判断产生访问异常的地址属于check_mm_struct某个vma表示的合法虚拟地址空间，且保存在硬盘swap文件中，则是执行页换入的时机。</p>
+<h3 id="换出"><a href="#换出" class="headerlink" title="换出"></a>换出</h3><p>对于换出有不同的策略：积极换出策略，指操作系统周期性的主动把某些认为不常用的页面换出到硬盘上，从而确保系统中总有一定数量的空闲页存在；消极换出策略，指只是当试图得到空闲页，发现当前没有空闲的物理页可供分配时，这才开始找不常用的页面将它换出。</p>
+<p>在ucore中执行的时第二种消极换出策略，在调用alloc_pages函数获取空闲页时，此函数如果发现无法从物理内存页分配器获得空闲页，就会进一步调用swap_out函数换出某页。</p>
+<p>本文参考：<a href="https://chyyuu.gitbooks.io/ucore_os_docs" target="_blank" rel="noopener">https://chyyuu.gitbooks.io/ucore_os_docs</a></p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/10/06/Lab2%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="next" title="Lab2物理内存管理">
+                <i class="fa fa-chevron-left"></i> Lab2物理内存管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -415,6 +551,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -435,8 +585,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -510,6 +669,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#实验执行流程"><span class="nav-number">1.</span> <span class="nav-text">实验执行流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关键数据结构"><span class="nav-number">2.</span> <span class="nav-text">关键数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#vm-struct"><span class="nav-number">2.1.</span> <span class="nav-text">vm_struct</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mm-struct"><span class="nav-number">2.2.</span> <span class="nav-text">mm_struct</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#page-fault异常处理"><span class="nav-number">3.</span> <span class="nav-text">page fault异常处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#页面置换机制"><span class="nav-number">4.</span> <span class="nav-text">页面置换机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#可以被换出的页"><span class="nav-number">4.1.</span> <span class="nav-text">可以被换出的页</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚存中的页与硬盘上的扇区之间的映射关系"><span class="nav-number">4.2.</span> <span class="nav-text">虚存中的页与硬盘上的扇区之间的映射关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行换入换出的时机"><span class="nav-number">4.3.</span> <span class="nav-text">执行换入换出的时机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#换入"><span class="nav-number">4.3.1.</span> <span class="nav-text">换入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#换出"><span class="nav-number">4.3.2.</span> <span class="nav-text">换出</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -693,6 +868,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -710,6 +889,18 @@
       <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2021/10/07/Lab3%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/';
+          this.page.identifier = '2021/10/07/Lab3虚拟内存管理/';
+          this.page.title = 'Lab3虚拟内存管理';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   

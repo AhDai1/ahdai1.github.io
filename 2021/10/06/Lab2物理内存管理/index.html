@@ -83,8 +83,8 @@
 
 <meta name="description" content="在lab2中，bootloader的工作有所增加，主要在两个方面，第一个是bootloader完成了对物理内存资源的探测工作，让ucore后续能够在探测出的物理内存情况下进行物理内存管理初始化工作。第二个是进入kern_init()函数之前，bootloader建立了一个C语言运行环境（设置堆栈），并且临时建立了一个段映射关系，为之后建立分页机制做一个准备。lab2的主题是物理内存管理，ucore">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浅谈ucoreLab2">
-<meta property="og:url" content="http://yoursite.com/2021/10/06/%E6%B5%85%E8%B0%88ucoreLab2/index.html">
+<meta property="og:title" content="Lab2物理内存管理">
+<meta property="og:url" content="http://yoursite.com/2021/10/06/Lab2%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
 <meta property="og:site_name" content="AhDai">
 <meta property="og:description" content="在lab2中，bootloader的工作有所增加，主要在两个方面，第一个是bootloader完成了对物理内存资源的探测工作，让ucore后续能够在探测出的物理内存情况下进行物理内存管理初始化工作。第二个是进入kern_init()函数之前，bootloader建立了一个C语言运行环境（设置堆栈），并且临时建立了一个段映射关系，为之后建立分页机制做一个准备。lab2的主题是物理内存管理，ucore">
 <meta property="og:locale" content="en_US">
@@ -124,7 +124,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2021/10/06/浅谈ucoreLab2/"/>
+  <link rel="canonical" href="http://yoursite.com/2021/10/06/Lab2物理内存管理/"/>
 
 
 
@@ -134,7 +134,7 @@
 
 
 
-  <title>浅谈ucoreLab2 | AhDai</title>
+  <title>Lab2物理内存管理 | AhDai</title>
   
 
 
@@ -325,7 +325,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/06/%E6%B5%85%E8%B0%88ucoreLab2/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/06/Lab2%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="AhDai">
@@ -342,7 +342,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">浅谈ucoreLab2</h1>
+          <h1 class="post-title" itemprop="name headline">Lab2物理内存管理</h1>
         
 
         <div class="post-meta">
@@ -395,9 +395,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2021/10/06/%E6%B5%85%E8%B0%88ucoreLab2/#comments" itemprop="discussionUrl">
+                <a href="/2021/10/06/Lab2%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2021/10/06/浅谈ucoreLab2/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2021/10/06/Lab2物理内存管理/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -539,6 +539,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2021/10/07/Lab3%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="prev" title="Lab3虚拟内存管理">
+                Lab3虚拟内存管理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -628,7 +632,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -639,7 +643,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -727,7 +731,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">50.4k</span>
+    <span title="Site words total count">52.5k</span>
   
 </div>
 
@@ -749,7 +753,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">全站共 50.4k 字</span>
+  <span class="post-count">全站共 52.5k 字</span>
 </div>
 
         
@@ -906,9 +910,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2021/10/06/%E6%B5%85%E8%B0%88ucoreLab2/';
-          this.page.identifier = '2021/10/06/浅谈ucoreLab2/';
-          this.page.title = '浅谈ucoreLab2';
+          this.page.url = 'http://yoursite.com/2021/10/06/Lab2%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/';
+          this.page.identifier = '2021/10/06/Lab2物理内存管理/';
+          this.page.title = 'Lab2物理内存管理';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://.disqus.com/embed.js';
