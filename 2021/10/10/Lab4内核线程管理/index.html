@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="LWP," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -81,17 +81,16 @@
 
 
 
-<meta name="description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210">
+<meta name="description" content="在lab2和lab3中ucore完成了物理和虚拟内存管理，这给创建内核线打下了提供内存管理的基础。内核线程是一种特殊的进程，内核线程与用户进程的区别如下：1、内核线程只运行在内核态2、用户进程会在用户态和内核态交替运行3、所有内核线程共用ucore内核内存空间，不需要为每个内核线程维护单独的内存空间4、用户进程需要维护各自的内存空间 实验执行流程概述在lab3时，整个控制流还是一条线串行执行，而l">
 <meta property="og:type" content="article">
-<meta property="og:title" content="多线程拷贝文件">
-<meta property="og:url" content="http://yoursite.com/2020/05/20/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%8B%B7%E8%B4%9D%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:title" content="Lab4内核线程管理">
+<meta property="og:url" content="http://yoursite.com/2021/10/10/Lab4%E5%86%85%E6%A0%B8%E7%BA%BF%E7%A8%8B%E7%AE%A1%E7%90%86/index.html">
 <meta property="og:site_name" content="AhDai">
-<meta property="og:description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210">
+<meta property="og:description" content="在lab2和lab3中ucore完成了物理和虚拟内存管理，这给创建内核线打下了提供内存管理的基础。内核线程是一种特殊的进程，内核线程与用户进程的区别如下：1、内核线程只运行在内核态2、用户进程会在用户态和内核态交替运行3、所有内核线程共用ucore内核内存空间，不需要为每个内核线程维护单独的内存空间4、用户进程需要维护各自的内存空间 实验执行流程概述在lab3时，整个控制流还是一条线串行执行，而l">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-05-20T11:50:14.577Z">
-<meta property="article:modified_time" content="2020-05-20T11:51:01.878Z">
+<meta property="article:published_time" content="2021-10-10T06:52:34.956Z">
+<meta property="article:modified_time" content="2021-10-10T06:53:01.432Z">
 <meta property="article:author" content="AhDai">
-<meta property="article:tag" content="LWP">
 <meta name="twitter:card" content="summary">
 
 
@@ -122,7 +121,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/05/20/多线程拷贝文件/"/>
+  <link rel="canonical" href="http://yoursite.com/2021/10/10/Lab4内核线程管理/"/>
 
 
 
@@ -132,7 +131,7 @@
 
 
 
-  <title>多线程拷贝文件 | AhDai</title>
+  <title>Lab4内核线程管理 | AhDai</title>
   
 
 
@@ -323,7 +322,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/20/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%8B%B7%E8%B4%9D%E6%96%87%E4%BB%B6/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/10/Lab4%E5%86%85%E6%A0%B8%E7%BA%BF%E7%A8%8B%E7%AE%A1%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="AhDai">
@@ -340,7 +339,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">多线程拷贝文件</h1>
+          <h1 class="post-title" itemprop="name headline">Lab4内核线程管理</h1>
         
 
         <div class="post-meta">
@@ -352,8 +351,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-20T19:50:14+08:00">
-                2020-05-20
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-10-10T14:52:34+08:00">
+                2021-10-10
               </time>
             
 
@@ -375,8 +374,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
+                  <a href="/categories/ucore/" itemprop="url" rel="index">
+                    <span itemprop="name">ucore</span>
                   </a>
                 </span>
 
@@ -393,9 +392,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/05/20/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%8B%B7%E8%B4%9D%E6%96%87%E4%BB%B6/#comments" itemprop="discussionUrl">
+                <a href="/2021/10/10/Lab4%E5%86%85%E6%A0%B8%E7%BA%BF%E7%A8%8B%E7%AE%A1%E7%90%86/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2020/05/20/多线程拷贝文件/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2021/10/10/Lab4内核线程管理/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -427,7 +426,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  602 字 
+                  2.5k 字 
                 </span>
               
 
@@ -443,7 +442,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  3 分钟
+                  9 分钟
                 </span>
               
             </div>
@@ -464,8 +463,42 @@
       
 
       
-        <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;errno.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dirent.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/time.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> THREAD_COUNT 5</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> THREAD_BUF 1024</span></span><br><span class="line"><span class="comment">//作为线程创建的参数，包括两个文件的文件描述符和每个线程复制的大小</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">thread_block</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> fd1;</span><br><span class="line">	<span class="keyword">int</span> fd2;</span><br><span class="line">	<span class="keyword">size_t</span> start;</span><br><span class="line">	<span class="keyword">size_t</span> <span class="built_in">end</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">thread_copy</span><span class="params">(<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">thread_block</span> *<span class="title">block</span> = (<span class="title">struct</span> <span class="title">thread_block</span> *)<span class="title">arg</span>;</span></span><br><span class="line">	<span class="keyword">char</span> buf[THREAD_BUF];</span><br><span class="line">	<span class="keyword">size_t</span> count = block-&gt;start;</span><br><span class="line">	<span class="comment">//打印线程ID和线程复制的起始位置和终点位置</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"thread id = %lu start = %ld end = %ld\n"</span>, pthread_self(), block-&gt;start, block-&gt;<span class="built_in">end</span>);</span><br><span class="line">	<span class="keyword">int</span> ret = lseek(block-&gt;fd1, block-&gt;start, SEEK_SET);<span class="comment">//将文件指针移到线程复制的起始位置</span></span><br><span class="line">	<span class="keyword">if</span>(ret == <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"lseek fd1 "</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	ret = lseek(block-&gt;fd2, block-&gt;start, SEEK_SET);</span><br><span class="line">	<span class="keyword">if</span>(ret == <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"lseek fd2 "</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span>(count &lt; block-&gt;<span class="built_in">end</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">size_t</span> read_size, write_size;</span><br><span class="line">		read_size = <span class="built_in">read</span>(block-&gt;fd1, buf, <span class="keyword">sizeof</span>(buf));</span><br><span class="line">		<span class="keyword">if</span>(read_size &gt; <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			count += read_size;<span class="comment">//加上读到的内容</span></span><br><span class="line">			<span class="keyword">if</span>(read_size == <span class="number">-1</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				perror(<span class="string">"read "</span>);</span><br><span class="line">				<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">char</span> *ptr = buf;<span class="comment">//*</span></span><br><span class="line">			<span class="keyword">do</span><span class="comment">//避免一次性不能写完全</span></span><br><span class="line">			&#123;</span><br><span class="line">				write_size = <span class="built_in">write</span>(block-&gt;fd2, ptr, read_size);</span><br><span class="line">				<span class="keyword">if</span>(write_size == <span class="number">-1</span>)</span><br><span class="line">				&#123;</span><br><span class="line">					perror(<span class="string">"write "</span>);</span><br><span class="line">					<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span> <span class="keyword">if</span>(write_size &gt; <span class="number">0</span>)</span><br><span class="line">				&#123;</span><br><span class="line">					ptr += write_size;<span class="comment">//*</span></span><br><span class="line">					read_size -= write_size;<span class="comment">//当一次没写完时，使数据减去已写入的数据</span></span><br><span class="line">				&#125;</span><br><span class="line">			&#125;<span class="keyword">while</span>(write_size != <span class="number">0</span>);<span class="comment">//当没有数据可写的时候退出</span></span><br><span class="line">		&#125;	</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"thread exit %lu\n"</span>, pthread_self());</span><br><span class="line">	pthread_exit(<span class="literal">NULL</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(argc &lt; <span class="number">3</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"./a.out error\n"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> fd1 = <span class="built_in">open</span>(argv[<span class="number">1</span>], O_RDONLY);</span><br><span class="line">	<span class="keyword">if</span>(fd1 &lt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"open file1:"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> fd2 = <span class="built_in">open</span>(argv[<span class="number">2</span>], O_CREAT | O_WRONLY, <span class="number">0664</span>);</span><br><span class="line">	<span class="keyword">if</span>(fd2 &lt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"open file2:"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">stat</span> <span class="title">st</span>;</span></span><br><span class="line">	<span class="keyword">int</span> ret = fstat(fd1, &amp;st);<span class="comment">//获取文件状态</span></span><br><span class="line">	<span class="keyword">if</span>(ret == <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"stat "</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">size_t</span> file_size = st.st_size;<span class="comment">//获取文件的大小</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">thread_block</span> *<span class="title">blocks</span>;</span></span><br><span class="line">	blocks = (struct thread_block *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct thread_block)* THREAD_COUNT);</span><br><span class="line">	<span class="keyword">size_t</span> percent = file_size/THREAD_COUNT;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"filesize = %ld\t each percent = %ld\n"</span>, file_size, percent);</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; THREAD_COUNT; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		blocks[i].fd1 = fd1;</span><br><span class="line">		blocks[i].fd2 = fd2;</span><br><span class="line">		blocks[i].start = i*percent;</span><br><span class="line">		blocks[i].<span class="built_in">end</span> = blocks[i].start + percent;</span><br><span class="line">	&#125;</span><br><span class="line">	blocks[i<span class="number">-1</span>].<span class="built_in">end</span> = file_size;<span class="comment">//最后一份</span></span><br><span class="line">	<span class="keyword">pthread_t</span> tid[THREAD_COUNT];</span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; THREAD_COUNT; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		ret = pthread_create(&amp;tid[i], <span class="literal">NULL</span>, thread_copy, (<span class="keyword">void</span> *)&amp;blocks[i]);</span><br><span class="line">		<span class="keyword">if</span>(ret != <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"creat error:%s\n"</span>, strerror(ret));</span><br><span class="line">			<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; THREAD_COUNT; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		ret = pthread_join(tid[i], <span class="literal">NULL</span>);</span><br><span class="line">		<span class="keyword">if</span>(ret != <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"join error:%s\n"</span>, strerror(ret));</span><br><span class="line">			<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">free</span>(blocks);</span><br><span class="line">	ret = <span class="built_in">close</span>(fd1);</span><br><span class="line">	<span class="keyword">if</span>(ret == <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"close fd1"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	ret = <span class="built_in">close</span>(fd2);</span><br><span class="line">	<span class="keyword">if</span>(ret == <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"close fd2"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"copy successful\n"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>在lab2和lab3中ucore完成了物理和虚拟内存管理，这给创建内核线打下了提供内存管理的基础。内核线程是一种特殊的进程，内核线程与用户进程的区别如下：<br>1、内核线程只运行在内核态<br>2、用户进程会在用户态和内核态交替运行<br>3、所有内核线程共用ucore内核内存空间，不需要为每个内核线程维护单独的内存空间<br>4、用户进程需要维护各自的内存空间</p>
+<h1 id="实验执行流程概述"><a href="#实验执行流程概述" class="headerlink" title="实验执行流程概述"></a>实验执行流程概述</h1><p>在lab3时，整个控制流还是一条线串行执行，而lab4在此基础上进行CPU的虚拟化，既让ucore实现分时共享CPU，实现多条控制流能够并发执行。为了实现内核线程，首先需要设计管理线程的数据结构，也就是进程控制块（在这里也可以叫做线程控制块）。如果要让内核线程运行，首先需要创建进程控制块，还需要把这些进程控制块通过链表连在一起，便于随时进行插入、删除等操作。<br>在lab4中的总控init函数中，当完成虚拟内存的初始化工作后，就调用了proc_init函数，这个函数完成了对idleproc内核线程和initproc内核线程的创建或复制工作。idleproc内核线程的工作就是不停的查询，寻找是否有其他内核线程可以执行，如果有就让调度器选择那个内核线程进行执行。<strong>所以idleproc内核线程是当ucore没有内核线程可执行的情况下才会被调用。</strong> 接着就是调用kernel_thread函数来创建initproc内核线程，initproc内核线程的工作就是显示“Hello World”，表示自己存在且能正常工作了。<br>接下来主要介绍PCB以及ucore创建并执行内核线程idleproc和内核线程initproc的两种不同方式。</p>
+<h1 id="关键数据结构–进程控制块（PCB）"><a href="#关键数据结构–进程控制块（PCB）" class="headerlink" title="关键数据结构–进程控制块（PCB）"></a>关键数据结构–进程控制块（PCB）</h1><p>在lab4中，进程管理用struct proc_struct表示，在kern/process/proc.h中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PROC_NAME_LEN               15</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">proc_struct</span> &#123;</span></span><br><span class="line">    <span class="keyword">enum</span> proc_state state; <span class="comment">// 进程状态</span></span><br><span class="line">    <span class="keyword">int</span> pid; <span class="comment">// 进程ID</span></span><br><span class="line">    <span class="keyword">int</span> runs; <span class="comment">// 运行时间</span></span><br><span class="line">    <span class="keyword">uintptr_t</span> kstack; <span class="comment">// 内核栈</span></span><br><span class="line">    <span class="keyword">volatile</span> <span class="keyword">bool</span> need_resched; <span class="comment">// 是否需要调度</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">proc_struct</span> *<span class="title">parent</span>;</span> <span class="comment">// 父进程</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">mm_struct</span> *<span class="title">mm</span>;</span> <span class="comment">// 进程的虚拟内存</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">context</span> <span class="title">context</span>;</span> <span class="comment">// 进程上下文</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">trapframe</span> *<span class="title">tf</span>;</span> <span class="comment">// 当前终端帧指</span></span><br><span class="line">    <span class="keyword">uintptr_t</span> cr3; <span class="comment">// 当前页表地址</span></span><br><span class="line">    <span class="keyword">uint32_t</span> flags; <span class="comment">// 进程属性</span></span><br><span class="line">    <span class="keyword">char</span> name[PROC_NAME_LEN + <span class="number">1</span>]; <span class="comment">// 进程名</span></span><br><span class="line">    <span class="keyword">list_entry_t</span> list_link; <span class="comment">//进程链表</span></span><br><span class="line">    <span class="keyword">list_entry_t</span> hash_link; <span class="comment">//</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>接下来对几个重要的成员变量进行解释：</p>
+<h2 id="mm"><a href="#mm" class="headerlink" title="mm"></a>mm</h2><p>内存管理的信息，包括内存映射列表，页表指针等。在lab5中涉及到了用户进程，才需要考虑用户内存空间的swap page，mm才会发挥作用，所以在lab4中mm对于内核线程并没有什么作用。但是mm里面有个很重要的pgdir，记录的是该进程使用的一级页表（页目录）的物理地址，所以用cr3代替。</p>
+<h2 id="state"><a href="#state" class="headerlink" title="state"></a>state</h2><p>进程所处的状态</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> proc_state &#123;              <span class="comment">//进程状态</span></span><br><span class="line">    PROC_UNINIT = <span class="number">0</span>,           <span class="comment">//未初始状态 </span></span><br><span class="line">    PROC_SLEEPING,             <span class="comment">//睡眠（阻塞）状态 </span></span><br><span class="line">    PROC_RUNNABLE,             <span class="comment">//运行与就绪态 </span></span><br><span class="line">    PROC_ZOMBIE,               <span class="comment">//僵死状态</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
+<h2 id="parent"><a href="#parent" class="headerlink" title="parent"></a>parent</h2><p>用户进程的父进程。在所有的进程中，只有内核创建的idleproc没有父进程。内核根据这个父子关系建立一个树形结构，用于维护一些特殊的操作。</p>
+<h2 id="context"><a href="#context" class="headerlink" title="context"></a>context</h2><p>进程的上下文，用于进程的切换。在ucore中所有的进程在内核中也是相对独立的。使用context保存寄存器的目的就在于内核态中能够进行上下文的切换。</p>
+<h2 id="tf"><a href="#tf" class="headerlink" title="tf"></a>tf</h2><p>中断帧指针，总是指向内核的某个位置。当进程从用户空间跳到内核空间时，中断帧记录了进程在被中断前的状态。当内核需要跳回用户控件时，需要调整中断帧以恢复让进程继续执行的各寄存器值。除此之外，在ucore中内核允许嵌套中断。因此为了保证嵌套中断发生时tf总指向当前的trapframe，ucore在内核栈上维护了tf的链。</p>
+<h2 id="cr3"><a href="#cr3" class="headerlink" title="cr3"></a>cr3</h2><p>保存页表的物理地址。目的就是进程切换时方便直接使用lcr3实现页表切换。当某个进程是一个普通用户态进程时，PCB中的cr3就是mm中pgdir，而当它是内核线程时候，cr3就等于boot_cr3，而boot_cr3指向了ucore启动时建立好的内核虚拟空间的页目录表首地址。</p>
+<h2 id="kstack"><a href="#kstack" class="headerlink" title="kstack"></a>kstack</h2><p>每个线程都有一个内核栈，并且位于内核地址空间的不同位置。对于内核线程，该栈就是运行时程序使用的栈，而对于普通进程，该栈是发生特权级改变的时候保存被打断的硬件信息所用的栈。</p>
+<h1 id="创建并执行内核线程"><a href="#创建并执行内核线程" class="headerlink" title="创建并执行内核线程"></a>创建并执行内核线程</h1><p>在建立PCB（proc.c中的alloc_proc函数）后，就可以通过PCB创建具体的线程/进程了。首先lab4中是对内核线程的创建，通常只是内核中的一小段代码，没有自己的专属空间。这是因为ucore启动后，已经对整个内核内存空间进行管理，通过设置页表建立了内核虚拟空间。所以内核线程就不需要再建立自己的页表，只需要共享这个内核虚拟空间就可以访问整个物理内存了。</p>
+<h2 id="创建第0个线程"><a href="#创建第0个线程" class="headerlink" title="创建第0个线程"></a>创建第0个线程</h2><p>在init.c::kern_init函数中调用了proc.c::proc_init函数。proc_init函数启动了创建内核线程的步骤。<br>首先调用alloc_proc函数来获取proc_struct结构的一块内存，作为第0个PCB。并把proc进程初步的初始化：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">proc-&gt;state = PROC_UNINIT;   <span class="comment">//设置进程为“初始”态</span></span><br><span class="line">proc-&gt;pid = <span class="number">-1</span>;             <span class="comment">//设置进程pid的未初始化值</span></span><br><span class="line">proc-&gt;cr3 = boot_cr3;       <span class="comment">//使用内核页目录表的基址</span></span><br></pre></td></tr></table></figure>
+<p>第一条语句设置了进程状态为初始态。第二条语句设置进程的pid为-1,表示进程ID还没有设置。第三条语句表示该线程在内核中运行。</p>
+<p>接下来proc_init函数对idleproc内核线程进行进一步初始化：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">idleproc-&gt;pid = <span class="number">0</span>;</span><br><span class="line">idleproc-&gt;state = PROC_RUNNABLE;</span><br><span class="line">idleproc-&gt;kstack = (<span class="keyword">uintptr_t</span>)bootstack;</span><br><span class="line">idleproc-&gt;need_resched = <span class="number">1</span>;</span><br><span class="line">set_proc_name(idleproc, <span class="string">"idle"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>第一条语句表示idleproc的合法ID为0，进一步说明idleproc是第0个线程。第二条语句改变了idleproc的状态，从初始态转变到了就绪态。第三条语句设置了idleproc所使用的内核栈的起始地址。第四条语句表示当need_resched=1时，就需要调用schedule函数要求调度器切换到其他进程执行。</p>
+<h2 id="创建第1个线程initproc"><a href="#创建第1个线程initproc" class="headerlink" title="创建第1个线程initproc"></a>创建第1个线程initproc</h2><p>第0个内核线程主要工作是完成内核中各个子系统的初始化，然后就调用kernel_thread创建了第一个内核线程。在lab4中，这个内核线程主要是输出一些字符串然后就返回了。接下来我们来分析以下创建内核线程的函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">kernel_thread(<span class="keyword">int</span> (*fn)(<span class="keyword">void</span> *), <span class="keyword">void</span> *arg, <span class="keyword">uint32_t</span> clone_flags)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">trapframe</span> <span class="title">tf</span>;</span></span><br><span class="line">    <span class="built_in">memset</span>(&amp;tf, <span class="number">0</span>, <span class="keyword">sizeof</span>(struct trapframe));</span><br><span class="line">    tf.tf_cs = KERNEL_CS;</span><br><span class="line">    tf.tf_ds = tf_struct.tf_es = tf_struct.tf_ss = KERNEL_DS;</span><br><span class="line">    tf.tf_regs.reg_ebx = (<span class="keyword">uint32_t</span>)fn;</span><br><span class="line">    tf.tf_regs.reg_edx = (<span class="keyword">uint32_t</span>)arg;</span><br><span class="line">    tf.tf_eip = (<span class="keyword">uint32_t</span>)kernel_thread_entry;</span><br><span class="line">    <span class="keyword">return</span> do_fork(clone_flags | CLONE_VM, <span class="number">0</span>, &amp;tf);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>kernel_thread函数采用了局部变量tf来保存内核线程的临时中断帧，并把中断帧指针传给do_fork函数，而do_fork函数会调用copy_thread函数在新的进程内核栈上专门给进程的中断帧分配一块空间。</p>
+<p>do_fork函数如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span></span><br><span class="line">do_fork(<span class="keyword">uint32_t</span> clone_flags, <span class="keyword">uintptr_t</span> <span class="built_in">stack</span>, struct trapframe *tf) &#123;</span><br><span class="line">    <span class="keyword">int</span> ret = -E_NO_FREE_PROC; <span class="comment">//尝试为进程分配内存</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">proc_struct</span> *<span class="title">proc</span>;</span> <span class="comment">//定义新进程</span></span><br><span class="line">    <span class="keyword">if</span> (nr_process &gt;= MAX_PROCESS) &#123; <span class="comment">//分配进程数大于4096,返回</span></span><br><span class="line">        <span class="keyword">goto</span> fork_out;  <span class="comment">//返回</span></span><br><span class="line">    &#125;</span><br><span class="line">    ret = -E_NO_MEM;  <span class="comment">//因内存不足而分配失败</span></span><br><span class="line">    <span class="keyword">if</span> ((proc = alloc_proc()) == <span class="literal">NULL</span>) &#123; <span class="comment">//分配内存失败</span></span><br><span class="line">        <span class="keyword">goto</span> fork_out; <span class="comment">//返回</span></span><br><span class="line">    &#125;</span><br><span class="line">    proc-&gt;parent = current; <span class="comment">//设置父进程名字</span></span><br><span class="line">    <span class="keyword">if</span> (setup_kstack(proc) != <span class="number">0</span>) &#123;<span class="comment">//分配内核栈</span></span><br><span class="line">        <span class="keyword">goto</span> bad_fork_cleanup_proc; <span class="comment">//返回</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (copy_mm(clone_flags, proc) != <span class="number">0</span>) &#123; <span class="comment">//复制父进程内存信息</span></span><br><span class="line">        <span class="keyword">goto</span> bad_fork_cleanup_kstack; <span class="comment">//返回</span></span><br><span class="line">    &#125;</span><br><span class="line">    copy_thread(proc, <span class="built_in">stack</span>, tf); <span class="comment">//复制中断帧和上下文信息</span></span><br><span class="line">    <span class="keyword">bool</span> intr_flag; </span><br><span class="line">    local_intr_save(intr_flag);  <span class="comment">//屏蔽中断，intr_flag置为1</span></span><br><span class="line">    &#123;</span><br><span class="line">        proc-&gt;pid = get_pid(); <span class="comment">//获取当前进程PID</span></span><br><span class="line">        hash_proc(proc);  <span class="comment">//建立hash映射</span></span><br><span class="line">        list_add(&amp;proc_list,&amp;(proc-&gt;list_link));<span class="comment">//加入进程链表</span></span><br><span class="line">        nr_process ++;  <span class="comment">//进程数加一</span></span><br><span class="line">    &#125;</span><br><span class="line">    local_intr_restore(intr_flag); <span class="comment">//恢复中断</span></span><br><span class="line">    wakeup_proc(proc); <span class="comment">//唤醒新进程</span></span><br><span class="line">    ret = proc-&gt;pid; <span class="comment">//返回当前进程的PID</span></span><br><span class="line">fork_out:  <span class="comment">//已分配进程数大于4096</span></span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">bad_fork_cleanup_kstack: <span class="comment">//分配内核栈失败</span></span><br><span class="line">    put_kstack(proc);</span><br><span class="line">bad_fork_cleanup_proc: </span><br><span class="line">    kfree(proc);</span><br><span class="line">    <span class="keyword">goto</span> fork_out;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>do_fork主要做了以下7件事情：<br>1、分配并初始化PCB（alloc_proc函数）<br>2、分配并初始化内核栈（setup_stack函数）<br>3、根据clone_flag标志复制或共享进程内存管理结构（copy_mm函数）<br>4、设置进程在内核运行和调度所需的中断帧和执行上下文（copy_thread函数）<br>5、把设置好的PCB放入hash_list和proc_list两个全局链表中<br>6、将进程设置为就绪态<br>7、返回进程的pid</p>
+<h2 id="调度并执行内核线程initproc"><a href="#调度并执行内核线程initproc" class="headerlink" title="调度并执行内核线程initproc"></a>调度并执行内核线程initproc</h2><p>在ucore执行完proc_init函数后，就创建好了idleproc和initproc，目前的执行现场就是idleproc，等到执行到init函数的最后一个函数cpu_idle之前，ucore的所有初始化工作就结束了，idleproc调用cpu_idle函数让出CPU给其他线程执行。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">cpu_idle(<span class="keyword">void</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (current-&gt;need_resched) &#123;</span><br><span class="line">            schedule();</span><br><span class="line">            ……</span><br></pre></td></tr></table></figure>
+
+<p>在ucore lab4中只实现了一个最简单的FIFO调度器，核心就是schedule函数，执行逻辑如下：<br>1、设置当前的内核线程current-&gt;need_resched为0<br>2、在proc_list队列中查找下一个处于就绪态的PCB<br>3、找到以后就调用proc_run函数，保存当前进程的上下文，恢复新进程的执行现场。<br>至此新进程就开始执行了</p>
+<p>至此lab4的工作大致描述完毕。</p>
+<p>本文参考：<br><a href="https://chyyuu.gitbooks.io/ucore_os_docs" target="_blank" rel="noopener">https://chyyuu.gitbooks.io/ucore_os_docs</a></p>
+<p><a href="https://blog.csdn.net/tangyuanzon" target="_blank" rel="noopener">https://blog.csdn.net/tangyuanzon</a></p>
 
       
     </div>
@@ -481,12 +514,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/LWP/" rel="tag"># LWP</a>
-          
-        </div>
-      
 
       
       
@@ -496,8 +523,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/05/20/%E7%BA%BF%E7%A8%8B%E5%B1%9E%E6%80%A7/" rel="next" title="线程属性">
-                <i class="fa fa-chevron-left"></i> 线程属性
+              <a href="/2021/10/07/Lab3%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="next" title="Lab3虚拟内存管理">
+                <i class="fa fa-chevron-left"></i> Lab3虚拟内存管理
               </a>
             
           </div>
@@ -505,10 +532,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/05/26/%E6%A0%91%E7%9A%84%E9%9D%9E%E9%80%92%E5%BD%92%E9%81%8D%E5%8E%86/" rel="prev" title="树的非递归遍历">
-                树的非递归遍历 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -570,8 +593,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -645,6 +677,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#实验执行流程概述"><span class="nav-number">1.</span> <span class="nav-text">实验执行流程概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关键数据结构–进程控制块（PCB）"><span class="nav-number">2.</span> <span class="nav-text">关键数据结构–进程控制块（PCB）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mm"><span class="nav-number">2.1.</span> <span class="nav-text">mm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#state"><span class="nav-number">2.2.</span> <span class="nav-text">state</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#parent"><span class="nav-number">2.3.</span> <span class="nav-text">parent</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#context"><span class="nav-number">2.4.</span> <span class="nav-text">context</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tf"><span class="nav-number">2.5.</span> <span class="nav-text">tf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cr3"><span class="nav-number">2.6.</span> <span class="nav-text">cr3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kstack"><span class="nav-number">2.7.</span> <span class="nav-text">kstack</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建并执行内核线程"><span class="nav-number">3.</span> <span class="nav-text">创建并执行内核线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建第0个线程"><span class="nav-number">3.1.</span> <span class="nav-text">创建第0个线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建第1个线程initproc"><span class="nav-number">3.2.</span> <span class="nav-text">创建第1个线程initproc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度并执行内核线程initproc"><span class="nav-number">3.3.</span> <span class="nav-text">调度并执行内核线程initproc</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -852,9 +900,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2020/05/20/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%8B%B7%E8%B4%9D%E6%96%87%E4%BB%B6/';
-          this.page.identifier = '2020/05/20/多线程拷贝文件/';
-          this.page.title = '多线程拷贝文件';
+          this.page.url = 'http://yoursite.com/2021/10/10/Lab4%E5%86%85%E6%A0%B8%E7%BA%BF%E7%A8%8B%E7%AE%A1%E7%90%86/';
+          this.page.identifier = '2021/10/10/Lab4内核线程管理/';
+          this.page.title = 'Lab4内核线程管理';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://.disqus.com/embed.js';
