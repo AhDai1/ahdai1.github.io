@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="true" />
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="EventLoop构造函数首先在muduo中强调的就是one loop per thread，也就是每个线程只能由一个EventLoop对象，所以EventLoop的构造函数会检查当前线程是否创建了其他的EventLoop。实现方式是通过EventLoop的构造函数会记住本对象所属的线程id。 下面是EventLoop的构造函数： 1234567891011121314151617EventLoo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="muduo分析之EventLoop、Channel、Poller">
+<meta property="og:url" content="http://yoursite.com/2021/11/02/muduo%E5%88%86%E6%9E%90%E4%B9%8BEventLoop%E3%80%81Channel%E3%80%81Poller/index.html">
+<meta property="og:site_name" content="AhDai">
+<meta property="og:description" content="EventLoop构造函数首先在muduo中强调的就是one loop per thread，也就是每个线程只能由一个EventLoop对象，所以EventLoop的构造函数会检查当前线程是否创建了其他的EventLoop。实现方式是通过EventLoop的构造函数会记住本对象所属的线程id。 下面是EventLoop的构造函数： 1234567891011121314151617EventLoo">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-11-02T13:14:49.373Z">
+<meta property="article:modified_time" content="2021-11-02T13:15:26.753Z">
+<meta property="article:author" content="AhDai">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/11/02/muduo分析之EventLoop、Channel、Poller/"/>
+
+
+
+
+
+  <meta name="baidu-site-verification" content="code-Aau2RjTaff" />
+
+
+
+  <title>muduo分析之EventLoop、Channel、Poller | AhDai</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">AhDai</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/02/muduo%E5%88%86%E6%9E%90%E4%B9%8BEventLoop%E3%80%81Channel%E3%80%81Poller/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AhDai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AhDai">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">muduo分析之EventLoop、Channel、Poller</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-11-02T21:14:49+08:00">
+                2021-11-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/muduo/" itemprop="url" rel="index">
+                    <span itemprop="name">muduo</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/11/02/muduo%E5%88%86%E6%9E%90%E4%B9%8BEventLoop%E3%80%81Channel%E3%80%81Poller/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2021/11/02/muduo分析之EventLoop、Channel、Poller/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+          <span class="post-meta-divider">|</span>
+          <span class="post-meta-item-icon"
+          >
+          <i class="fa fa-"></i>
+           post.views: 
+    	  <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+	  </span>
+
+	  
+
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  1.9k 字 
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  8 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="EventLoop"><a href="#EventLoop" class="headerlink" title="EventLoop"></a>EventLoop</h1><h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><p>首先在muduo中强调的就是<strong>one loop per thread</strong>，也就是每个线程只能由一个EventLoop对象，所以EventLoop的构造函数会检查当前线程是否创建了其他的EventLoop。<br>实现方式是通过EventLoop的构造函数会记住本对象所属的线程id。</p>
+<p>下面是EventLoop的构造函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">EventLoop::EventLoop():looping_(<span class="literal">false</span>),<span class="comment">//事件循环是否开始</span></span><br><span class="line">threadId_(CurrentThread::tid()),<span class="comment">//获取当前线程id</span></span><br><span class="line">quit_(<span class="literal">false</span>),</span><br><span class="line">poller_(<span class="keyword">new</span> Poller(<span class="keyword">this</span>)),<span class="comment">//创建一个poll</span></span><br><span class="line">timerQueue_(<span class="keyword">new</span> TimerQueue(<span class="keyword">this</span>)),</span><br><span class="line">wakeupFd_(createEventfd()),<span class="comment">//创建了eventfd作为线程间等待、唤醒</span></span><br><span class="line">wakeupChannel_(<span class="keyword">new</span> Channel(<span class="keyword">this</span>,wakeupFd_))<span class="comment">//创建wakeupChannel通道</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(t_loopInThisThread)&#123;<span class="comment">//判断是否已有EventLoop</span></span><br><span class="line">        perror(<span class="string">"Another EventLoop"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        t_loopInThisThread=<span class="keyword">this</span>;</span><br><span class="line">    wakeupChannel_-&gt;setReadCallback(boost::bind(&amp;EventLoop::handleRead,<span class="keyword">this</span>));<span class="comment">//设定wakeupChannel的回调函数</span></span><br><span class="line">    wakeupChannel_-&gt;enableReading();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="处理活跃事件"><a href="#处理活跃事件" class="headerlink" title="处理活跃事件"></a>处理活跃事件</h2><p>处理网络事件时，一般通过select/poll/epoll阻塞等待，根据返回的事件调用相应的处理函数，下面函数就是主要处理这件事情的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">EventLoop::loop</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    assert(!looping_);</span><br><span class="line">    assertInLoopThread();<span class="comment">//断言处于创建线程中</span></span><br><span class="line">    looping_=<span class="literal">true</span>;</span><br><span class="line">    quit_ = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">while</span>(!quit_)</span><br><span class="line">    &#123;</span><br><span class="line">        activeChannels_.clear();</span><br><span class="line">        pollReturnTime_=poller_-&gt;poll(kPollTimeMs,&amp;activeChannels_);<span class="comment">//调用poll返回活跃的事件，也有可能被唤醒</span></span><br><span class="line">        <span class="keyword">for</span>(ChannelList::iterator it = activeChannels_.begin();it != activeChannels_.end();it++)&#123;</span><br><span class="line">            (*it)-&gt;handleEvent(pollReturnTime_);<span class="comment">//遍历通道来唤醒</span></span><br><span class="line">        &#125;</span><br><span class="line">        doPendingFunctors();<span class="comment">//处理用户回调函数</span></span><br><span class="line">    &#125;</span><br><span class="line">    looping_ = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个线程其实就是一个IO事件线程，阻塞等待活跃事件，<strong>活跃的描述符通过activeChannels_带回来</strong>，然后依次进行处理。这个在后面进行介绍。</p>
+<h2 id="执行用户回调函数"><a href="#执行用户回调函数" class="headerlink" title="执行用户回调函数"></a>执行用户回调函数</h2><p>在上面的loop()函数中，执行完所有的event后，<strong>有一个doPendingFunctors()</strong>，用来执行用户指定的回调函数。其实就是让IO线程来执行额外的计算任务的，如果没有发生事件那么loop()大概率会阻塞在poll上，所以可以让IO线程空闲时进行处理。</p>
+<p>由于在muduo中使用的时one loop per thread，所以就需要用到runInloop()。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">EventLoop::runInLoop</span><span class="params">(<span class="keyword">const</span> Functor&amp; cb)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(isInLoopThread())&#123;</span><br><span class="line">        cb();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        queueInLoop(cb);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">EventLoop::queueInLoop</span><span class="params">(<span class="keyword">const</span> Functor&amp; cb)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">MutexLockGuard <span class="title">lock</span><span class="params">(mutex_)</span></span>;</span><br><span class="line">        pendingFunctors_.push_back(cb);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!isInLoopThread() || callingPendingFunctors_)&#123;</span><br><span class="line">        wakeup();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是我认为非常精妙的一个地方，在runInloop()中，<strong>如果是IO线程主动调用该函数想要执行，那么就直接调用该函数，如果是其他线程给IO线程的任务，那么其他线程需要把回调函数加入IO线程的队列等待执行。这样不需要加锁就可以保证安全的在线程间进行任务调配。</strong><br>接下来queueInloop()，因为pendingFunctors_是暴露给其他线程的，所以需要锁住，然后当加入到回调队列后，当然希望IO线程尽快执行任务，所以立即唤醒IO线程。而这个唤醒是通过eventfd来实现的。</p>
+<h2 id="eventfd"><a href="#eventfd" class="headerlink" title="eventfd"></a>eventfd</h2><p>poll的唤醒操作是通过eventfd来实现的，实现的方式就是在唤醒的过程中调用write()函数，唤醒之后调用之前注册好的回调函数handleRead()。也就是EventLoop构造函数中的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设定wakeupChannel的回调函数</span></span><br><span class="line">wakeupChannel_-&gt;setReadCallback(boost::bind(&amp;EventLoop::handleRead,<span class="keyword">this</span>));</span><br><span class="line">wakeupChannel_-&gt;enableReading();</span><br></pre></td></tr></table></figure>
+<p>调用write()来唤醒：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">EventLoop::wakeup</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">uint64_t</span> one =<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">ssize_t</span>  n = ::write(wakeupFd_,&amp;one,<span class="keyword">sizeof</span>(one));</span><br><span class="line">    <span class="keyword">if</span>(n!=<span class="keyword">sizeof</span>(one))&#123;</span><br><span class="line">        perror(<span class="string">"EventLoop::wakeup() writes"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h1><p><strong>Channel是muduo的Reactor模式的关键结构，也就是负责对描述符及事件的封装以及分发。</strong></p>
+<p>每个Channel对象只属于一个EventLoop，因此每个Channel对象都只属于某一个IO线程。</p>
+<p>每个Channel对象只负责一个文件描述符的事件分发，但并不拥有这个fd也就是不负责fd的创建以及关闭。</p>
+<p>Channel的函数成员都只能在IO线程调用，所以可以不用加锁。</p>
+<h2 id="构造函数-1"><a href="#构造函数-1" class="headerlink" title="构造函数"></a>构造函数</h2><p>首先我们来看Channel的构造函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Channel::Channel(EventLoop* loop,<span class="keyword">int</span> fdArg):</span><br><span class="line">loop_(loop),<span class="comment">//保存EventLoop的指针</span></span><br><span class="line">fd_(fdArg),<span class="comment">//描述符</span></span><br><span class="line">events_(<span class="number">0</span>),<span class="comment">//用户关心的事件</span></span><br><span class="line">revents_(<span class="number">0</span>),<span class="comment">//实际发生的事件</span></span><br><span class="line">index_(<span class="number">-1</span>),<span class="comment">//记录当前fd在pollfd的位置</span></span><br><span class="line">eventHanding_(<span class="literal">false</span>)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>构造函数设置了该Channel所属的EventLoop和所关心的fd。</p>
+<h2 id="handleEvent"><a href="#handleEvent" class="headerlink" title="handleEvent"></a>handleEvent</h2><p>Channel::handleEvent()是Channel的核心部分，由EventLoop::loop()调用，是根据revents_的值分别调用不同的回调函数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Channel::handleEvent</span><span class="params">(Timestamp receiveTime)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    eventHanding_=<span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span>(revents_ &amp; POLLNVAL)&#123;</span><br><span class="line">        perror(<span class="string">"Channel::handle_event() POLLNVAL"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>((revents_&amp; POLLHUP) &amp;&amp; !(revents_ &amp; POLLIN))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(closeCallback_) closeCallback_();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(revents_ &amp; (POLLERR | POLLNVAL))&#123;</span><br><span class="line">        <span class="keyword">if</span>(errCallback_) errCallback_();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(revents_ &amp; (POLLIN | POLLPRI | POLLRDHUP))&#123;</span><br><span class="line">        <span class="keyword">if</span>(readCallback_) readCallback_(receiveTime);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(revents_ &amp; POLLOUT)&#123;</span><br><span class="line">        <span class="keyword">if</span>(writeCallback_) writeCallback_();</span><br><span class="line">    &#125;</span><br><span class="line">    eventHanding_=<span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="update"><a href="#update" class="headerlink" title="update"></a>update</h2><p>EventLoop和Channel配合协调工作的一个函数就是update()，它将二者联系起来。所以我们可以从EventLoop中的wakeupfd来分析。在EventLoop的构造函数中有这么一行代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wakeupChannel_-&gt;enableReading();</span><br></pre></td></tr></table></figure>
+<p>简单来说这行代码干了两件事情，<strong>一件事设置关心的事件为POLL_IN，事件可读。<br>第二件事是将fd添加到Pollfd数组中。</strong><br>第二件事以此调用Channel::update—&gt;EventLooop::updateChannel—&gt;Poller::updateChannel。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Channel::<span class="keyword">void</span> <span class="title">enableReading</span><span class="params">()</span> </span>&#123; events_ |= kReadEvent; update(); &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Channel::update</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    loop_-&gt;updateChannel(<span class="keyword">this</span>);<span class="comment">//将指针传到了EventLoop</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">EventLoop::updateChannel</span><span class="params">(Channel* channel)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    assert(channel-&gt;ownerLoop() == <span class="keyword">this</span>);</span><br><span class="line">    assertInLoopThread();</span><br><span class="line">    poller_-&gt;updateChannel(channel);<span class="comment">//将Channel指针传给Poller</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Poller::updateChannel()函数在下一节介绍。</p>
+<h1 id="Poller"><a href="#Poller" class="headerlink" title="Poller"></a>Poller</h1><p>接下来我们来看Poller，Poller class是对IO multiplexing的封装。同样也是<strong>Reactor的关键部分，负责获取活跃的事件。</strong></p>
+<p>Poller是EventLoop的间接成员，只供owner EventLoop在IO线程内调用，因此无需加锁。生命周期与EventLoop相等。</p>
+<p>Poller并不拥有Channel，Channel在析构之前必须自己unregister，避免空悬指针。</p>
+<h2 id="poll"><a href="#poll" class="headerlink" title="poll()"></a>poll()</h2><p>Poller::poll()是Poller的核心功能，它调用::poll()获得当前活动的IO事件，然后填充调用方传入的activeChannels，并返回::poll()的return时刻。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Timestamp <span class="title">Poller::poll</span><span class="params">(<span class="keyword">int</span> timeoutms, ChannelList* activeChannels)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> numEvents = ::poll(&amp;*pollfds_.begin(),pollfds_.size(),timeoutms);<span class="comment">//poll调用</span></span><br><span class="line">    <span class="function">Timestamp <span class="title">now</span><span class="params">(Timestamp::now())</span></span>;</span><br><span class="line">    <span class="keyword">if</span>(numEvents&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        fillActiveChannels(numEvents,activeChannels);<span class="comment">//填充活跃的事件Channel</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(numEvents ==<span class="number">0</span>)&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(numEvents&lt;<span class="number">0</span>)&#123;</span><br><span class="line">        perror(<span class="string">"Poller::poll()"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> now;<span class="comment">//返回poll的return时间</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="fillActiveChannels"><a href="#fillActiveChannels" class="headerlink" title="fillActiveChannels"></a>fillActiveChannels</h2><p>当有活跃事件返回时，调用fillActiveChannels()遍历pollfds_，找出有活动事件的fd，把它对应的Channel填入activeChannels。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Poller::fillActiveChannels</span><span class="params">(<span class="keyword">int</span> numEvents, ChannelList* activeChannels)</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(PollFdList::const_iterator pfd = pollfds_.begin();pfd != pollfds_.end() &amp;&amp; numEvents &gt; <span class="number">0</span>;pfd++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(pfd-&gt;revents &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            --numEvents;</span><br><span class="line">            ChannelMap::const_iterator ch = channels_.find(pfd-&gt;fd);</span><br><span class="line">            assert(ch != channels_.end());</span><br><span class="line">            Channel* channel = ch-&gt;second;</span><br><span class="line">            assert(channel-&gt;fd() == pfd-&gt;fd);</span><br><span class="line">            channel-&gt;set_revents(pfd-&gt;revents);</span><br><span class="line">            activeChannels-&gt;push_back(channel);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为了提前结束循环，每找到一个活跃的fd就将numEvents减一，这样当numEvents为0的时候就表示活动的fd已经找完了。</p>
+<h2 id="updateChannel"><a href="#updateChannel" class="headerlink" title="updateChannel"></a>updateChannel</h2><p>接下来我们来分析上一节提到的Poller::updateChannel()，在得到了Channel指针以后，<strong>负责维护和更新pollfds_数组</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Poller::updateChannel</span><span class="params">(Channel* channel)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    assertInLoopThread();</span><br><span class="line">    <span class="keyword">if</span>(channel-&gt;index()&lt;<span class="number">0</span>)&#123;<span class="comment">//new one</span></span><br><span class="line">        assert(channels_.find(channel-&gt;fd()) == channels_.end());</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">pollfd</span> <span class="title">pfd</span>;</span><span class="comment">//pollfd结构体</span></span><br><span class="line">        pfd.fd = channel-&gt;fd();</span><br><span class="line">        pfd.events = <span class="keyword">static_cast</span>&lt;short&gt;(channel-&gt;events());</span><br><span class="line">        pfd.revents =<span class="number">0</span>;</span><br><span class="line">        <span class="comment">//pollfds_是pollfd类型的vector，充当poll的第一个参数</span></span><br><span class="line">        pollfds_.push_back(pfd);</span><br><span class="line">        <span class="keyword">int</span> index = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(pollfds_.size())<span class="number">-1</span>;<span class="comment">//重新计算索引，方便下次快速定位</span></span><br><span class="line">        channel-&gt;set_index(index);</span><br><span class="line">        channels_[pfd.fd] = channel;<span class="comment">//channels_是fd和channel的一个map</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        assert(channels_.find(channel-&gt;fd()) != channels_.end());</span><br><span class="line">        assert(channels_[channel-&gt;fd()] == channel);</span><br><span class="line">        <span class="keyword">int</span> index = channel-&gt;index();</span><br><span class="line">        assert(index&gt;=<span class="number">0</span>&amp;&amp;index &lt; <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(pollfds_.size()));<span class="comment">//////</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">pollfd</span>&amp; <span class="title">pfd</span> = <span class="title">pollfds_</span>[<span class="title">index</span>];</span></span><br><span class="line">        assert(pfd.fd == channel-&gt;fd() || pfd.fd == -channel-&gt;fd()<span class="number">-1</span>);</span><br><span class="line">        pfd.events = <span class="keyword">static_cast</span>&lt;short&gt;(channel-&gt;events());</span><br><span class="line">        pfd.revents = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(channel-&gt;isNoneEvent())&#123;</span><br><span class="line">            pfd.fd = -channel-&gt;fd()<span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/10/10/Lab4%E5%86%85%E6%A0%B8%E7%BA%BF%E7%A8%8B%E7%AE%A1%E7%90%86/" rel="next" title="Lab4内核线程管理">
+                <i class="fa fa-chevron-left"></i> Lab4内核线程管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpg"
+                alt="AhDai" />
+            
+              <p class="site-author-name" itemprop="name">AhDai</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ahdai1" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#EventLoop"><span class="nav-number">1.</span> <span class="nav-text">EventLoop</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数"><span class="nav-number">1.1.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理活跃事件"><span class="nav-number">1.2.</span> <span class="nav-text">处理活跃事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行用户回调函数"><span class="nav-number">1.3.</span> <span class="nav-text">执行用户回调函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eventfd"><span class="nav-number">1.4.</span> <span class="nav-text">eventfd</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Channel"><span class="nav-number">2.</span> <span class="nav-text">Channel</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数-1"><span class="nav-number">2.1.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#handleEvent"><span class="nav-number">2.2.</span> <span class="nav-text">handleEvent</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#update"><span class="nav-number">2.3.</span> <span class="nav-text">update</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Poller"><span class="nav-number">3.</span> <span class="nav-text">Poller</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#poll"><span class="nav-number">3.1.</span> <span class="nav-text">poll()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fillActiveChannels"><span class="nav-number">3.2.</span> <span class="nav-text">fillActiveChannels</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#updateChannel"><span class="nav-number">3.3.</span> <span class="nav-text">updateChannel</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">AhDai</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">56.8k</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">全站共 56.8k 字</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2021/11/02/muduo%E5%88%86%E6%9E%90%E4%B9%8BEventLoop%E3%80%81Channel%E3%80%81Poller/';
+          this.page.identifier = '2021/11/02/muduo分析之EventLoop、Channel、Poller/';
+          this.page.title = 'muduo分析之EventLoop、Channel、Poller';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'X8RkIsIDA1jAfry74XrNCXpO-gzGzoHsz',
+        appKey: 'yszI0pH8Wwt9LuKX3v9wXO9E',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
