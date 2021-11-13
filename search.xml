@@ -1301,7 +1301,7 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct
 <p>本文参考：<a href="https://chyyuu.gitbooks.io/ucore_os_docs" target="_blank" rel="noopener">https://chyyuu.gitbooks.io/ucore_os_docs</a></p>
 ]]></content>
       <categories>
-        <category>ucore·</category>
+        <category>ucore</category>
       </categories>
   </entry>
   <entry>
@@ -1527,7 +1527,7 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct
 <h2 id="TcpConnection生命周期的步骤"><a href="#TcpConnection生命周期的步骤" class="headerlink" title="TcpConnection生命周期的步骤"></a>TcpConnection生命周期的步骤</h2><p>1、在TcpServer中，当新连接到来时用map&lt;string, std::shared_ptr<TcpConnection>&gt;管理TcpConnection对象，此时引用计数为1。<br>2、在TcpConnection::connectEstablished()内将TcpConnection对象指针给Channel的std::weak_ptr<void> tie_。弱指针不增加引用计数，依旧为1。<br>3、当客户端选择关闭连接时，TcpConnection的Channel调用的时读事件，在TcpConnection::handleRead()内将weak_ptr提升为shared_ptr，引用计数为2。<br>4、再调用TcpConnection::handleRead()，判断读取到的字节为0，再调用TcpConnection::handleClose()，在这里又一次shared_ptr<TcpConnection>，引用计数为3。<br>5、再调用TcpConnection的回调函数TcpServer::removeConnection()，然后再交给EventLoop做最后的处理。<br>6、最后调用TcpServer::removeConnectionInLoop()，在这里将第一步加入map容器内的TcpConnection指针移除，引用计数为2。<br>7、在TcpServer::removeConnectionInLoop()中构造了一个std::bind(&amp;TcpConnection::connectDestroyed, conn)新的对象，引用计数为3。<br>8、开始函数的返回，结束TcpConnection::handleClose()函数，回收一个智能指针，引用计数为2。<br>9、结束Channel::handleEvent()函数，回收一个智能指针，引用计数为1。<br>10、最后一个引用会在EventLoop函数内调用完TcpConnection::connectionDestroyes()后，TcpConnection最终被释放。</p>
 ]]></content>
       <categories>
-        <category>mnuduo</category>
+        <category>muduo</category>
       </categories>
   </entry>
 </search>
