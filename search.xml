@@ -1530,4 +1530,37 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct
         <category>muduo</category>
       </categories>
   </entry>
+  <entry>
+    <title>muduo分析之Buffer</title>
+    <url>/2021/11/14/muduo%E5%88%86%E6%9E%90%E4%B9%8BBuffer/</url>
+    <content><![CDATA[<h1 id="Buffer的设计"><a href="#Buffer的设计" class="headerlink" title="Buffer的设计"></a>Buffer的设计</h1><p>1、Buffer对外表现为一块连续的内存(char *, len)。<br>2、其size()可以自动增长。<br>3、内部以vector<char>来保存数据。</p>
+<p>从前一文对TcpConnection的分析来看，TcpConnection会有两个Buffer成员，input buffer和output buffer。</p>
+<p>input buffer：TcpConnection会从socket中读取数据，然后写入到input buffer中，客户代码从input buffer中读取数据。<br>output buffer：客户代码会将数据写入output buffer中，TcpConnection从output buffer中读取数据并写入socket。</p>
+<h2 id="Buffer的数据结构"><a href="#Buffer的数据结构" class="headerlink" title="Buffer的数据结构"></a>Buffer的数据结构</h2><p>Buffer的内部是一个vector<char>，是一块连续的内存。数据结构图如下：<br><img src="https://img-blog.csdnimg.cn/4702eab16d3f40bdb11a2eff80752134.gif#pic_center" alt="在这里插入图片描述"><br>在Buffer中有三个部分，prependable、readable、writable。各块的大小为：<br>prependable = readIndex</p>
+<p>readable = writeIndex - readIndex</p>
+<p>writable = size() - writeIndex</p>
+<p>在Buffer里还有两个常数 kCheapPrepend 和 kIntialSize，定义了prependable和writable的初始大小。如下图：</p>
+<p><img src="https://img-blog.csdnimg.cn/d44fe6b3560d4b3ea2a723568a6e2d68.gif#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="Buffer的操作"><a href="#Buffer的操作" class="headerlink" title="Buffer的操作"></a>Buffer的操作</h2><p>1、写入200字节数据<br>如果向Buffer中写入200字节的数据：<br><img src="https://img-blog.csdnimg.cn/f4ad3233d2a44d968acfea0a3c40367b.gif#pic_center" alt="在这里插入图片描述"><br>writeIndex会向后移动200字节，    readIndex保持不变，readable和writable相应变化。</p>
+<p>2、读出50字节数据<br>如果从Buffer读走50字节的数据，如下图：<br><img src="https://img-blog.csdnimg.cn/be176ac411394350bb2bf431105a80d8.gif#pic_center" alt="在这里插入图片描述"><br>与上图相比，readIndex右移了50字节，writeIndex保持不变，readable和writable相应变化。</p>
+<p>3、写入200字节<br><img src="https://img-blog.csdnimg.cn/62914f843b13499c91ce8d8421f9b807.gif#pic_center" alt="在这里插入图片描述"><br>writeIndex向后移动200字节，readIndex不变。</p>
+<p>4、一次性读350字节</p>
+<p>由于全部把数据读完，所以readIndex和writeIndex回到初始位置。</p>
+<p>5、如果直接向Buffer写入大于size()的数据，那么Buffer会自动增长容纳全部数据，并且readIndex会回到初始位置</p>
+<p><img src="https://img-blog.csdnimg.cn/e3016f2bc76a41af81f94f50dbef7e1d.gif#pic_center" alt="在这里插入图片描述"></p>
+<p>6、当经过若干次读写，readIndex移动到了后面的位置。<br><img src="https://img-blog.csdnimg.cn/a944a560dfb84aaeb361de3ee4bbcfbc.gif#pic_center" alt="在这里插入图片描述"><br>如果这时写入的数据超过了writable时，Buffer会将数据挪到最前面：<br><img src="https://img-blog.csdnimg.cn/f7b0ba8991c04b77901b0cea928f7412.gif#pic_center" alt="在这里插入图片描述"><br>这时候就可以继续写入数据。</p>
+<h1 id="readFd"><a href="#readFd" class="headerlink" title="readFd()"></a>readFd()</h1><p>上一文讲到的TcpConnection读取数据的时候，用到了readFd()函数，在这节进行简要介绍：<br>具体做法是，在栈上准备一个 65536 字节的 stackbuf，然后利用 readv() 来读取数据，iovec 有两块，第一块指向Buffer 中的 writable 字节，另一块指向栈上的 stackbuf。这样如果读入的数据不多，那么全部都读到 Buffer 中去了；如果长度超过 Buffer 的 writable 字节数，就会读到栈上的 stackbuf 里，然后程序再把 stackbuf 里的数据 append 到 Buffer 中。</p>
+<h2 id="iovec"><a href="#iovec" class="headerlink" title="iovec"></a>iovec</h2><p>一个与readv()和writev()操作相关的结构体：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">iovec</span>&#123;</span></span><br><span class="line">     <span class="keyword">void</span> *iov_base;</span><br><span class="line">     <span class="keyword">size_t</span> iov_len;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>readv和writev函数用于在一次函数调用中读、写多个非连续缓冲区。这两个函数称为散布和聚集写。<br>iov_base：指向一个缓冲区，这个缓冲区是存放readv所接收的数据或是writev将要发送的数据。<br>iov_len：确定了接收的最大长度以及实际写入的长度。</p>
+<h2 id="readFd-源码"><a href="#readFd-源码" class="headerlink" title="readFd()源码"></a>readFd()源码</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">Buffer::readFd</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">int</span>* savedErrno)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> extrabuf[<span class="number">65536</span>];<span class="comment">//栈上空间</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">iovec</span> <span class="title">vec</span>[2];</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">size_t</span> writable = writeableBytes();</span><br><span class="line">  vec[<span class="number">0</span>].iov_base = begin()+writerIndex_;<span class="comment">//Buffer</span></span><br><span class="line">  vec[<span class="number">0</span>].iov_len = writable;</span><br><span class="line">  vec[<span class="number">1</span>].iov_base = extrabuf;<span class="comment">//stack</span></span><br><span class="line">  vec[<span class="number">1</span>].iov_len = <span class="keyword">sizeof</span> extrabuf;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">ssize_t</span> n = readv(fd, vec, <span class="number">2</span>);</span><br><span class="line">  <span class="keyword">if</span> (n &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    *savedErrno = errno;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (implicit_cast&lt;<span class="keyword">size_t</span>&gt;(n) &lt;= writable) &#123;</span><br><span class="line">    writerIndex_ += n;<span class="comment">//如果Buffer可以直接读入，就直接读</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;<span class="comment">//如果数据过大则先读到栈上，接着添加到Buffer的后面</span></span><br><span class="line">    writerIndex_ = buffer_.size();</span><br><span class="line">    append(extrabuf, n - writable);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>以上来源于：<a href="https://blog.csdn.net/Solstice/article/details/6329080" target="_blank" rel="noopener">https://blog.csdn.net/Solstice/article/details/6329080</a></p>
+]]></content>
+      <categories>
+        <category>muduo</category>
+      </categories>
+  </entry>
 </search>

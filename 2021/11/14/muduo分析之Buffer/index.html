@@ -81,20 +81,26 @@
 
 
 
-<meta name="description" content="前言通过lab1可以了解到操作系统也是一个软件，需要通过某种机制加载并运行。而这种机制简单来讲就是一个比操作系统更简单的软件bootloader，通过bootloader来加载ucore os。在lab1中可以学习到编译运行bootloader的过程，PC启动bootloader的过程，编译、运行os的过程、分段管理以及中断管理等等。 BIOS当计算机加电之后，一般都会执行BIOS完成基本IO初始">
+<meta name="description" content="Buffer的设计1、Buffer对外表现为一块连续的内存(char *, len)。2、其size()可以自动增长。3、内部以vector来保存数据。 从前一文对TcpConnection的分析来看，TcpConnection会有两个Buffer成员，input buffer和output buffer。 input buffer：TcpConnection会从socket中读取数据，然后写入到">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浅谈ucoreLab1">
-<meta property="og:url" content="http://yoursite.com/2021/10/04/%E6%B5%85%E8%B0%88ucoreLab1/index.html">
+<meta property="og:title" content="muduo分析之Buffer">
+<meta property="og:url" content="http://yoursite.com/2021/11/14/muduo%E5%88%86%E6%9E%90%E4%B9%8BBuffer/index.html">
 <meta property="og:site_name" content="AhDai">
-<meta property="og:description" content="前言通过lab1可以了解到操作系统也是一个软件，需要通过某种机制加载并运行。而这种机制简单来讲就是一个比操作系统更简单的软件bootloader，通过bootloader来加载ucore os。在lab1中可以学习到编译运行bootloader的过程，PC启动bootloader的过程，编译、运行os的过程、分段管理以及中断管理等等。 BIOS当计算机加电之后，一般都会执行BIOS完成基本IO初始">
+<meta property="og:description" content="Buffer的设计1、Buffer对外表现为一块连续的内存(char *, len)。2、其size()可以自动增长。3、内部以vector来保存数据。 从前一文对TcpConnection的分析来看，TcpConnection会有两个Buffer成员，input buffer和output buffer。 input buffer：TcpConnection会从socket中读取数据，然后写入到">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/344fe82bf2764caf8a3d6bfef7604fd8.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAQWhEYWnCtw==,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/25e3e4c9deb843b2ab60c2a2dcca8e96.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAQWhEYWnCtw==,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center">
-<meta property="article:published_time" content="2021-10-04T05:52:35.768Z">
-<meta property="article:modified_time" content="2021-10-04T06:02:00.929Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/4702eab16d3f40bdb11a2eff80752134.gif#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/d44fe6b3560d4b3ea2a723568a6e2d68.gif#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/f4ad3233d2a44d968acfea0a3c40367b.gif#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/be176ac411394350bb2bf431105a80d8.gif#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/62914f843b13499c91ce8d8421f9b807.gif#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/e3016f2bc76a41af81f94f50dbef7e1d.gif#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/a944a560dfb84aaeb361de3ee4bbcfbc.gif#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/f7b0ba8991c04b77901b0cea928f7412.gif#pic_center">
+<meta property="article:published_time" content="2021-11-14T07:47:25.484Z">
+<meta property="article:modified_time" content="2021-11-14T07:48:21.432Z">
 <meta property="article:author" content="AhDai">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/344fe82bf2764caf8a3d6bfef7604fd8.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAQWhEYWnCtw==,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/4702eab16d3f40bdb11a2eff80752134.gif#pic_center">
 
 
 
@@ -124,7 +130,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2021/10/04/浅谈ucoreLab1/"/>
+  <link rel="canonical" href="http://yoursite.com/2021/11/14/muduo分析之Buffer/"/>
 
 
 
@@ -134,7 +140,7 @@
 
 
 
-  <title>浅谈ucoreLab1 | AhDai</title>
+  <title>muduo分析之Buffer | AhDai</title>
   
 
 
@@ -325,7 +331,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/04/%E6%B5%85%E8%B0%88ucoreLab1/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/14/muduo%E5%88%86%E6%9E%90%E4%B9%8BBuffer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="AhDai">
@@ -342,7 +348,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">浅谈ucoreLab1</h1>
+          <h1 class="post-title" itemprop="name headline">muduo分析之Buffer</h1>
         
 
         <div class="post-meta">
@@ -354,8 +360,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-10-04T13:52:35+08:00">
-                2021-10-04
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-11-14T15:47:25+08:00">
+                2021-11-14
               </time>
             
 
@@ -377,8 +383,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ucore/" itemprop="url" rel="index">
-                    <span itemprop="name">ucore</span>
+                  <a href="/categories/muduo/" itemprop="url" rel="index">
+                    <span itemprop="name">muduo</span>
                   </a>
                 </span>
 
@@ -395,9 +401,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2021/10/04/%E6%B5%85%E8%B0%88ucoreLab1/#comments" itemprop="discussionUrl">
+                <a href="/2021/11/14/muduo%E5%88%86%E6%9E%90%E4%B9%8BBuffer/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2021/10/04/浅谈ucoreLab1/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2021/11/14/muduo分析之Buffer/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -429,7 +435,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  2.6k 字 
+                  796 字 
                 </span>
               
 
@@ -445,7 +451,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  9 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -466,34 +472,31 @@
       
 
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>通过lab1可以了解到操作系统也是一个软件，需要通过某种机制加载并运行。而这种机制简单来讲就是一个比操作系统更简单的软件bootloader，通过bootloader来加载ucore os。在lab1中可以学习到编译运行bootloader的过程，PC启动bootloader的过程，编译、运行os的过程、分段管理以及中断管理等等。</p>
-<h1 id="BIOS"><a href="#BIOS" class="headerlink" title="BIOS"></a>BIOS</h1><p><strong>当计算机加电之后，一般都会执行BIOS完成基本IO初始化及引导加载功能</strong>，简单来讲就是通过BIOS初始化os运行的环境，最终引导程序将操作系统内核映像加载到RAM中，并将控制权交给操作系统。<br>在ucore中，BIOS由bootasm.S和bootmain.c一起组成。BIOS实际上是被固化在ROM中为上层软件提供最底层的支持。以Intel 80386为例，计算机加电后，CPU从0xFFFFFFF0（CS:EIP CS:0xF000, IP:0xFFF0）处开始执行，在这只储存了一条跳转指令，跳转到BIOS的起始点，当BIOS完成自己的工作后就会读取设备的第一扇区（主引导扇区）到内存特定的地址0x7c00处，然后把工作交给bootloader。</p>
-<h1 id="bootloader"><a href="#bootloader" class="headerlink" title="bootloader"></a>bootloader</h1><h2 id="实模式"><a href="#实模式" class="headerlink" title="实模式"></a>实模式</h2><p><strong>在bootloader接手BIOS的工作后，当前的PC系统处于实模式运行状态</strong>，在这种状态下，软件访问的物理内存空间不能超过1MB，无法发挥Intel 80386以上级别的32位CPU的4GB内存管理能力。</p>
-<p>实模式将整个物理内存看成分段区域，内核和用户程序并没有区别对待，每一个指针都是指向实际的物理地址，如果一个用户的指针指向了内核区域并修改了内容，那么就是灾难性的结果。所以bootloader的第一个工作就是将PC从实模式转换到保护模式，这就需要修改A20地址线，下面简单的介绍一下A20地址线：</p>
-<p>Intel早期的8086 CPU提供了20根地址线，可寻址的空间范围即0-1MB的内存空间，但是8086的数据线宽位为16位，无法直接寻址1MB的内存空间，所以8086提供了段地址加偏移量的地址转换机制，但是转换以后的地址最大值超过了1MB，也就是超过了20位的寻址范围，所以当寻址超过1MB时则会发生”回卷“。下一代80286 CPU提供了24位地址线，为了保持完全的向下兼容性，于是出现了A20 Gate。在保护模式下，为了使能所有地址的寻址能力，需要打开A20地址线。</p>
-<h2 id="保护模式"><a href="#保护模式" class="headerlink" title="保护模式"></a>保护模式</h2><p><strong>在打开A20地址线后，PC就进入了保护模式</strong>，在保护模式下80386的全部32根地址线有效，可寻址4GB的线性地址空间。在保护模式下可以采用分段存储管理机制和分页存储管理机制，不仅为存储共享和保护提供了硬件支持，而且为虚拟存储提供了硬件支持。</p>
-<h2 id="分段机制"><a href="#分段机制" class="headerlink" title="分段机制"></a>分段机制</h2><p><strong>只有在进入保护模式下才可以使用分段存储管理机制</strong>，分段涉及4个关键内容：逻辑地址、段描述符、段描述符表、段选择子。分段地址转换机构把逻辑地址中的选择子作为段描述符表的索引，找到表中对应的段描述符，然后把段描述符中保存的段基址加上段偏移量形成线性地址。<br><strong>段描述符：</strong><br>①段基地址：规定线性地址空间中段的起始地址。<br>②段界限：规定段的大小。<br>③段属性：确定段的各种性质，包括类型、描述符特权级、段存在位、已访问位等等。<br><strong>段描述符表：</strong> 其实就是一个保存多个段描述符的“数组”，起始地址保存在全局描述符表寄存器GDTR中。<br><strong>选择子：</strong> 用来选择哪个描述符表和在该表中索引一个描述符的。选择子的结构如下：<br>①索引：在描述符表中选择一个描述符。<br>②表指示位：选择应该访问哪一个描述符表。全局或局部。<br>③请求特权级（RPL）：进程对段访问的请求权限。<br>通过请求特权级，顺便总结一下CPL和DPL<br>CPL：当前特权级，保存在段选择子的最低两位，描述当前活动代码段的特权级。<br>DPL：描述符特权，存储在段描述符中的权限位，描述对应段所属的特权级。</p>
-<p><strong>在ucore中，启动分段机制，还未启动分页机制，目前逻辑地址、线性地址、物理地址关系如下：<br>逻辑地址–&gt;（分段地址转换）–&gt;线性地址 == 物理地址</strong></p>
-<h2 id="读取磁盘扇区"><a href="#读取磁盘扇区" class="headerlink" title="读取磁盘扇区"></a>读取磁盘扇区</h2><p><strong>在完成了上述工作以后，bootloader下一步就是读取硬盘扇区</strong>，当前硬盘数据时储存到硬盘扇区中，一个扇区大小为512字节。读取扇区的工作在boot/bootmain.c中的readsect函数，大致流程如下：<br>①等待磁盘准备好<br>②发出读取扇区命令<br>③等待磁盘准备好<br>④把磁盘扇区数据读到指定内存</p>
-<h2 id="加载ELF格式的os"><a href="#加载ELF格式的os" class="headerlink" title="加载ELF格式的os"></a>加载ELF格式的os</h2><p>ELF文件格式是一种Linux系统下的一种常用目标文件格式，有三种主要类型：<br>①用于执行的可执行文件：用于提供提供程序镜像，加载的内存执行。<br>②用于连接的可重定位文件，与其他目标文件一起创建可执文件和共享目标文件。<br>③共享目标文件，连接器可将它与其他可重定位文件和共享目标文件连接成其他的目标文件。</p>
-<p>加载ELF格式的代码在bootmain.c中的bootmain函数中。<br><strong>在读取硬盘扇区之后，接下来bootloader就要加载ELF格式的os</strong>：首先从第一个扇区（第零个扇区为bootloader）中读取os kernel最开始的4KB代码，然后判断前四个字节是否等于指定的ELF_MAGIC，用于判断ELF header是否合法。接下来从ELF头文件中获取program header表的位置，然后遍历该表的每一项，并且从每一个program header中获取到段应该被加载到内存中的位置，以及段的大小，然后调用readseg函数将每一个段加载到内存中。</p>
-<p><strong>至此bootloader还剩下最后一个步骤，就是从ELF header中查询到os kernel的入口地址，然后跳转到该条指令的地址，进入ucore os。</strong></p>
-<h1 id="os"><a href="#os" class="headerlink" title="os"></a>os</h1><p>目前lab1的ucore功能比较简单，完成了内存管理以及外设中断管理：<br>①初始化终端<br>②显示字符串<br>③显示堆栈中多层函数调用关系<br>④切换到保护模式，启动分段机制<br>⑤初始化中断控制器，设置中断描述符表，初始化时钟中断，使能整个系统的中断机制</p>
-<p>接下来我们分析一下函数的堆栈以及中断。</p>
-<h2 id="函数堆栈"><a href="#函数堆栈" class="headerlink" title="函数堆栈"></a>函数堆栈</h2><p>每一次的函数调用都会进行压栈，几乎在每个函数体之前都会有类如如下的汇编指令</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pushl   %ebp</span><br><span class="line">movl   %esp , %ebp</span><br></pre></td></tr></table></figure>
+        <h1 id="Buffer的设计"><a href="#Buffer的设计" class="headerlink" title="Buffer的设计"></a>Buffer的设计</h1><p>1、Buffer对外表现为一块连续的内存(char *, len)。<br>2、其size()可以自动增长。<br>3、内部以vector<char>来保存数据。</p>
+<p>从前一文对TcpConnection的分析来看，TcpConnection会有两个Buffer成员，input buffer和output buffer。</p>
+<p>input buffer：TcpConnection会从socket中读取数据，然后写入到input buffer中，客户代码从input buffer中读取数据。<br>output buffer：客户代码会将数据写入output buffer中，TcpConnection从output buffer中读取数据并写入socket。</p>
+<h2 id="Buffer的数据结构"><a href="#Buffer的数据结构" class="headerlink" title="Buffer的数据结构"></a>Buffer的数据结构</h2><p>Buffer的内部是一个vector<char>，是一块连续的内存。数据结构图如下：<br><img src="https://img-blog.csdnimg.cn/4702eab16d3f40bdb11a2eff80752134.gif#pic_center" alt="在这里插入图片描述"><br>在Buffer中有三个部分，prependable、readable、writable。各块的大小为：<br>prependable = readIndex</p>
+<p>readable = writeIndex - readIndex</p>
+<p>writable = size() - writeIndex</p>
+<p>在Buffer里还有两个常数 kCheapPrepend 和 kIntialSize，定义了prependable和writable的初始大小。如下图：</p>
+<p><img src="https://img-blog.csdnimg.cn/d44fe6b3560d4b3ea2a723568a6e2d68.gif#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="Buffer的操作"><a href="#Buffer的操作" class="headerlink" title="Buffer的操作"></a>Buffer的操作</h2><p>1、写入200字节数据<br>如果向Buffer中写入200字节的数据：<br><img src="https://img-blog.csdnimg.cn/f4ad3233d2a44d968acfea0a3c40367b.gif#pic_center" alt="在这里插入图片描述"><br>writeIndex会向后移动200字节，    readIndex保持不变，readable和writable相应变化。</p>
+<p>2、读出50字节数据<br>如果从Buffer读走50字节的数据，如下图：<br><img src="https://img-blog.csdnimg.cn/be176ac411394350bb2bf431105a80d8.gif#pic_center" alt="在这里插入图片描述"><br>与上图相比，readIndex右移了50字节，writeIndex保持不变，readable和writable相应变化。</p>
+<p>3、写入200字节<br><img src="https://img-blog.csdnimg.cn/62914f843b13499c91ce8d8421f9b807.gif#pic_center" alt="在这里插入图片描述"><br>writeIndex向后移动200字节，readIndex不变。</p>
+<p>4、一次性读350字节</p>
+<p>由于全部把数据读完，所以readIndex和writeIndex回到初始位置。</p>
+<p>5、如果直接向Buffer写入大于size()的数据，那么Buffer会自动增长容纳全部数据，并且readIndex会回到初始位置</p>
+<p><img src="https://img-blog.csdnimg.cn/e3016f2bc76a41af81f94f50dbef7e1d.gif#pic_center" alt="在这里插入图片描述"></p>
+<p>6、当经过若干次读写，readIndex移动到了后面的位置。<br><img src="https://img-blog.csdnimg.cn/a944a560dfb84aaeb361de3ee4bbcfbc.gif#pic_center" alt="在这里插入图片描述"><br>如果这时写入的数据超过了writable时，Buffer会将数据挪到最前面：<br><img src="https://img-blog.csdnimg.cn/f7b0ba8991c04b77901b0cea928f7412.gif#pic_center" alt="在这里插入图片描述"><br>这时候就可以继续写入数据。</p>
+<h1 id="readFd"><a href="#readFd" class="headerlink" title="readFd()"></a>readFd()</h1><p>上一文讲到的TcpConnection读取数据的时候，用到了readFd()函数，在这节进行简要介绍：<br>具体做法是，在栈上准备一个 65536 字节的 stackbuf，然后利用 readv() 来读取数据，iovec 有两块，第一块指向Buffer 中的 writable 字节，另一块指向栈上的 stackbuf。这样如果读入的数据不多，那么全部都读到 Buffer 中去了；如果长度超过 Buffer 的 writable 字节数，就会读到栈上的 stackbuf 里，然后程序再把 stackbuf 里的数据 append 到 Buffer 中。</p>
+<h2 id="iovec"><a href="#iovec" class="headerlink" title="iovec"></a>iovec</h2><p>一个与readv()和writev()操作相关的结构体：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">iovec</span>&#123;</span></span><br><span class="line">     <span class="keyword">void</span> *iov_base;</span><br><span class="line">     <span class="keyword">size_t</span> iov_len;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>readv和writev函数用于在一次函数调用中读、写多个非连续缓冲区。这两个函数称为散布和聚集写。<br>iov_base：指向一个缓冲区，这个缓冲区是存放readv所接收的数据或是writev将要发送的数据。<br>iov_len：确定了接收的最大长度以及实际写入的长度。</p>
+<h2 id="readFd-源码"><a href="#readFd-源码" class="headerlink" title="readFd()源码"></a>readFd()源码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">Buffer::readFd</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">int</span>* savedErrno)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> extrabuf[<span class="number">65536</span>];<span class="comment">//栈上空间</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">iovec</span> <span class="title">vec</span>[2];</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">size_t</span> writable = writeableBytes();</span><br><span class="line">  vec[<span class="number">0</span>].iov_base = begin()+writerIndex_;<span class="comment">//Buffer</span></span><br><span class="line">  vec[<span class="number">0</span>].iov_len = writable;</span><br><span class="line">  vec[<span class="number">1</span>].iov_base = extrabuf;<span class="comment">//stack</span></span><br><span class="line">  vec[<span class="number">1</span>].iov_len = <span class="keyword">sizeof</span> extrabuf;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">ssize_t</span> n = readv(fd, vec, <span class="number">2</span>);</span><br><span class="line">  <span class="keyword">if</span> (n &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    *savedErrno = errno;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (implicit_cast&lt;<span class="keyword">size_t</span>&gt;(n) &lt;= writable) &#123;</span><br><span class="line">    writerIndex_ += n;<span class="comment">//如果Buffer可以直接读入，就直接读</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;<span class="comment">//如果数据过大则先读到栈上，接着添加到Buffer的后面</span></span><br><span class="line">    writerIndex_ = buffer_.size();</span><br><span class="line">    append(extrabuf, n - writable);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>这两条汇编指令的含义是：首先将ebp寄存器入栈，然后将栈顶指针esp赋值给ebp，表面上看是用esp覆盖ebp的值，实际上在给ebp赋值之前，原ebp的值已经被压栈，而新的ebp恰好指向栈顶。这样就会有一下数据顺序：参数、返回地址、ebp寄存器。如下图所示，栈的结构：</p>
-<p><img src="https://img-blog.csdnimg.cn/344fe82bf2764caf8a3d6bfef7604fd8.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAQWhEYWnCtw==,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述"></p>
-<p>由栈结构可知，ss:[ebp+4]为返回地址，ss:[ebp+8]为第一个参数值，ss:[ebp-4]为第一个局部变量，ss:[ebp]为上一层ebp值。因为ebp处的值总是上一层的ebp值，而在每一层函数调用中，都能通过当前的ebp值向上获取返回地址等数据，以此形成递归，直到栈底。</p>
-<p>通过对栈结构的了解，我们可以顺利完成练习5：实现函数调用堆栈跟踪函数。</p>
-<h2 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h2><p>在操作系统中有三种特殊的中断事件。<br>①由CPU外部设备引起的外部事件如I/O中断、时钟中断、控制台中断等是异步产生的，与CPU的执行无关，成为异步中断也称外部中断。<br>②而在CPU执行指令期间检测到的不正常或非法条件所引起的内部事件称为同步中断也称内部中断，简称异常。<br>③把在程序中使用请求系统服务的系统调用而引发的事件称作陷入中断，也称软中断。</p>
-<p>在lab1中只描述保护模式下的处理过程，当CPU收到中断或异常事件时，它会暂停当前处理的程序或任务，通过一定的机制跳转到负责处理的例程中。然后在返回刚才被打断的程序或任务中。<strong>操作系统在IDT中设置好各种中断向量对应的中断描述符，用于CPU在产生中断后进行查询相应中断例程的入口地址。</strong></p>
-<h3 id="中断描述符表（IDT）"><a href="#中断描述符表（IDT）" class="headerlink" title="中断描述符表（IDT）"></a>中断描述符表（IDT）</h3><p>中断描述符表把每个中断或异常编号和一个指向中断服务例程的描述符联系起来。CPU把中断（异常）号乘以8作为IDT的索引。IDT可以存在于内存中任意的位置，CPU通过IDT寄存器的内容来寻址IDT的起始地址。<br>指令LIDT和SIDT用来操作IDTR，两条指令的含义如下：<br>LIDT：使用一个包含线性地址基址和界限的内存操作来加载IDT，os在创建IDT时需要执行它来设定IDT的起始地址。这条指令只能在特权级0执行。<br>SIDT：拷贝IDTR的基址和界限部分到一个内存地址。这条指令可以在任意特权级执行。</p>
-<h3 id="中断处理过程"><a href="#中断处理过程" class="headerlink" title="中断处理过程"></a>中断处理过程</h3><p>在lab1中，中断处理在trap.c中的trap函数中，所有的中断在经过中断入口函数__alltraps（位于trapasm.S）预处理后，都会跳转到这里。根据不同的中断类型进行相应的处理。在处理结束后，trap会返回，被中断的程序会继续运行。整个中断处理流程大致如下：<br><img src="https://img-blog.csdnimg.cn/25e3e4c9deb843b2ab60c2a2dcca8e96.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAQWhEYWnCtw==,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述"></p>
-<p><br><br></p>
-<p><strong>至此lab1的工作完成</strong></p>
-<p>本文参考：<br><a href="https://chyyuu.gitbooks.io/ucore_os_docs" target="_blank" rel="noopener">https://chyyuu.gitbooks.io/ucore_os_docs</a><br><a href="https://www.jianshu.com/p/2f95d38afa1d" target="_blank" rel="noopener">https://www.jianshu.com/p/2f95d38afa1d</a></p>
+
+
+<p>以上来源于：<a href="https://blog.csdn.net/Solstice/article/details/6329080" target="_blank" rel="noopener">https://blog.csdn.net/Solstice/article/details/6329080</a></p>
 
       
     </div>
@@ -518,8 +521,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2021/09/29/ucore%E5%8F%8C%E5%90%91%E5%BE%AA%E7%8E%AF%E9%93%BE%E8%A1%A8/" rel="next" title="ucore双向循环链表">
-                <i class="fa fa-chevron-left"></i> ucore双向循环链表
+              <a href="/2021/11/13/muduo%E5%88%86%E6%9E%90%E4%B9%8BTcpConnection/" rel="next" title="muduo分析之TcpConnection">
+                <i class="fa fa-chevron-left"></i> muduo分析之TcpConnection
               </a>
             
           </div>
@@ -527,10 +530,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2021/10/04/%E5%9C%A8operator=%E4%B8%AD%E5%A4%84%E7%90%86%E8%87%AA%E6%88%91%E8%B5%8B%E5%80%BC/" rel="prev" title="在operator=中处理自我赋值">
-                在operator=中处理自我赋值 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -686,7 +685,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BIOS"><span class="nav-number">2.</span> <span class="nav-text">BIOS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bootloader"><span class="nav-number">3.</span> <span class="nav-text">bootloader</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实模式"><span class="nav-number">3.1.</span> <span class="nav-text">实模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保护模式"><span class="nav-number">3.2.</span> <span class="nav-text">保护模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分段机制"><span class="nav-number">3.3.</span> <span class="nav-text">分段机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读取磁盘扇区"><span class="nav-number">3.4.</span> <span class="nav-text">读取磁盘扇区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加载ELF格式的os"><span class="nav-number">3.5.</span> <span class="nav-text">加载ELF格式的os</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#os"><span class="nav-number">4.</span> <span class="nav-text">os</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#函数堆栈"><span class="nav-number">4.1.</span> <span class="nav-text">函数堆栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中断"><span class="nav-number">4.2.</span> <span class="nav-text">中断</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#中断描述符表（IDT）"><span class="nav-number">4.2.1.</span> <span class="nav-text">中断描述符表（IDT）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中断处理过程"><span class="nav-number">4.2.2.</span> <span class="nav-text">中断处理过程</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Buffer的设计"><span class="nav-number">1.</span> <span class="nav-text">Buffer的设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Buffer的数据结构"><span class="nav-number">1.1.</span> <span class="nav-text">Buffer的数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Buffer的操作"><span class="nav-number">1.2.</span> <span class="nav-text">Buffer的操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#readFd"><span class="nav-number">2.</span> <span class="nav-text">readFd()</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#iovec"><span class="nav-number">2.1.</span> <span class="nav-text">iovec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#readFd-源码"><span class="nav-number">2.2.</span> <span class="nav-text">readFd()源码</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -899,9 +898,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2021/10/04/%E6%B5%85%E8%B0%88ucoreLab1/';
-          this.page.identifier = '2021/10/04/浅谈ucoreLab1/';
-          this.page.title = '浅谈ucoreLab1';
+          this.page.url = 'http://yoursite.com/2021/11/14/muduo%E5%88%86%E6%9E%90%E4%B9%8BBuffer/';
+          this.page.identifier = '2021/11/14/muduo分析之Buffer/';
+          this.page.title = 'muduo分析之Buffer';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://.disqus.com/embed.js';
