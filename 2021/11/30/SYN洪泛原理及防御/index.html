@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://img-blog.csdnimg.cn/01100fade59d46a0969fd8453347eedb.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/5d001a5857db4fddbc2fe88c6e5809ae.png">
 <meta property="article:published_time" content="2021-11-30T13:19:03.429Z">
-<meta property="article:modified_time" content="2021-11-30T13:19:38.958Z">
+<meta property="article:modified_time" content="2021-11-30T13:26:26.888Z">
 <meta property="article:author" content="AhDai">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://img-blog.csdnimg.cn/img_convert/13f30c262232c8fde5d27e188335709a.png#pic_center">
@@ -488,23 +488,20 @@
 <h1 id="SYN洪范攻击实验"><a href="#SYN洪范攻击实验" class="headerlink" title="SYN洪范攻击实验"></a>SYN洪范攻击实验</h1><p>工具：<br>hping3：用来模拟 SYN 洪范攻击<br>tcpdump：抓取 SYN 包<br>netstat：用处查看端口状态以及统计半连接队列<br>注意：本次实验没有开启 tcp_syncookies 功能，攻击的服务器是自己在阿里云的服务器。（tcp_syncookies 在防御措施有解释）</p>
 <h2 id="使用hping3-进行-SYN-洪范攻击"><a href="#使用hping3-进行-SYN-洪范攻击" class="headerlink" title="使用hping3 进行 SYN 洪范攻击"></a>使用hping3 进行 SYN 洪范攻击</h2><ul>
 <li>客户端发起 SYN 洪范攻击</li>
-<li>-S：指定 TCP 包的标志位 SYN<ul>
+<li>-S：指定 TCP 包的标志位 SYN</li>
 <li>-p：指定目的端口号</li>
-<li>–flood：以洪范的方式攻击<br><img src="https://img-blog.csdnimg.cn/b8e6ad9af4c24a6380627c6dda527982.png" alt="在这里插入图片描述"><br>如上图所示，客户端就对服务器发送很多 SYN 请求，也就是 SYN 洪范攻击。</li>
+<li>–flood：以洪范的方式攻击</li>
 </ul>
-</li>
-</ul>
+<p><img src="https://img-blog.csdnimg.cn/b8e6ad9af4c24a6380627c6dda527982.png" alt="在这里插入图片描述"><br>如上图所示，客户端就对服务器发送很多 SYN 请求，也就是 SYN 洪范攻击。</p>
 <h2 id="tcpdump抓包"><a href="#tcpdump抓包" class="headerlink" title="tcpdump抓包"></a>tcpdump抓包</h2><ul>
 <li>dst：目的 ip 地址</li>
 <li>Flags[S]：SYN 请求包<br><img src="https://img-blog.csdnimg.cn/034bd18e0b0646e0b99c9adf09d48252.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAQWhEYWnCtw==,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>利用 tcpdump 在本地进行抓包，从上图可以看出从本机对服务器发出很多的 SYN 请求包。</li>
 </ul>
 <h2 id="半连接队列"><a href="#半连接队列" class="headerlink" title="半连接队列"></a>半连接队列</h2><p>从第一节知道，当客户端在发送 SYN 请求后，在服务器收到 ACK 之前，这些连接都被放在半连接队列中，可以利用 netstat 命令来查看半连接队列的长度。</p>
 <ul>
-<li>-s：按各个协议进行统计<ul>
+<li>-s：按各个协议进行统计</li>
 <li>grep SYN_RECV：只看处于 SYN_RECV 状态的端口</li>
 <li>wc -l：统计数量</li>
-</ul>
-</li>
 </ul>
 <p><img src="https://img-blog.csdnimg.cn/b76d99cfb633467e816ca8ac8e310eb0.PNG?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAQWhEYWnCtw==,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述"><br>从上图可以看出当服务端受到 SYN 洪范攻击后，半连接队列会迅速增大，然后达到峰值，然后减少。半连接队列的长度的限制条件在后续会进行分析，这里只看它的现象。</p>
 <h2 id="端口状态"><a href="#端口状态" class="headerlink" title="端口状态"></a>端口状态</h2><p>处于半连接队列中的连接端口状态都是 SYN_RECV。<br><img src="https://img-blog.csdnimg.cn/5b93df59cdc44bc9a560b7190568a34b.PNG?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAQWhEYWnCtw==,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述"><br>上图截取了部分连接状态，可以发现当服务器收到很多 SYN 请求时，会有很多的半连接状态的端口。</p>
