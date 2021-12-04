@@ -1593,7 +1593,10 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds, struct
 </ul>
 <h2 id="半连接队列"><a href="#半连接队列" class="headerlink" title="半连接队列"></a>半连接队列</h2><p>从第一节知道，当客户端在发送 SYN 请求后，在服务器收到 ACK 之前，这些连接都被放在半连接队列中，可以利用 netstat 命令来查看半连接队列的长度。</p>
 <ul>
-<li>-s：按各个协议进行统计</li>
+<li>-a：显示所有 Sockect</li>
+<li>-p: 显示程序名</li>
+<li>-n: 显示 ip 地址</li>
+<li>-t: 显示 TCP 传输协议</li>
 <li>grep SYN_RECV：只看处于 SYN_RECV 状态的端口</li>
 <li>wc -l：统计数量</li>
 </ul>
